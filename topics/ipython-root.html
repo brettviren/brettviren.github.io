@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Using <code>ipython</code> and ROOT interactively."/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-06-16 12:05:25 EDT"/>
+<meta name="generated" content="2012-06-16 14:30:08 EDT"/>
 <meta name="author" content="Brett Viren"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -85,6 +85,11 @@
 
 </head>
 <body>
+<div id="org-div-home-and-up" style="text-align:right;font-size:70%;white-space:nowrap;">
+ <a accesskey="h" href="../index.html"> UP </a>
+ |
+ <a accesskey="H" href="sitemap.html"> HOME </a>
+</div>
 
 <div id="preamble">
 
@@ -93,7 +98,9 @@
 <div id="content">
 <h1 class="title">Using <code>ipython</code> and ROOT interactively.</h1>
 
-<p><a href="http://root.cern.ch/">ROOT</a> can be partially described as a toolkit for performing data analysis.
+
+<p>
+<a href="http://root.cern.ch/">ROOT</a> can be partially described as a toolkit for performing data analysis.
 </p>
 <p>
 <a href="http://ipython.org">ipython</a> can be partially described as an interactive <a href="http://www.python.org">Python</a> shell.
@@ -101,7 +108,7 @@
 <p>
 They work well together.  Both provide an interactive command-line
 interface to the user.  These two interfaces are compared and
-contrasted.  Then a focus on using <code>ipython</code> is taken.
+contrasted.  Then a focus on using ROOT from Python is taken.
 </p>
 
 
@@ -142,19 +149,17 @@ contrasted.  Then a focus on using <code>ipython</code> is taken.
 </li>
 <li><a href="#sec-6">6 Caveats of using ROOT from Python</a>
 <ul>
-<li><a href="#sec-6-1">6.1 Object Ownership Rules</a></li>
-<li><a href="#sec-6-2">6.2 C++-isms</a>
+<li><a href="#sec-6-1">6.1 Loss of Magic Object Creation</a></li>
+<li><a href="#sec-6-2">6.2 Object Ownership Rules</a></li>
+<li><a href="#sec-6-3">6.3 C++-isms</a>
 <ul>
-<li><a href="#sec-6-2-1">6.2.1 ROOT Extensions</a></li>
-<li><a href="#sec-6-2-2">6.2.2 C++ from Python</a></li>
+<li><a href="#sec-6-3-1">6.3.1 Handling <code>std::vector</code></a></li>
+<li><a href="#sec-6-3-2">6.3.2 Passing input/output variable by reference</a></li>
+<li><a href="#sec-6-3-3">6.3.3 Your own C++ classes in Python</a></li>
 </ul></li>
 </ul>
 </li>
-<li><a href="#sec-7">7 Useful stuff</a>
-<ul>
-<li><a href="#sec-7-1">7.1 Rainbow Palette</a></li>
-</ul>
-</li>
+<li><a href="#sec-7">7 Some Useful Code</a></li>
 </ul>
 </div>
 </div>
@@ -257,7 +262,7 @@ hal
 
 <p>
 <code>ipython</code> does not provide redirection to files but it runs shell
-commands similarly and provides redirection to variable:
+commands similarly and provides redirection to a variable:
 </p>
 
 
@@ -284,7 +289,7 @@ For example, the usual filesystem navigation commands are there:
 
 
 <p>
-To see all available commands type "<code>%TAB</code>".  
+To see all available commands type "<code>%</code>" followed by "<code>&lt;TAB&gt;</code>".  
 </p>
 <p>
 Arbitrary commands can be defined using "<code>%alias</code>":
@@ -292,12 +297,15 @@ Arbitrary commands can be defined using "<code>%alias</code>":
 
 
 
-<pre class="example">In [1]: %alias hn hostname
-In [2]: hn 
-Out[2]: ['hal']
+<pre class="example">In [1]: %alias hna hostname
+In [2]: hna 
+hal
 </pre>
 
 
+<p>
+You can not redirect the output of an alias to a variable.
+</p>
 <p>
 Finally, and this is a feature of all <code>ipython</code> command line entries,
 a series of entries can be joined into a more complex command using
@@ -541,6 +549,7 @@ In [9]: canvas.Print("h.pdf]")
 Looking at the resulting <code>h.pdf</code> file you should find 3 pages showing
 progressively more entries in the histogram.
 </p>
+
 </div>
 </div>
 
@@ -549,6 +558,7 @@ progressively more entries in the histogram.
 <div id="outline-container-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> Batch processing</h2>
 <div class="outline-text-2" id="text-4">
+
 
 
 </div>
@@ -699,8 +709,65 @@ call to <code>canvas.Update()</code> or various other things.
 </div>
 
 <div id="outline-container-6-1" class="outline-3">
-<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Object Ownership Rules</h3>
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Loss of Magic Object Creation</h3>
 <div class="outline-text-3" id="text-6-1">
+
+
+<p>
+Independent of Python, ROOT has its own caveats due to its limitations
+and its extensions to C++ when interpreting.  One main feature that is
+lost when using the ROOT Python module is the "magic" creation of
+objects (or pointers to objects) in the current namespace due to
+creation of C++ objects of a given name.  This is easily shown in an
+example:
+</p>
+
+
+
+<pre class="example">root [0] new TH1F("histogram","A histogram that would normally be leaked in C++", 100,-10,10)
+(class TH1F*)0x8cc9a10
+root [1] histogram
+(class TH1F*)0x8cc9a10
+root [2] histogram-&gt;GetTitle()
+(const char* 0x8cc9cc0)"A histogram that would normally be leaked in C++"
+</pre>
+
+
+<p>
+Here the pointer variable <code>histogram</code> is created out of thin air and
+is set to point to the just-created <a href="http://root.cern.ch/root/html/TH1F"><code>TH1F</code></a> of the same name.
+</p>
+<p>
+Some might call this a feature.  Others might call this perverse.  In
+either case, it is not directly extended to Python:
+</p>
+
+
+
+<pre class="example">In [1]: ROOT.TH1F("histogram","An histogram not stored",100,-10,10)
+Out[1]: &lt;ROOT.TH1F object ("histogram") at 0xb4eee88&gt;
+
+In [2]: histogram
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/home/bv/&lt;ipython-input-2-f15a3aea956b&gt; in &lt;module&gt;()
+----&gt; 1 histogram
+
+NameError: name 'histogram' is not defined
+</pre>
+
+
+<p>
+However, ROOT still holds on to that histogram and it can be retrieved
+by name:
+</p>
+
+
+
+<pre class="example">In [3]: ROOT.gROOT.FindObject("histogram")
+Out[3]: &lt;ROOT.TH1F object ("histogram") at 0xb4eee88&gt;
+</pre>
+
 
 
 </div>
@@ -708,39 +775,107 @@ call to <code>canvas.Update()</code> or various other things.
 </div>
 
 <div id="outline-container-6-2" class="outline-3">
-<h3 id="sec-6-2"><span class="section-number-3">6.2</span> C++-isms</h3>
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> Object Ownership Rules</h3>
 <div class="outline-text-3" id="text-6-2">
 
 
+<p>
+When a C++ object is used through the ROOT Python module there are
+some rules to consider.  By default any object created explicitly
+like:
+</p>
+
+
+
+<pre class="example">h = ROOT.TH1F(...)
+</pre>
+
+
+<p>
+will be considered owned by the caller.  When "<code>h</code>" is deleted in
+Python then the underlying C++ object will be deleted.  On the other
+hand, if this object was provided to Python by some other means or if
+it is ever passed back in to C++ then the controlling ownership will
+be stripped from the Python object.  This stripping can be done
+explicitly via:
+</p>
+
+
+
+<pre class="example">h = ROOT.TH1F(...)
+ROOT.SetOwnership(h,0)
+</pre>
+
+
+<p>
+This example illustrates the issue.  Here "<code>canvas</code>" is an
+instantaneous of <a href="http://root.cern.ch/root/html/TCanvas">TCanvas</a>.
+</p>
+
+
+
+<pre class="example">def func(canvas):
+    h = ROOT.TH1F("h","hist",100,-10,10)
+    h.FillRandom("gaus")
+    h.Draw()
+    canvas.Print("func.png")
+</pre>
+
+
+<p>
+While the expected output will be found in <code>func.png</code> the canvas will
+be left empty as when "<code>h</code>" falls out of scope it is destroyed and
+takes the underlying C++ histogram object with it and removes if from
+the canvas as a side-effect.  If this is not desired the
+<code>ROOT.SetOwnership(h,0)</code> method can be used as above or instead of
+<code>h.Draw()</code>, <code>h.DrawCopy()</code> could be called or the histogram could be
+returned to and held by the caller of <code>func</code>.
+</p>
 
 </div>
 
-<div id="outline-container-6-2-1" class="outline-4">
-<h4 id="sec-6-2-1"><span class="section-number-4">6.2.1</span> ROOT Extensions</h4>
-<div class="outline-text-4" id="text-6-2-1">
+</div>
+
+<div id="outline-container-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> C++-isms</h3>
+<div class="outline-text-3" id="text-6-3">
+
+
+<p>
+Various issues in handling C++ "stuff" in Python 
+</p>
+
+</div>
+
+<div id="outline-container-6-3-1" class="outline-4">
+<h4 id="sec-6-3-1"><span class="section-number-4">6.3.1</span> Handling <code>std::vector</code></h4>
+<div class="outline-text-4" id="text-6-3-1">
 
 
 </div>
 
 </div>
 
-<div id="outline-container-6-2-2" class="outline-4">
-<h4 id="sec-6-2-2"><span class="section-number-4">6.2.2</span> C++ from Python</h4>
-<div class="outline-text-4" id="text-6-2-2">
+<div id="outline-container-6-3-2" class="outline-4">
+<h4 id="sec-6-3-2"><span class="section-number-4">6.3.2</span> Passing input/output variable by reference</h4>
+<div class="outline-text-4" id="text-6-3-2">
 
 
-<ul>
-<li>Python objects are handles
-</li>
-<li>Types
-</li>
-<li>Dictionaries
-</li>
-<li>Input/Output reference variables (ROOT.Long/ROOT.Double)
-</li>
-</ul>
+<p>
+For integers use a <code>ROOT.Long</code> or for floats a <code>ROOT.Double</code>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6-3-3" class="outline-4">
+<h4 id="sec-6-3-3"><span class="section-number-4">6.3.3</span> Your own C++ classes in Python</h4>
+<div class="outline-text-4" id="text-6-3-3">
 
 
+<p>
+Need to make and load a library with a CINT or Reflex dictionary
+</p>
 
 </div>
 </div>
@@ -749,35 +884,45 @@ call to <code>canvas.Update()</code> or various other things.
 </div>
 
 <div id="outline-container-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Useful stuff</h2>
+<h2 id="sec-7"><span class="section-number-2">7</span> Some Useful Code</h2>
 <div class="outline-text-2" id="text-7">
 
 
 <p>
-This collects some useful ROOT related functionality to use from <code>ipython</code>.
+This collects links to some useful ROOT related functionality to use
+from <code>ipython</code> or plain Python code.  Additional documentation can be
+found in the code's docstrings.
 </p>
+<dl>
+<dt><a href="https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py">rainbow.py</a></dt><dd>ROOT's default color palette closely resembles vomit.
+                 Setting the palette to "<code>1</code>" as described above is
+                 much better.  However this has too much green which
+                 tends to reduce the useful dynamic range in the mid
+                 range.  This is an example of a custom rainbow
+                 palette that better distributes the colors.
 
-</div>
+</dd>
+<dt><a href="https://github.com/brettviren/dot/blob/master/python/bv/root/cprint.py">cprint.py</a></dt><dd>Different plot formats are often needed for different
+                uses (web, talk, paper).  In addition one often
+                produces a series of related plots and it can be
+                useful to bundle them all into a compendium.  This
+                assists producing multiple plots in this manner.
+</dd>
+</dl>
 
-<div id="outline-container-7-1" class="outline-3">
-<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Rainbow Palette</h3>
-<div class="outline-text-3" id="text-7-1">
 
 
-<p>
-ROOT's default color palette closely resembles vomit.  Setting the
-palette to "<code>1</code>" as described above is much better.  However this has
-too much green which tends to reduce the useful dynamic range in the
-mid range.  An example of a custom rainbow palette is available as
-<a href="https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py">rainbow.py</a>.
-</p></div>
+
+
+<hr/>
 </div>
 </div>
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-06-16 12:05:25 EDT</p>
+<p class="date">Date: 2012-06-16 14:30:08 EDT</p>
 <p class="author">Author: Brett Viren</p>
+<p class="email"><a href="mailto:bv@hal.local">bv@hal.local</a></p>
 <p class="creator">Org version 7.8.09 with Emacs version 23</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 

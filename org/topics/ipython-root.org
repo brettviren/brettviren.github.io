@@ -1,4 +1,6 @@
-Using =ipython= and ROOT interactively.
+#+setupfile: ../templates/topics.org
+#+title: Using =ipython= and ROOT interactively.
+
 
 [[http://root.cern.ch/][ROOT]] can be partially described as a toolkit for performing data analysis.
 
@@ -6,7 +8,7 @@ Using =ipython= and ROOT interactively.
 
 They work well together.  Both provide an interactive command-line
 interface to the user.  These two interfaces are compared and
-contrasted.  Then a focus on using =ipython= is taken.
+contrasted.  Then a focus on using ROOT from Python is taken.
 
 
 * Beginnings
@@ -68,7 +70,7 @@ hal
 ** Shell commands from =ipython=
 
 =ipython= does not provide redirection to files but it runs shell
-commands similarly and provides redirection to variable:
+commands similarly and provides redirection to a variable:
 
 #+begin_src sh
 In [1]: !hostname
@@ -87,15 +89,17 @@ For example, the usual filesystem navigation commands are there:
 cd dirs ls pushd popd pwd 
 #+end_example
 
-To see all available commands type "=%TAB=".  
+To see all available commands type "=%=" followed by "=<TAB>=".  
 
 Arbitrary commands can be defined using "=%alias=":
 
 #+begin_src sh
-In [1]: %alias hn hostname
-In [2]: hn 
-Out[2]: ['hal']
+In [1]: %alias hna hostname
+In [2]: hna 
+hal
 #+end_src
+
+You can not redirect the output of an alias to a variable.
 
 Finally, and this is a feature of all =ipython= command line entries,
 a series of entries can be joined into a more complex command using
@@ -242,7 +246,9 @@ In [9]: canvas.Print("h.pdf]")
 Looking at the resulting =h.pdf= file you should find 3 pages showing
 progressively more entries in the histogram.
 
+
 * Batch processing
+
 
 * Customization and Configuration
 
@@ -336,28 +342,128 @@ call to =canvas.Update()= or various other things.
 
 * Caveats of using ROOT from Python
 
+** Loss of Magic Object Creation
+
+Independent of Python, ROOT has its own caveats due to its limitations
+and its extensions to C++ when interpreting.  One main feature that is
+lost when using the ROOT Python module is the "magic" creation of
+objects (or pointers to objects) in the current namespace due to
+creation of C++ objects of a given name.  This is easily shown in an
+example:
+
+#+begin_src sh
+root [0] new TH1F("histogram","A histogram that would normally be leaked in C++", 100,-10,10)
+(class TH1F*)0x8cc9a10
+root [1] histogram
+(class TH1F*)0x8cc9a10
+root [2] histogram->GetTitle()
+(const char* 0x8cc9cc0)"A histogram that would normally be leaked in C++"
+#+end_src
+
+Here the pointer variable =histogram= is created out of thin air and
+is set to point to the just-created [[tclass:TH1F][=TH1F=]] of the same name.
+
+Some might call this a feature.  Others might call this perverse.  In
+either case, it is not directly extended to Python:
+
+#+begin_src sh
+In [1]: ROOT.TH1F("histogram","An histogram not stored",100,-10,10)
+Out[1]: <ROOT.TH1F object ("histogram") at 0xb4eee88>
+
+In [2]: histogram
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/home/bv/<ipython-input-2-f15a3aea956b> in <module>()
+----> 1 histogram
+
+NameError: name 'histogram' is not defined
+#+end_src
+
+However, ROOT still holds on to that histogram and it can be retrieved
+by name:
+
+#+begin_src sh
+In [3]: ROOT.gROOT.FindObject("histogram")
+Out[3]: <ROOT.TH1F object ("histogram") at 0xb4eee88>
+#+end_src
+
+
 ** Object Ownership Rules
+
+When a C++ object is used through the ROOT Python module there are
+some rules to consider.  By default any object created explicitly
+like:
+
+#+begin_src python
+h = ROOT.TH1F(...)
+#+end_src
+
+will be considered owned by the caller.  When "=h=" is deleted in
+Python then the underlying C++ object will be deleted.  On the other
+hand, if this object was provided to Python by some other means or if
+it is ever passed back in to C++ then the controlling ownership will
+be stripped from the Python object.  This stripping can be done
+explicitly via:
+
+#+begin_src python
+h = ROOT.TH1F(...)
+ROOT.SetOwnership(h,0)
+#+end_src
+
+This example illustrates the issue.  Here "=canvas=" is an
+instantaneous of [[tclass:TCanvas][TCanvas]].
+
+#+begin_src python
+def func(canvas):
+    h = ROOT.TH1F("h","hist",100,-10,10)
+    h.FillRandom("gaus")
+    h.Draw()
+    canvas.Print("func.png")
+#+end_src
+
+While the expected output will be found in =func.png= the canvas will
+be left empty as when "=h=" falls out of scope it is destroyed and
+takes the underlying C++ histogram object with it and removes if from
+the canvas as a side-effect.  If this is not desired the
+=ROOT.SetOwnership(h,0)= method can be used as above or instead of
+=h.Draw()=, =h.DrawCopy()= could be called or the histogram could be
+returned to and held by the caller of =func=.
+
 
 ** C++-isms
 
-*** ROOT Extensions
+Various issues in handling C++ "stuff" in Python 
 
-*** C++ from Python
+*** Handling =std::vector=
 
- - Python objects are handles
- - Types
- - Dictionaries
- - Input/Output reference variables (ROOT.Long/ROOT.Double)
+*** Passing input/output variable by reference
+
+For integers use a =ROOT.Long= or for floats a =ROOT.Double=.
+
+*** Your own C++ classes in Python
+
+Need to make and load a library with a CINT or Reflex dictionary
 
 
-* Useful stuff
+* Some Useful Code
 
-This collects some useful ROOT related functionality to use from =ipython=.
+This collects links to some useful ROOT related functionality to use
+from =ipython= or plain Python code.  Additional documentation can be
+found in the code's docstrings.
 
-** Rainbow Palette
+ - [[https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py][rainbow.py]] :: ROOT's default color palette closely resembles vomit.
+                 Setting the palette to "=1=" as described above is
+                 much better.  However this has too much green which
+                 tends to reduce the useful dynamic range in the mid
+                 range.  This is an example of a custom rainbow
+                 palette that better distributes the colors.
 
-ROOT's default color palette closely resembles vomit.  Setting the
-palette to "=1=" as described above is much better.  However this has
-too much green which tends to reduce the useful dynamic range in the
-mid range.  An example of a custom rainbow palette is available as
-[[https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py][rainbow.py]].
+ - [[https://github.com/brettviren/dot/blob/master/python/bv/root/cprint.py][cprint.py]] :: Different plot formats are often needed for different
+                uses (web, talk, paper).  In addition one often
+                produces a series of related plots and it can be
+                useful to bundle them all into a compendium.  This
+                assists producing multiple plots in this manner.
+
+
+
+-----
