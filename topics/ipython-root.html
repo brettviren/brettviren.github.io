@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Using <code>ipython</code> and ROOT interactively.</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Using <code>ipython</code> and ROOT interactively."/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-06-16 12:05:25 EDT"/>
+<meta name="author" content="Brett Viren"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Using <code>ipython</code> and ROOT interactively.</h1>
+
+<p><a href="http://root.cern.ch/">ROOT</a> can be partially described as a toolkit for performing data analysis.
+</p>
+<p>
+<a href="http://ipython.org">ipython</a> can be partially described as an interactive <a href="http://www.python.org">Python</a> shell.
+</p>
+<p>
+They work well together.  Both provide an interactive command-line
+interface to the user.  These two interfaces are compared and
+contrasted.  Then a focus on using <code>ipython</code> is taken.
+</p>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Beginnings</a></li>
+<li><a href="#sec-2">2 Shell Replacement</a>
+<ul>
+<li><a href="#sec-2-1">2.1 Shell Commands from ROOT</a></li>
+<li><a href="#sec-2-2">2.2 Shell commands from <code>ipython</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 Making histograms</a>
+<ul>
+<li><a href="#sec-3-1">3.1 Canvas</a>
+<ul>
+<li><a href="#sec-3-1-1">3.1.1 The Canvas from ROOT</a></li>
+<li><a href="#sec-3-1-2">3.1.2 The Canvas from <code>ipython</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2 Drawing a Histogram</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1 In ROOT</a></li>
+<li><a href="#sec-3-2-2">3.2.2 In <code>ipython</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">3.3 Printing</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 Batch processing</a></li>
+<li><a href="#sec-5">5 Customization and Configuration</a>
+<ul>
+<li><a href="#sec-5-1">5.1 ROOT RC file</a></li>
+<li><a href="#sec-5-2">5.2 <code>ipython</code> RC file</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 Caveats of using ROOT from Python</a>
+<ul>
+<li><a href="#sec-6-1">6.1 Object Ownership Rules</a></li>
+<li><a href="#sec-6-2">6.2 C++-isms</a>
+<ul>
+<li><a href="#sec-6-2-1">6.2.1 ROOT Extensions</a></li>
+<li><a href="#sec-6-2-2">6.2.2 C++ from Python</a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 Useful stuff</a>
+<ul>
+<li><a href="#sec-7-1">7.1 Rainbow Palette</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Beginnings</h2>
+<div class="outline-text-2" id="text-1">
+
+
+<p>
+To install ROOT and ipython see their respective web pages.
+</p>
+<p>
+Depending on the installation method you will need to set up some
+environment for ROOT (this should not be needed if you have installed
+the packages for Debian).  The usual way to set up is to locate where
+ROOT was installed and source the script meant for your shell flavor:
+</p>
+
+
+
+<pre class="example">bash&gt; source /path/to/root/bin/thisroot.sh
+tcsh&gt; source /path/to/root/bin/thisroot.csh
+shell&gt; root -l
+root [0] .q
+shell&gt;
+</pre>
+
+
+
+<p>
+No particular setup for <code>ipython</code> is needed.  You should now be able
+to talk to ROOT from ipython:
+</p>
+
+
+
+<pre class="example">shell&gt; ipython
+In [1]: import ROOT
+In [2]: print ROOT.gROOT.GetVersion()
+5.26/00f
+In [3]: exit
+shell&gt;
+</pre>
+
+
+<p>
+In following examples, it is assumed that the ROOT module has been imported as above.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Shell Replacement</h2>
+<div class="outline-text-2" id="text-2">
+
+
+<p>
+Both ROOT and <code>ipython</code> provide command shell features that allow you
+to replace your shell to some extent.  Both allow for running shell
+commands by hinting them with a prefix made of special characters.
+<code>ipython</code> has additional support.
+</p>
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Shell Commands from ROOT</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<p>
+ROOT provides access to special commands through the use of "<code>.</code>" and
+to shell commands via "<code>.!</code>".  ROOT also support redirection of output
+to a file.
+</p>
+
+
+
+<pre class="example">root [1] .! hostname
+hal
+root [2] .! hostname &gt; hn.txt
+root [3] .! cat hn.txt
+hal
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Shell commands from <code>ipython</code></h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+<p>
+<code>ipython</code> does not provide redirection to files but it runs shell
+commands similarly and provides redirection to variable:
+</p>
+
+
+
+<pre class="example">In [1]: !hostname
+hal
+In [2]: hn = !hostname
+In [3]: print hn
+['hal']
+</pre>
+
+
+<p>
+In addition to the "<code>!</code>" hint to run arbitrary commands there are
+built in commands that are prefixed by "<code>%</code>", (although they can be
+run without the "<code>%</code>").  Some of these replace common shell commands.
+For example, the usual filesystem navigation commands are there:
+</p>
+
+
+
+<pre class="example">cd dirs ls pushd popd pwd 
+</pre>
+
+
+<p>
+To see all available commands type "<code>%TAB</code>".  
+</p>
+<p>
+Arbitrary commands can be defined using "<code>%alias</code>":
+</p>
+
+
+
+<pre class="example">In [1]: %alias hn hostname
+In [2]: hn 
+Out[2]: ['hal']
+</pre>
+
+
+<p>
+Finally, and this is a feature of all <code>ipython</code> command line entries,
+a series of entries can be joined into a more complex command using
+the <code>%macro</code> special:
+</p>
+
+
+
+<pre class="example">In [1]: pwd
+Out[1]: u'/home/bv'
+
+In [2]: cd git
+/home/bv/git
+
+In [3]: pwd
+Out[3]: u'/home/bv/git'
+
+In [4]: cd -
+/home/bv
+
+In [5]: pwd
+Out[5]: u'/home/bv'
+
+In [6]: %macro chkgitdir 2-4 5
+Macro `chkgitdir` created. To execute, type its name (without quotes).
+=== Macro contents: ===
+get_ipython().magic(u'cd git')
+get_ipython().magic(u'pwd ')
+get_ipython().magic(u'cd -')
+get_ipython().magic(u'pwd ')
+
+
+In [7]: chkgitdir
+/home/bv/git
+/home/bv
+Out[7]: u'/home/bv'
+</pre>
+
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Making histograms</h2>
+<div class="outline-text-2" id="text-3">
+
+
+<p>
+We are mainly here to make plots.  Some examples "in ROOT" (from the
+ROOT command line interface) and "in <code>ipython</code>" (from the <code>ipython</code>
+command line interface with the ROOT Python module) are given to
+illustrate the basics.
+</p>
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Canvas</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+<p>
+Plots are made in a <a href="http://root.cern.ch/root/html/TCanvas">TCanvas</a>.  If one does not yet exist it will be
+created implicitly.  Creating one explicitly and holding on to it in a
+variable can be useful to in order to control it from code.
+</p>
+
+</div>
+
+<div id="outline-container-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> The Canvas from ROOT</h4>
+<div class="outline-text-4" id="text-3-1-1">
+
+
+<p>
+Create a canvas and set it to use a logarithmic scale for the Y axis.
+</p>
+
+
+
+<pre class="example">root [9] canvas = new TCanvas("canvas","A Canvas")
+(class TCanvas*)0x88ca1f0
+root [10] canvas-&gt;SetLogy()
+</pre>
+
+
+<p>
+Notes:
+</p>
+<ul>
+<li>Unlike in C++, one need not declare the variable <code>canvas</code>.
+</li>
+<li>Likewise, the line need not end in a "<code>;</code>".  If omitted it will cause ROOT to print the return value, if any.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> The Canvas from <code>ipython</code></h4>
+<div class="outline-text-4" id="text-3-1-2">
+
+
+<p>
+The same is done in <code>ipython</code> like
+</p>
+
+
+
+<pre class="example">In [10]: canvas = ROOT.TCanvas("canvas","A Canvas")
+In [11]: canvas.SetLogy()
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Drawing a Histogram</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+<p>
+To illustrate drawing a basic histogram, create one and fill it with
+random entries drawn from the Gaussian distribution.
+</p>
+
+</div>
+
+<div id="outline-container-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> In ROOT</h4>
+<div class="outline-text-4" id="text-3-2-1">
+
+
+<p>
+Create, fill and draw in ROOT:
+</p>
+
+
+
+<pre class="example">root [11] h = new TH1F("h","The Gaussian Distribution",100,-10,10)
+(class TH1F*)0x8965690
+root [12] h-&gt;FillRandom("gaus")
+root [13] h-&gt;Draw()
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> In <code>ipython</code></h4>
+<div class="outline-text-4" id="text-3-2-2">
+
+
+<p>
+Create, fill and draw in ROOT, make a macro to refill/redraw:
+</p>
+
+
+
+<pre class="example">In [13]: h = ROOT.TH1F("h","The Gaussian Distribution",100,-10,10)
+In [14]: h.FillRandom("gaus")
+In [15]: h.Draw()
+</pre>
+
+
+<p>
+And, for fun, the <code>macro</code> feature in action again:
+</p>
+
+
+
+<pre class="example">In [16]: macro refilldraw_h 14 15
+In [17]: refilldraw_h
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Printing</h3>
+<div class="outline-text-3" id="text-3-3">
+
+
+<p>
+After making a plot one typically needs to save it for display in a
+web page or presentation.  This is done by calling the
+<code>TCanvas::Print()</code> method.  This works identically in ROOT and
+<code>ipython</code>, eg:
+</p>
+
+
+
+<pre class="example">In [4]: canvas.Print("h.png")
+</pre>
+
+
+<p>
+The extension is used to determine the file format.  In addition,
+there is a hint that applies to multi-page formats to allow multiple
+calls to <code>Print()</code> to append to the output file.  First the output is
+opened by "printing" to a named file with a "<code>[</code>" appended to the
+name.  Then print multiple times to the same named file with nothing
+extra appended.  Finally, after all printing is done the file is
+closed by "printing" to the named file with a "<code>]</code>" appended to the
+name.  For example:
+</p>
+
+
+
+<pre class="example">In [1]: canvas.Print("h.pdf[")
+In [2]: h = ROOT.TH1F("h","The Gaussian Distribution",100,-10,10)
+In [3]: h.FillRandom("gaus")
+In [4]: h.Draw()
+In [5]: canvas.Print("h.pdf")
+In [6]: macro fill_more_and_print 3-5
+In [7]: fill_more_and_print
+In [8]: fill_more_and_print
+In [9]: canvas.Print("h.pdf]")
+</pre>
+
+
+<p>
+Looking at the resulting <code>h.pdf</code> file you should find 3 pages showing
+progressively more entries in the histogram.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Batch processing</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Customization and Configuration</h2>
+<div class="outline-text-2" id="text-5">
+
+
+<p>
+Both ROOT and <code>ipython</code> provide a configuration mechanism to allow for
+consistent set up each time they are run.  
+</p>
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> ROOT RC file</h3>
+<div class="outline-text-3" id="text-5-1">
+
+
+<p>
+ROOT uses a <code>~/.rootrc</code> file to specify start up commands and in
+particular to specify an interpreted file to load and any extra
+locations to look for interpreted files.  This is done with lines
+like:
+</p>
+
+
+
+<pre class="example">Rint.Logon:     ~/.rootlogon.C
+Unix.*.Root.MacroPath: .:${HOME}/share/root
+</pre>
+
+
+<p>
+Any valid ROOT language can be put in <code>~/.rootlogon.C</code> but it is
+usually written as an anonymous code block.  The <b>most important thing</b> to add to your start up is code to remove the horrendous
+default style elements.
+</p>
+
+
+
+<pre class="example">{
+    gROOT-&gt;SetStyle("Plain");
+    gStyle-&gt;SetTitleBorderSize(0);
+    gStyle-&gt;SetPalette(1);
+    // ...
+}
+</pre>
+
+
+<p>
+It is also a good idea to turn on grids by default:
+</p>
+
+
+
+<pre class="example">{
+    // ...
+    gStyle-&gt;SetPadGridY(true);
+    gStyle-&gt;SetPadGridX(true);
+    gStyle-&gt;SetGridStyle(1);
+    gStyle-&gt;SetGridColor(18);
+    gStyle-&gt;SetGridWidth(1);
+}
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> <code>ipython</code> RC file</h3>
+<div class="outline-text-3" id="text-5-2">
+
+
+<p>
+When using the ROOT Python module from <code>ipython</code>, the above
+ROOT-specific configuration will be picked up.  There are some
+specific <code>ipython=/ROOT set that may be useful.  This can be specified by creating an =ipython</code> <a href="http://ipython.org/ipython-doc/dev/config/overview.html#profiles">profile</a> area called "root".
+</p>
+
+
+
+<pre class="example">shell&gt; ipython profile create root
+[ProfileCreate] Generating default config file: u'/home/bv/.config/ipython/profile_root/ipython_config.py'
+[ProfileCreate] Generating default config file: u'/home/bv/.config/ipython/profile_root/ipython_qtconsole_config.py'
+</pre>
+
+
+<p>
+One configuration you may want is to add any default code.  This is
+done by making Python files under the
+<code>~/.config/ipython/profile_root/startup/</code> directory.  If there are
+multiple files they are loaded in order of their file names.  Here is
+an example of one file that import ROOT followed by one explicitly
+creating the default canvas.
+</p>
+
+
+
+<pre class="example"># 00-import.py
+import ROOT
+
+# 10-canvas.py
+canvas = ROOT.TCanvas("canvas","The Canvas")
+</pre>
+
+
+<p>
+You then run it like:
+</p>
+
+
+
+<pre class="example">shell&gt; ipython --profile root
+In [1]: h = ROOT.TH1F("h","hist",100,-10,10)
+In [2]: h.FillRandom("gaus")
+In [3]: h.Draw()
+</pre>
+
+
+<p>
+Note that there is a quirk which may lead to the histogram not being
+immediately painted to the canvas.  The painting will be triggered
+eventually, either by clicking on the window, explicitly issuing a
+call to <code>canvas.Update()</code> or various other things.
+</p>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Caveats of using ROOT from Python</h2>
+<div class="outline-text-2" id="text-6">
+
+
+
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Object Ownership Rules</h3>
+<div class="outline-text-3" id="text-6-1">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> C++-isms</h3>
+<div class="outline-text-3" id="text-6-2">
+
+
+
+</div>
+
+<div id="outline-container-6-2-1" class="outline-4">
+<h4 id="sec-6-2-1"><span class="section-number-4">6.2.1</span> ROOT Extensions</h4>
+<div class="outline-text-4" id="text-6-2-1">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6-2-2" class="outline-4">
+<h4 id="sec-6-2-2"><span class="section-number-4">6.2.2</span> C++ from Python</h4>
+<div class="outline-text-4" id="text-6-2-2">
+
+
+<ul>
+<li>Python objects are handles
+</li>
+<li>Types
+</li>
+<li>Dictionaries
+</li>
+<li>Input/Output reference variables (ROOT.Long/ROOT.Double)
+</li>
+</ul>
+
+
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Useful stuff</h2>
+<div class="outline-text-2" id="text-7">
+
+
+<p>
+This collects some useful ROOT related functionality to use from <code>ipython</code>.
+</p>
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Rainbow Palette</h3>
+<div class="outline-text-3" id="text-7-1">
+
+
+<p>
+ROOT's default color palette closely resembles vomit.  Setting the
+palette to "<code>1</code>" as described above is much better.  However this has
+too much green which tends to reduce the useful dynamic range in the
+mid range.  An example of a custom rainbow palette is available as
+<a href="https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py">rainbow.py</a>.
+</p></div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-06-16 12:05:25 EDT</p>
+<p class="author">Author: Brett Viren</p>
+<p class="creator">Org version 7.8.09 with Emacs version 23</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,363 @@
+Using =ipython= and ROOT interactively.
+
+[[http://root.cern.ch/][ROOT]] can be partially described as a toolkit for performing data analysis.
+
+[[http://ipython.org][ipython]] can be partially described as an interactive [[http://www.python.org][Python]] shell.
+
+They work well together.  Both provide an interactive command-line
+interface to the user.  These two interfaces are compared and
+contrasted.  Then a focus on using =ipython= is taken.
+
+
+* Beginnings
+
+To install ROOT and ipython see their respective web pages.
+
+Depending on the installation method you will need to set up some
+environment for ROOT (this should not be needed if you have installed
+the packages for Debian).  The usual way to set up is to locate where
+ROOT was installed and source the script meant for your shell flavor:
+
+#+begin_src sh
+bash> source /path/to/root/bin/thisroot.sh
+tcsh> source /path/to/root/bin/thisroot.csh
+shell> root -l
+root [0] .q
+shell>
+#+end_src
+
+
+No particular setup for =ipython= is needed.  You should now be able
+to talk to ROOT from ipython:
+
+#+begin_src python
+shell> ipython
+In [1]: import ROOT
+In [2]: print ROOT.gROOT.GetVersion()
+5.26/00f
+In [3]: exit
+shell>
+#+end_src
+
+In following examples, it is assumed that the ROOT module has been imported as above.
+
+
+* Shell Replacement
+
+Both ROOT and =ipython= provide command shell features that allow you
+to replace your shell to some extent.  Both allow for running shell
+commands by hinting them with a prefix made of special characters.
+=ipython= has additional support.
+
+
+** Shell Commands from ROOT 
+
+ROOT provides access to special commands through the use of "=.=" and
+to shell commands via "=.!=".  ROOT also support redirection of output
+to a file.
+
+#+begin_src sh
+root [1] .! hostname
+hal
+root [2] .! hostname > hn.txt
+root [3] .! cat hn.txt
+hal
+#+end_src
+
+
+** Shell commands from =ipython=
+
+=ipython= does not provide redirection to files but it runs shell
+commands similarly and provides redirection to variable:
+
+#+begin_src sh
+In [1]: !hostname
+hal
+In [2]: hn = !hostname
+In [3]: print hn
+['hal']
+#+end_src
+
+In addition to the "=!=" hint to run arbitrary commands there are
+built in commands that are prefixed by "=%=", (although they can be
+run without the "=%=").  Some of these replace common shell commands.
+For example, the usual filesystem navigation commands are there:
+
+#+begin_example
+cd dirs ls pushd popd pwd 
+#+end_example
+
+To see all available commands type "=%TAB=".  
+
+Arbitrary commands can be defined using "=%alias=":
+
+#+begin_src sh
+In [1]: %alias hn hostname
+In [2]: hn 
+Out[2]: ['hal']
+#+end_src
+
+Finally, and this is a feature of all =ipython= command line entries,
+a series of entries can be joined into a more complex command using
+the =%macro= special:
+
+#+begin_src sh
+In [1]: pwd
+Out[1]: u'/home/bv'
+
+In [2]: cd git
+/home/bv/git
+
+In [3]: pwd
+Out[3]: u'/home/bv/git'
+
+In [4]: cd -
+/home/bv
+
+In [5]: pwd
+Out[5]: u'/home/bv'
+
+In [6]: %macro chkgitdir 2-4 5
+Macro `chkgitdir` created. To execute, type its name (without quotes).
+=== Macro contents: ===
+get_ipython().magic(u'cd git')
+get_ipython().magic(u'pwd ')
+get_ipython().magic(u'cd -')
+get_ipython().magic(u'pwd ')
+
+
+In [7]: chkgitdir
+/home/bv/git
+/home/bv
+Out[7]: u'/home/bv'
+#+end_src
+
+
+
+
+* Making histograms
+
+We are mainly here to make plots.  Some examples "in ROOT" (from the
+ROOT command line interface) and "in =ipython=" (from the =ipython=
+command line interface with the ROOT Python module) are given to
+illustrate the basics.
+
+** Canvas
+
+Plots are made in a [[tclass:TCanvas][TCanvas]].  If one does not yet exist it will be
+created implicitly.  Creating one explicitly and holding on to it in a
+variable can be useful to in order to control it from code.
+
+*** The Canvas from ROOT
+
+Create a canvas and set it to use a logarithmic scale for the Y axis.
+
+#+begin_src sh
+root [9] canvas = new TCanvas("canvas","A Canvas")
+(class TCanvas*)0x88ca1f0
+root [10] canvas->SetLogy()
+#+end_src
+
+Notes:
+
+ - Unlike in C++, one need not declare the variable =canvas=.
+ - Likewise, the line need not end in a "=;=".  If omitted it will cause ROOT to print the return value, if any.
+
+*** The Canvas from =ipython=
+
+The same is done in =ipython= like
+
+#+begin_src sh
+In [10]: canvas = ROOT.TCanvas("canvas","A Canvas")
+In [11]: canvas.SetLogy()
+#+end_src
+
+
+** Drawing a Histogram
+
+To illustrate drawing a basic histogram, create one and fill it with
+random entries drawn from the Gaussian distribution.
+
+*** In ROOT
+
+Create, fill and draw in ROOT:
+
+#+begin_src sh
+root [11] h = new TH1F("h","The Gaussian Distribution",100,-10,10)
+(class TH1F*)0x8965690
+root [12] h->FillRandom("gaus")
+root [13] h->Draw()
+#+end_src
+
+*** In =ipython=
+
+Create, fill and draw in ROOT, make a macro to refill/redraw:
+
+#+begin_src sh
+In [13]: h = ROOT.TH1F("h","The Gaussian Distribution",100,-10,10)
+In [14]: h.FillRandom("gaus")
+In [15]: h.Draw()
+#+end_src
+
+And, for fun, the =macro= feature in action again:
+
+#+begin_src sh
+In [16]: macro refilldraw_h 14 15
+In [17]: refilldraw_h
+#+end_src
+
+
+** Printing
+
+After making a plot one typically needs to save it for display in a
+web page or presentation.  This is done by calling the
+=TCanvas::Print()= method.  This works identically in ROOT and
+=ipython=, eg:
+
+#+begin_src sh
+In [4]: canvas.Print("h.png")
+#+end_src
+
+The extension is used to determine the file format.  In addition,
+there is a hint that applies to multi-page formats to allow multiple
+calls to =Print()= to append to the output file.  First the output is
+opened by "printing" to a named file with a "=[=" appended to the
+name.  Then print multiple times to the same named file with nothing
+extra appended.  Finally, after all printing is done the file is
+closed by "printing" to the named file with a "=]=" appended to the
+name.  For example:
+
+#+begin_src sh
+In [1]: canvas.Print("h.pdf[")
+In [2]: h = ROOT.TH1F("h","The Gaussian Distribution",100,-10,10)
+In [3]: h.FillRandom("gaus")
+In [4]: h.Draw()
+In [5]: canvas.Print("h.pdf")
+In [6]: macro fill_more_and_print 3-5
+In [7]: fill_more_and_print
+In [8]: fill_more_and_print
+In [9]: canvas.Print("h.pdf]")
+#+end_src
+
+Looking at the resulting =h.pdf= file you should find 3 pages showing
+progressively more entries in the histogram.
+
+* Batch processing
+
+* Customization and Configuration
+
+Both ROOT and =ipython= provide a configuration mechanism to allow for
+consistent set up each time they are run.  
+
+** ROOT RC file
+
+ROOT uses a =~/.rootrc= file to specify start up commands and in
+particular to specify an interpreted file to load and any extra
+locations to look for interpreted files.  This is done with lines
+like:
+
+#+begin_example
+Rint.Logon:     ~/.rootlogon.C
+Unix.*.Root.MacroPath: .:${HOME}/share/root
+#+end_example
+
+Any valid ROOT language can be put in =~/.rootlogon.C= but it is
+usually written as an anonymous code block.  The *most important
+thing* to add to your start up is code to remove the horrendous
+default style elements.
+
+#+begin_src C++
+{
+    gROOT->SetStyle("Plain");
+    gStyle->SetTitleBorderSize(0);
+    gStyle->SetPalette(1);
+    // ...
+}
+#+end_src
+
+It is also a good idea to turn on grids by default:
+
+#+begin_src C++
+{
+    // ...
+    gStyle->SetPadGridY(true);
+    gStyle->SetPadGridX(true);
+    gStyle->SetGridStyle(1);
+    gStyle->SetGridColor(18);
+    gStyle->SetGridWidth(1);
+}
+#+end_src
+
+
+** =ipython= RC file
+
+When using the ROOT Python module from =ipython=, the above
+ROOT-specific configuration will be picked up.  There are some
+specific =ipython=/ROOT set that may be useful.  This can be specified
+by creating an =ipython= [[http://ipython.org/ipython-doc/dev/config/overview.html#profiles][profile]] area called "root".
+
+#+begin_src sh
+shell> ipython profile create root
+[ProfileCreate] Generating default config file: u'/home/bv/.config/ipython/profile_root/ipython_config.py'
+[ProfileCreate] Generating default config file: u'/home/bv/.config/ipython/profile_root/ipython_qtconsole_config.py'
+#+end_src
+
+One configuration you may want is to add any default code.  This is
+done by making Python files under the
+=~/.config/ipython/profile_root/startup/= directory.  If there are
+multiple files they are loaded in order of their file names.  Here is
+an example of one file that import ROOT followed by one explicitly
+creating the default canvas.
+
+#+begin_src sh
+# 00-import.py
+import ROOT
+
+# 10-canvas.py
+canvas = ROOT.TCanvas("canvas","The Canvas")
+#+end_src
+
+You then run it like:
+
+#+begin_src sh
+shell> ipython --profile root
+In [1]: h = ROOT.TH1F("h","hist",100,-10,10)
+In [2]: h.FillRandom("gaus")
+In [3]: h.Draw()
+#+end_src
+
+Note that there is a quirk which may lead to the histogram not being
+immediately painted to the canvas.  The painting will be triggered
+eventually, either by clicking on the window, explicitly issuing a
+call to =canvas.Update()= or various other things.
+
+
+
+
+* Caveats of using ROOT from Python
+
+** Object Ownership Rules
+
+** C++-isms
+
+*** ROOT Extensions
+
+*** C++ from Python
+
+ - Python objects are handles
+ - Types
+ - Dictionaries
+ - Input/Output reference variables (ROOT.Long/ROOT.Double)
+
+
+* Useful stuff
+
+This collects some useful ROOT related functionality to use from =ipython=.
+
+** Rainbow Palette
+
+ROOT's default color palette closely resembles vomit.  Setting the
+palette to "=1=" as described above is much better.  However this has
+too much green which tends to reduce the useful dynamic range in the
+mid range.  An example of a custom rainbow palette is available as
+[[https://github.com/brettviren/dot/blob/master/python/bv/root/rainbow.py][rainbow.py]].
