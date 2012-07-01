@@ -1,3 +1,7 @@
 #+TITLE: Sitemap
 
+   + camera
+     + [[file:camera/eos-kiss-x3.org][Canon EOS Kiss X3 a.k.a 500D]]
+   + orgmode
+     + [[file:orgmode/looped-figures.org][Looping to Generate LaTeX Figures]]
    + [[file:ipython-root.org][Using =ipython= and ROOT interactively.]]
