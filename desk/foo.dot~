@@ -1,0 +1,23 @@
+digraph G {
+    graph [rankdir = LR, splines=ortho];
+
+    node[shape=record];
+    Bar[label="Bar", height=2];
+    Foo[label="Foo", height=4];
+
+    Bew[label="Bew", height=2];
+    Gate[label="Gate", height=2];
+
+    Bar -> Foo [label="Bar2Foo"];
+    Bar -> Foo [label="Bar2Foo"];
+    Bar -> Foo [label="Bar2Foo"];
+
+    Foo -> Bew [label="Foo2Bew"];
+    Foo -> Bew [label="Foo2Bew"];
+    Bew -> Foo [label="Bew2Foo"];
+
+
+    Foo -> Gate [label="Foo2Gate"];
+    Foo -> Gate [label="Foo2Gate"];
+}
+

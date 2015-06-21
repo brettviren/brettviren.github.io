@@ -1,0 +1,38 @@
+#+TITLE: Building with waf
+#+DATE: [2014-03-01 Sat 09:56]
+#+DESCRIPTION: Making a better build system with waf.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+The venerable workhorse of building software has long been [[https://www.gnu.org/software/make/][=make=]] driven by its quirky and sometimes cryptic =Makefile= configurations.  Anytime I must write even a moderately complex build system based on =make= I dream of having a simple, consistent and real programming language to describe the configuration instead of the language of a =Makefile=.  Lacking it, when I use =make= I end up relying on a zoo of external tools which leads to a hodgepodge.
+
+At some point I came across [[http://www.scons.org/][=scons=]] and thought my wishes were answered.  It uses the lovely Python programming language so must be perfect. Unfortunately as I tried to use it I found a few problems and personal dislikes.  It was difficult to extend and I found the built-in functionality awkward.  These are admittedly very personal judgments.
+
+More recently I came across [[https://code.google.com/p/waf/][=waf=]] and found it just about exactly what I was looking for.  It uses Python, it can be extended easily (it forms the bases of [[https://github.com/brettviren/worch][worch]]).  It has good, if not great [[http://docs.waf.googlecode.com/git/][documentation]].  This latter issue is what this topic is meant to address.  It is written to collect my understanding as a user of waf and hopefully fill a needed gap.  It tries to provide concrete examples of how to do various things and refer to the official documentation wherever possible.
+
+* Gestalt of waf
+
+Waf is like =make= but with a =Makefile= called =wscript= and written in Python.  Waf is unlike in several ways:
+
+- waf can be [[http://docs.waf.googlecode.com/git/book_17/single.html#_writing_re_usable_waf_tools][extended]] by providing Python modules loaded through =wscript= files
+
+- waf can be [[http://docs.waf.googlecode.com/git/book_17/single.html#_obtaining_the_waf_file][bundled]] along with extensions to provide a single executable that performs specific tasks
+
+- waf is cross-platform, no compilation needed and can be included as a single file along with the project it builds
+
+- waf is parallel by default, it will run tasks as parallel as possible constrained by available CPU, dependencies or any limits imposed by the user
+
+* The waf configuration file
+
+Waf expects to find a file called =wscript= in the current directory.  Functions in this file become exposed through waf as command line commands.  For example:
+
+#+INCLUDE: "examples/commands/wscript" src python
+
+can be exercised as:
+
+#+BEGIN_SRC sh
+  cd examples/commands/
+  waf chirp
+#+END_SRC
+
+#+RESULTS:
+

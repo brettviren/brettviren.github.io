@@ -1,0 +1,276 @@
+% Created 2014-07-26 Sat 11:49
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\author{Brett Viren}
+\date{2014-07-25}
+\title{Managing a LArSoft Development Environment with Google Repo}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={Google =repo= can be used to manage a development environment and to build the code.},
+  pdfcreator={<a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5a)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+This topic describes how to set up a development environment for modifying LArSoft code or developing packages built on top of LArSoft.  The methods here do not make use of "\texttt{mrb}" but do rely on a "Fermilab compatible" UPS products area which provide the packages satisfying any dependencies any of the development packages require.
+
+The development area consists of these directories:
+
+\begin{description}
+\item[{\texttt{source/}}] a directory where all repositories are cloned
+\item[{\texttt{build/}}] a directory from where building the source is done
+\item[{\texttt{install/}}] a directory where the built binaries are placed
+\end{description}
+
+Each of these directories are independent from each other and may be placed where convenient.   Their contents are managed by the various steps as described below.  In the examples below, the use of these as relative directory paths indicate you should use whatever path locates them.  Where an absolute path is required, the absolute path \texttt{/path/to} will be prepended.  For example:
+
+\begin{verbatim}
+$ cd source/
+$ cd /path/to/build
+\end{verbatim}
+
+\section{Manual Setup}
+\label{sec-1}
+
+This section describes how to produce a development environment for a single package, "lbnecode"  a manual manner.  It uses as low-level methods as reasonable but stops before exposing the user to the morass of the underlying UPS/CMake build system.
+
+\subsection{Preliminaries}
+\label{sec-1-1}
+
+Make the three areas, here assuming they are all next to each other:
+
+\begin{verbatim}
+$ mkdir source build install
+\end{verbatim}
+
+The \texttt{install/} directory will need to be primed with some UPS files which can be copied from the central UPS "products" area for the site.  This example assume you are using BNL's RACF.
+
+\begin{verbatim}
+$ cp -a /afs/rhic.bnl.gov/lbne/software/products/.up[sd]files install/
+\end{verbatim}
+\subsection{Source}
+\label{sec-1-2}
+
+Clone the package repository into the source area
+
+\begin{verbatim}
+$ cd source/
+$ git clone http://cdcvs.fnal.gov/projects/lbnecode
+\end{verbatim}
+
+Note, this URL allows anonymous cloning of the repository but does not allow any commits that you may make to be pushed.  Later, if desired, you can add an additional remote that allows pushes so any commits you may make can be shared.
+
+From this clone, decide which tag or branch to start with.  If you don't know what is available you can query the repository like:
+
+\begin{verbatim}
+$ cd source/lbnecode/
+$ git tag
+$ git branch -a
+$ gitk --all
+\end{verbatim}
+
+A likely starting point is either the "master" or "develop" branch or some tag. If you intend to have other people use your modifications then starting from "master" is wise as it will make future merging easier than if you start from an older tag.  However, if you want to explicitly modify the code from some past tagged release, of courses use that tag next.
+
+Once a starting point is found use its label in place of "\texttt{<branch-or-tag>}" in the following "\texttt{checkout}" command.
+
+\begin{verbatim}
+$ git checkout -b feature/MYWORK <branch-or-tag>
+\end{verbatim}
+
+The "\texttt{feature/MYWORK}" follows the convention for holding development.  Pick a unique name for "\texttt{MYWORK}" that indicates the intent of the development.  It should be brief but evocative.  It need not include any identifier as to who will be doing the work as any commits to the branch will, as always, will be attributed to your identity.
+\subsection{Undoing a version lie}
+\label{sec-1-3}
+
+The build, which is described below, will result in a UPS "product" binary package holding files for any executable, library, include, etc produced by the build.  This package lays out its files in a pattern that includes a version string and this version string must be supplied to the UPS "\texttt{setup}" command by anyone who wishes to use these build outputs.
+
+This version string is intended for release builds but it gets forced on you, the poor developer.  It will be set to whatever value was needed at the time of the last release build that occurred in the branch you decided to check out above.  Any modifications to the source past this release point will likely \textbf{not} modify this version and thus will create a lie.  When reporting any results produced from a package that is in development you must take care not to quote them as being due to the release but qualify that the release was the basis for the development modifications.
+
+With those caveats appreciated, you ignore the rest of this section.  
+
+To make plain that your development build is not a release you may modify the release string.  It is set here:
+
+\begin{verbatim}
+$ emacs source/lbnecode/ups/product_deps
+\end{verbatim}
+
+Look for a line beginning with "\texttt{parent}".  For example: 
+
+\begin{verbatim}
+parent lbnecode v02_03_01
+\end{verbatim}
+
+Modify this string to indicate the development.  For example, tack on an identifier that can be associated with the branch name you chose above.
+
+\begin{verbatim}
+parent lbnecode v02_03_01MYWORK
+\end{verbatim}
+
+The rest of the file can often be left untouched.  If the development requires a new direct dependency it may need to be added.  
+\subsection{Set up environment for building}
+\label{sec-1-4}
+
+Before any development is started and before the first build of the checked out code one has to provide a meticulously crafted environment for the brittle UPS/CMake-based build system to work.  This setup is site specific but in general it involves sourcing a shell script associated with a base UPS "products area" followed by sourcing one associated with the package being built.
+
+\begin{verbatim}
+$ source /afs/rhic.bnl.gov/lbne/software/products/setup
+$ mkdir -p build/lbnecode
+$ cd build/lbnecode
+$ source /path/to/source/lbnecode/setup_for_development -p
+...
+env CC=gcc CXX=g++ FC=gfortran cmake -DCMAKE_INSTALL_PREFIX="/install/path" -DCMAKE_BUILD_TYPE=${CETPKG_TYPE} "${CETPKG_SOURCE}"
+\end{verbatim}
+
+The "\texttt{-p}" flag in the last source indicates a "profile" build variant is desired.  
+
+Take note of the "\texttt{cmake}" command echoed by this second script as it will be used later.
+In general, building with CMake is best done in a directory outside the source directory and specific to each package:
+
+Also, take note of that this last sourced file will add files to your current working directory which is why it is important to run it from the directory where build outputs should go.
+\subsection{Build the package}
+\label{sec-1-5}
+
+Next, issue that cmake command which was echoed by \texttt{setup\_for\_development}.  Take note to edit the absolute path for the install prefix to suit your desired layout.
+
+\begin{verbatim}
+$ cd build/lbnecode/
+$ env CC=gcc CXX=g++ FC=gfortran cmake -DCMAKE_INSTALL_PREFIX="/path/to/install" -DCMAKE_BUILD_TYPE=${CETPKG_TYPE} "${CETPKG_SOURCE}"
+$ make
+\end{verbatim}
+
+\subsubsection{Using the build directly}
+\label{sec-1-5-1}
+
+After the "\texttt{make}" the "lbnecode" package is built into the "\texttt{build/}" directory.  In sourcing the "\texttt{setup\_for\_development}" script your environment was munged in order to locate the basic OS-level outputs of this build including executable and library files.  However, application-level files may not be yet be found if their location depends on additional environment variables.  Some examples:
+
+\begin{description}
+\item[{FCL files}] these are located through the environment variable "\texttt{FHICL\_FILE\_PATH}".  This variable may be defined already but may not explicitly contain any elements pointing in to the build area.  It may contain the relative paths "\texttt{.}" and "\texttt{./job}" which may find FCL files while you remain in the \texttt{build/lbnecode/} directory
+\end{description}
+\subsection{Install the package}
+\label{sec-1-6}
+
+The build products can be installed as a UPS "product" into the location specified by  the \texttt{CMAKE\_INSTALL\_PREFIX} directive to the \texttt{cmake} command with:
+
+\begin{verbatim}
+$ make install
+\end{verbatim}
+
+Note that you should observe the output of this command copying files into a location with a directory named with your modified version string as above.
+
+\subsubsection{Using the development UPS products area}
+\label{sec-1-6-1}
+
+If the \texttt{install/} area was prepped as a UPS "products area" as above then you will now have your own products area that you or anyone who can access it may use.  Since it only contains the development packages you have built and relies on the packages from the central UPS products area one must set up the environment to tell UPS about both.  You do this by prepending your products area to the \texttt{PRODUCTS} environment variable:
+
+\begin{verbatim}
+$ export PRODUCTS=/path/to/install:$PRODUCTS
+\end{verbatim}
+
+This assumes you have already sourced the central site UPS "\texttt{setup}" script.
+
+You can now see that your package is found by UPS, for example with:
+
+\begin{verbatim}
+$ ups list -aK+ | grep lbnecode | grep MYWORK
+"lbnecode" "v02_03_01MYWORK" "Linux64bit+2.6-2.12" "e5:prof" ""
+\end{verbatim}
+
+Where "\texttt{MYWORK}" is the label you added to break the version lie as above.  To munge your environment to use this package do the usual dance:
+
+\begin{verbatim}
+$ setup lbnecode v02_03_01MYWORK -q e5:prof
+\end{verbatim}
+
+This will munge your environment to give precedence to the installation in your personal UPS products area.  In particular, it will likely shadow any direct use of the build outputs.  You can see this in the example:
+
+\begin{verbatim}
+echo $LD_LIBRARY_PATH|tr ':' '\n'
+/path/to/install/lbnecode/v02_03_01manual-build/slf6.x86_64.e5.prof/lib
+/path/to/build/lbnecode/lib
+# ... central UPS products library directories
+\end{verbatim}
+
+This means that you will need to do a full "\texttt{make install}" in order to access the build output following any development of the source.
+
+You may also wish to examine "\texttt{\$FHICL\_FILE\_PATH}" and determine that an absolute path into the "lbnecode" package in your personal UPS products area has been added.
+
+\begin{verbatim}
+$ echo $FHICL_FILE_PATH|tr ':' '\n'
+.
+./job
+/path/to/install/lbnecode/v02_03_01manual-build/job
+.
+./job
+# ...
+\end{verbatim}
+
+Why are the "\texttt{.}" and "\texttt{./job}" directories repeated?  Dunno, don't ask me, I didn't write this.
+\subsubsection{Rebuilding and using with a personal UPS products area}
+\label{sec-1-6-2}
+
+As noted above, if you elect to munge your environment to use the contents of your personal UPS products area be aware that they will take precedence over the contents of your build area.  This means you must do a "\texttt{make install}" before you may use the output of the rebuild. 
+
+If you are developing multiple packages at once this environment must also be kept in mind.
+\section{Multi-package Development Automation}
+\label{sec-2}
+
+The above procedures can be carried out when one develops multiple packages.  However, it can be tedious and error prone.  Some things that must be kept in mind:
+
+\begin{itemize}
+\item clone a suite of package source repositories
+\item assure checkouts of each package are from a consistent point in their development history
+\item assure correct build dependencies are used
+\end{itemize}
+
+This last one include the need to correctly use the correct packages from the centrally installed UPS products except when these packages are subject to the development effort.  For these packages one must build them in proper order and assure that their results are used when building subsequent packages.
+
+\subsection{Source preparation with Repo}
+\label{sec-2-1}
+
+To facilitate managing the source code for multiple packages the \href{https://code.google.com/p/git-repo/}{repo} tool developed by Google for Android development may be used to automate some steps.  This section walks through how to use Repo to prepare the packages providing the LArSoft source.
+
+Repo is installed simply by downloading the tool into a location that is picked up in your "\texttt{\$PATH}" like so:
+
+\begin{verbatim}
+$ curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+$ chmod +x ~/bin/repo
+\end{verbatim}
+
+Repo uses a file called a "manifest".  These should not to be confused with similarly named but unrelated files which are part of a certain binary UPS product installation method.  A Repo manifest file is in XML format and describes the basic elements of a set of source repositories.  In particular it states for each repository:
+
+\begin{itemize}
+\item the base URL
+\item the branch from which to checkout
+\item the local directory
+\item the repository name
+\end{itemize}
+
+These last two are usually identical and this last is appended to the base URL to locate the repository.  
+
+Repo expects the manifest to, itself, live in a git repository.  This allows one to track development at a meta-level.  Feature branches across multiple repositories can be grouped in a manifest file which is itself tracked in a branch of the manifest repository.   Multiple manifest files may also be maintained.
+
+LBNE maintains a manifest repository for LArSoft and it may be used with Repo as in this example:
+
+\begin{verbatim}
+$ cd source/
+$ repo init -u https://github.com/drbenmorgan/larsoft-manifest.git
+\end{verbatim}
+
+Note, the same directory location conventions from the \ref{sec-1} section are used.
+% <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5a)
+\end{document}

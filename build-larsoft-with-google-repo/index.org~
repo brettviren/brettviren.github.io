@@ -1,0 +1,4 @@
+#+TITLE: Managing a LArSoft Development Environment with Google Repo
+#+DATE: [2014-07-25 Fri 20:09]
+#+DESCRIPTION: Google =repo= can be used to manage a development environment and to build the code.
+#+SETUPFILE: ~/org-pub/topics/setup.org

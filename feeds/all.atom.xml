@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>They Call Me Brett</title><link href="http://www.phy.bnl.gov/~bviren/" rel="alternate"></link><link href="http://www.phy.bnl.gov/~bviren/feeds/all.atom.xml" rel="self"></link><id>http://www.phy.bnl.gov/~bviren/</id><updated>2015-03-01T00:00:00-05:00</updated><entry><title>Building with waf</title><link href="http://www.phy.bnl.gov/~bviren/waf" rel="alternate"></link><updated>2015-03-01T00:00:00-05:00</updated><author><name>Brett Viren</name></author><id>tag:www.phy.bnl.gov,2015-03-01:~bviren/waf</id><summary type="html">
+&lt;p&gt;
+The venerable workhorse of building software has long been &lt;a href="https://www.gnu.org/software/make/"&gt;&lt;code&gt;make&lt;/code&gt;&lt;/a&gt; driven by its quirky and sometimes cryptic &lt;code&gt;Makefile&lt;/code&gt; configurations.  Anytime I must write even a moderately complex build system based on &lt;code&gt;make&lt;/code&gt; I dream of having a simple, consistent and real programming language to describe the configuration instead of the language of a &lt;code&gt;Makefile&lt;/code&gt;.  Lacking it, when I use &lt;code&gt;make&lt;/code&gt; I end up relying on a zoo of external tools which leads to a hodgepodge.
+&lt;/p&gt;
+&lt;p&gt;
+At some point I came across &lt;a href="http://www.scons.org/"&gt;&lt;code&gt;scons&lt;/code&gt;&lt;/a&gt; and thought my wishes were answered.  It uses the lovely Python programming language so must be perfect. Unfortunately as I tried to use it I found a few problems and personal dislikes.  It was difficult to extend and I found the built-in functionality awkward.  These are admittedly very personal judgments.
+&lt;/p&gt;
+&lt;p&gt;
+More recently I came across &lt;a href="https://code.google.com/p/waf/"&gt;&lt;code&gt;waf&lt;/code&gt;&lt;/a&gt; and found it just about exactly what I was looking for.  It uses Python, it can be extended easily (it forms the basis of my meta-build system &lt;a href="https://github.com/brettviren/worch"&gt;worch&lt;/a&gt;).  It has good, if not great &lt;a href="http://docs.waf.googlecode.com/git/"&gt;documentation&lt;/a&gt;.  This latter issue is what this topic is meant to address.  It is written to collect my understanding as a user of waf and hopefully fill a needed gap.  It tries to provide concrete examples of how to do various things and refer to the official documentation wherever possible.
+&lt;/p&gt;
+&lt;div class="outline-2" id="outline-container-sec-1"&gt;
+&lt;h2 id="sec-1"&gt;&lt;span class="section-number-2"&gt;1&lt;/span&gt; Gestalt of waf&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+Waf is like &lt;code&gt;make&lt;/code&gt; but with a &lt;code&gt;Makefile&lt;/code&gt; called &lt;code&gt;wscript&lt;/code&gt; and written in Python.  Waf is unlike in several ways:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;waf can be &lt;a href="http://docs.waf.googlecode.com/git/book_17/single.html#_writing_re_usable_waf_tools"&gt;extended&lt;/a&gt; by providing Python modules loaded through &lt;code&gt;wscript&lt;/code&gt; files
+&lt;/li&gt;
+&lt;li&gt;waf can be &lt;a href="http://docs.waf.googlecode.com/git/book_17/single.html#_obtaining_the_waf_file"&gt;bundled&lt;/a&gt; along with extensions to provide a single executable that performs specific tasks
+&lt;/li&gt;
+&lt;li&gt;waf is cross-platform, no compilation needed and can be included as a single file along with the project it builds
+&lt;/li&gt;
+&lt;li&gt;waf is parallel by default, it will run tasks as parallel as possible constrained by available CPU, dependencies or any limits imposed by the user
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-2"&gt;
+&lt;h2 id="sec-2"&gt;&lt;span class="section-number-2"&gt;2&lt;/span&gt; The waf configuration file&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+Waf expects to find a file called &lt;code&gt;wscript&lt;/code&gt; in the current directory.  
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-1"&gt;
+&lt;h3 id="sec-2-1"&gt;&lt;span class="section-number-3"&gt;2.1&lt;/span&gt; Commands&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-1"&gt;
+&lt;p&gt;
+Functions in this file become exposed through waf as command line commands.  For example:
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-python"&gt;&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;chirp&lt;/span&gt;(ctx):
+    &lt;span style="font-weight: bold;"&gt;print&lt;/span&gt; (ctx)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+can be exercised as:
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-sh"&gt;&lt;span style="font-weight: bold;"&gt;cd&lt;/span&gt; examples/commands/
+waf chirp
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;pre class="example"&gt;
+&amp;lt;waflib.Context.Context object at 0x28c0090&amp;gt;
+'chirp' finished successfully (0.000s)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-2"&gt;
+&lt;h3 id="sec-2-2"&gt;&lt;span class="section-number-3"&gt;2.2&lt;/span&gt; Context object&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-2"&gt;
+&lt;p&gt;
+A waf command function is given a context object.  This context object may be specialized depending on the function called.  The figure from the  &lt;a href="http://docs.waf.googlecode.com/git/apidocs_17/Context.html"&gt;context reference docs&lt;/a&gt; shows the inheritance:
+&lt;/p&gt;
+&lt;div class="figure" id="fig:context-inheritance"&gt;
+&lt;p&gt;&lt;img alt="context-inheritance.png" src="./context-inheritance.png"/&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;span class="figure-number"&gt;Figure 1:&lt;/span&gt; Inheritance of context classes.  Note, the arrows are reversed from the sense they would be drawn in a UML inheritance diagram.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-3"&gt;
+&lt;h2 id="sec-3"&gt;&lt;span class="section-number-2"&gt;3&lt;/span&gt; Predefined commands&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+Certain commands are reserved and treated special by waf.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-3-1"&gt;
+&lt;h3 id="sec-3-1"&gt;&lt;span class="section-number-3"&gt;3.1&lt;/span&gt; Options&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-1"&gt;
+&lt;p&gt;
+The &lt;code&gt;options(ctx)&lt;/code&gt; function will be passed an &lt;a href="http://docs.waf.googlecode.com/git/apidocs_17/Options.html"&gt;options&lt;/a&gt; context object.  This function can be used to define command line options that waf will recognize on behalf of the project.
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-python"&gt;&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;options&lt;/span&gt;(opt):
+    opt.add_option(&lt;span style="font-style: italic;"&gt;'-x'&lt;/span&gt;,&lt;span style="font-style: italic;"&gt;'--extra'&lt;/span&gt;,action=&lt;span style="font-style: italic;"&gt;'store'&lt;/span&gt;, 
+                   &lt;span style="font-weight: bold;"&gt;help&lt;/span&gt;=&lt;span style="font-style: italic;"&gt;'Add something extra from the command line'&lt;/span&gt;)
+
+&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;chirp&lt;/span&gt;(ctx):
+    &lt;span style="font-weight: bold;"&gt;print&lt;/span&gt; (&lt;span style="font-style: italic;"&gt;'The little bit of extra is: "%s"'&lt;/span&gt; % ctx.options.extra)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-sh"&gt;&lt;span style="font-weight: bold;"&gt;cd&lt;/span&gt; examples/options/
+waf --extra=&lt;span style="font-style: italic;"&gt;'Just a bit of extra stuff'&lt;/span&gt; chirp
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-3-2"&gt;
+&lt;h3 id="sec-3-2"&gt;&lt;span class="section-number-3"&gt;3.2&lt;/span&gt; Configure&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-2"&gt;
+&lt;p&gt;
+The &lt;code&gt;configure(cfg)&lt;/code&gt; function is passed a &lt;a href="http://docs.waf.googlecode.com/git/apidocs_17/Configure.html"&gt;configuration&lt;/a&gt; context object.  This function can be used to persist any information between other command calls.  On possible use is to make command line options persisted.
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-python"&gt;&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;options&lt;/span&gt;(opt):
+    opt.add_option(&lt;span style="font-style: italic;"&gt;'-x'&lt;/span&gt;,&lt;span style="font-style: italic;"&gt;'--extra'&lt;/span&gt;,action=&lt;span style="font-style: italic;"&gt;'store'&lt;/span&gt;, 
+                   &lt;span style="font-weight: bold;"&gt;help&lt;/span&gt;=&lt;span style="font-style: italic;"&gt;'Add something extra from the command line'&lt;/span&gt;)
+
+&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;configure&lt;/span&gt;(cfg):
+    &lt;span style="font-weight: bold; font-style: italic;"&gt;cfg.env.EXTRA_MSG&lt;/span&gt; = &lt;span style="font-style: italic;"&gt;'The little bit of extra is: "%s"'&lt;/span&gt; % cfg.options.extra
+
+&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;build&lt;/span&gt;(bld):
+    &lt;span style="font-weight: bold;"&gt;print&lt;/span&gt; (bld.env.EXTRA_MSG)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-sh"&gt;&lt;span style="font-weight: bold;"&gt;cd&lt;/span&gt; examples/configure/
+waf -x &lt;span style="font-style: italic;"&gt;'Persist This'&lt;/span&gt; configure 
+&lt;span style="font-weight: bold;"&gt;echo&lt;/span&gt; &lt;span style="font-style: italic;"&gt;"Configure done"&lt;/span&gt;
+waf
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;pre class="example"&gt;
+Setting top to                           : /home/bv/org-pub/topics/waf/examples/configure 
+Setting out to                           : /home/bv/org-pub/topics/waf/examples/configure/build 
+'configure' finished successfully (0.003s)
+Configure done
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/configure/build'
+The little bit of extra is: "Persist This"
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/configure/build'
+'build' finished successfully (0.002s)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-3-3"&gt;
+&lt;h3 id="sec-3-3"&gt;&lt;span class="section-number-3"&gt;3.3&lt;/span&gt; Build&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-3"&gt;
+&lt;p&gt;
+In the &lt;code&gt;build(bld)&lt;/code&gt; function is where one describes to waf how to build everything.    It is passed a &lt;a href="http://docs.waf.googlecode.com/git/apidocs_17/Build.html"&gt;build&lt;/a&gt; context object.  There are several ways to do this but a simple and powerful way is to declare a task generator by calling &lt;code&gt;bld&lt;/code&gt; as a callable object.
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-python"&gt;&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;configure&lt;/span&gt;(cfg):
+    &lt;span style="font-weight: bold;"&gt;return&lt;/span&gt;
+
+&lt;span style="font-weight: bold;"&gt;def&lt;/span&gt; &lt;span style="font-weight: bold;"&gt;build&lt;/span&gt;(bld):
+    bld(rule=&lt;span style="font-style: italic;"&gt;"date &amp;gt; ${TGT}"&lt;/span&gt;, target = &lt;span style="font-style: italic;"&gt;"one.txt"&lt;/span&gt;)
+    bld(rule=&lt;span style="font-style: italic;"&gt;"cp ${SRC} ${TGT} &amp;amp;&amp;amp; date &amp;gt;&amp;gt; ${TGT}"&lt;/span&gt;, source=&lt;span style="font-style: italic;"&gt;"one.txt"&lt;/span&gt;, target=&lt;span style="font-style: italic;"&gt;"two.txt"&lt;/span&gt;)
+    bld.install_files(&lt;span style="font-style: italic;"&gt;"${PREFIX}/examples"&lt;/span&gt;, &lt;span style="font-style: italic;"&gt;"one.txt two.txt"&lt;/span&gt;)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-sh"&gt;&lt;span style="font-weight: bold;"&gt;cd&lt;/span&gt; examples/build
+rm -rf build install
+waf --prefix=install configure build install
+ls -l build
+ls -l install/examples
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;pre class="example"&gt;
+Setting top to                           : /home/bv/org-pub/topics/waf/examples/build 
+Setting out to                           : /home/bv/org-pub/topics/waf/examples/build/build 
+'configure' finished successfully (0.003s)
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/build/build'
+[1/2] one.txt:  -&amp;gt; build/one.txt
+[2/2] two.txt: build/one.txt -&amp;gt; build/two.txt
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/build/build'
+'build' finished successfully (0.015s)
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/build/build'
++ install /home/bv/org-pub/topics/waf/examples/build/install/examples/one.txt (from build/one.txt)
++ install /home/bv/org-pub/topics/waf/examples/build/install/examples/two.txt (from build/two.txt)
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/build/build'
+'install' finished successfully (0.005s)
+total 16
+drwxr-xr-x 2 bv bv 4096 Mar  1 19:10 c4che
+-rw-r--r-- 1 bv bv  376 Mar  1 19:10 config.log
+-rw-r--r-- 1 bv bv   29 Mar  1 19:10 one.txt
+-rw-r--r-- 1 bv bv   58 Mar  1 19:10 two.txt
+total 8
+-rw-r--r-- 1 bv bv 29 Mar  1 19:10 one.txt
+-rw-r--r-- 1 bv bv 58 Mar  1 19:10 two.txt
+&lt;/pre&gt;
+&lt;p&gt;
+In this example two files are created, &lt;code&gt;one.txt&lt;/code&gt; out of thin air and &lt;code&gt;two.txt&lt;/code&gt; based on &lt;code&gt;one.txt&lt;/code&gt;.  Both of these files are then installed into a location based on the value of &lt;code&gt;PREFIX&lt;/code&gt; which is set by the standard waf &lt;code&gt;--prefix&lt;/code&gt; command line option.  A task is generated for each invocation of &lt;code&gt;bld()&lt;/code&gt; as set by the &lt;code&gt;rule&lt;/code&gt;.  Here the rule is a &lt;a href="http://docs.waf.googlecode.com/git/book_16/single.html#_scriptlet_expressions"&gt;scriptlet&lt;/a&gt; which is essentially a shell script command with some string interpolation.  As can be seen, file redirection and other shell operators can be used.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary><category term="overview"></category><category term="waf"></category></entry><entry><title>Using Conda To Package Stuff</title><link href="http://www.phy.bnl.gov/~bviren/conda" rel="alternate"></link><updated>2014-11-21T00:00:00-05:00</updated><author><name>Brett Viren</name></author><id>tag:www.phy.bnl.gov,2014-11-21:~bviren/conda</id><summary type="html">
+&lt;div class="outline-2" id="outline-container-sec-1"&gt;
+&lt;h2 id="sec-1"&gt;&lt;span class="section-number-2"&gt;1&lt;/span&gt; Overview&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+I was looking through SciPy 2014 talks and found a talk on something called "Conda".  This takes pip to the level of handling builds.  It uses the same idea of "shims" scripts that I gave to Fermilab plus a worch like engine to do installation+build.  The install layout is single-rooted and uses Nix-like behavior using hardlinking instead of soft to produce derived distributions.  The packages are relocatable, not just in the trivial surface manner as UPS packages but goes into executables and scripts to make sure build paths are made relocatable.
+&lt;/p&gt;
+&lt;p&gt;
+It has a huge body of build recipes which includes GCC, BOOST and ROOT (no Geant4).
+&lt;/p&gt;
+&lt;p&gt;
+In short, worch may be dead, UPS may be dead, mrb may be dead.  Long live Conda.
+&lt;/p&gt;
+&lt;p&gt;
+Well, let's see.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-2"&gt;
+&lt;h2 id="sec-2"&gt;&lt;span class="section-number-2"&gt;2&lt;/span&gt; Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://conference.scipy.org/scipy2014/schedule/presentation/1708/"&gt;Sci Py 2014 Conda Abstract&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://pyvideo.org/video/2735/conda-a-cross-platform-package-manager-for-any-b"&gt;pyvideo entry&lt;/a&gt; with link to the presentation video at YouTube
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://conda.pydata.org/"&gt;Conda home page&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://conda.pydata.org/docs/intro.html"&gt;Conda docs&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.continuum.io/blog/conda"&gt;Blog entry&lt;/a&gt; with some description, Continuum support Conda devel
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://binstar.org"&gt;Binstar&lt;/a&gt; is like github+pypi
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docs.binstar.org/"&gt;Binstar docs&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://binstar.org/brettviren"&gt;My binstar account&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-3"&gt;
+&lt;h2 id="sec-3"&gt;&lt;span class="section-number-2"&gt;3&lt;/span&gt; Install &lt;code&gt;conda&lt;/code&gt;&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+The package management is through a single &lt;code&gt;conda&lt;/code&gt; program.  
+&lt;/p&gt;
+&lt;p&gt;
+It looks like I can use pip to get it, but it needs &lt;code&gt;libyaml-dev&lt;/code&gt;:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ sudo apt-get install libyaml-dev
+$ pip install --user conda
+&lt;/pre&gt;
+&lt;p&gt;
+But there is also &lt;a href="http://conda.pydata.org/miniconda.html"&gt;miniconda&lt;/a&gt; to try:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ sudo apt-get remove --purge libyaml-dev 
+$ wget http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Linux-x86_64.sh
+$ bash Miniconda3-3.7.3-Linux-x86_64.sh
+(pick install location)
+$ export PATH=/home/bv/opt/miniconda3/bin:$PATH
+$ conda install conda-build
+$ conda install binstar
+&lt;/pre&gt;
+&lt;p&gt;
+This installs Python 3.4 and other stuff into the "root environment".
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-4"&gt;
+&lt;h2 id="sec-4"&gt;&lt;span class="section-number-2"&gt;4&lt;/span&gt; Try to install ROOT&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;p&gt;
+Let's see if we can get ROOT installed via &lt;code&gt;conda&lt;/code&gt; without trying too hard
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda search root
+Fetching package metadata: ..
+&lt;/pre&gt;
+&lt;p&gt;
+Hmm, nothing….  It probably needs to be pointed at the collection of recipes on GitHub.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ git clone https://github.com/conda/conda-recipes.git
+$ conda build conda-recipes/root
+&lt;/pre&gt;
+&lt;p&gt;
+This fails at test.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-5"&gt;
+&lt;h2 id="sec-5"&gt;&lt;span class="section-number-2"&gt;5&lt;/span&gt; Make a Conda environment&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-5"&gt;
+&lt;pre class="example"&gt;
+$ conda create -n rootenv-py27 python=2
+$ source activate rootenv-py27
+$ binstar search -t conda root
+...
+     jsw-fnal/root_numpy       |    3.3.1 | conda           | linux-64       
+                                          : An interface between ROOT and NumPy
+     jsw-fnal/rootpy           |    0.7.1 | conda           | linux-64       
+                                          : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+     kcolletti1/rootpy         |    0.7.1 | conda           | linux-64       
+                                          : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+     zhenxieit/root            |  5.99.05 | conda           | linux-64       
+                                          : http://root.cern.ch
+...
+$ conda install --channel https://conda.binstar.org/zhenxieit root
+&lt;/pre&gt;
+&lt;p&gt;
+That gets ROOT installed but in what I think is a wrong location.  I can try the usual setup:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ source miniconda3/envs/rootenv-py27/root/bin/thisroot.sh
+&lt;/pre&gt;
+&lt;p&gt;
+But, starting ROOT crashes and burns.  Maybe due to it being version 5.99.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-6"&gt;
+&lt;h2 id="sec-6"&gt;&lt;span class="section-number-2"&gt;6&lt;/span&gt; Build up explicit devel env&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-6"&gt;
+&lt;pre class="example"&gt;
+$ conda create -n gcc29py27 python=2 
+$ source activate gcc29py27
+&lt;/pre&gt;
+&lt;p&gt;
+Now, let's build GCC
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/gcc-4.9
+There was an error importing jinja2.
+Please run `conda install jinja2` to enable jinja template support
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: gmp &amp;gt;=4.3.2
+&lt;/pre&gt;
+&lt;p&gt;
+Hmm….
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ ls -d conda-recipes/gmp*
+conda-recipes/gmp  conda-recipes/gmp-4  conda-recipes/gmpy  conda-recipes/gmpy2
+&lt;/pre&gt;
+&lt;p&gt;
+That first one is v5.  Use the second explicitly:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/gmp-4
+...
+====================================
+1 of 58 tests failed
+Please report to gmp-bugs@gmplib.org
+====================================
+make[4]: *** [check-TESTS] Error 1
+make[4]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+make[3]: *** [check-am] Error 2
+make[3]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+make[2]: *** [check-recursive] Error 1
+make[2]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests'
+make[1]: *** [check-recursive] Error 1
+make[1]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2'
+make: *** [check] Error 2
+Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gmp-4/build.sh
+&lt;/pre&gt;
+&lt;p&gt;
+Try again with &lt;code&gt;make check&lt;/code&gt; commented out again.  Complete, and install like:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda install -n gcc29py27 miniconda3/pkgs/gmp-4.3.2-0.tar.bz2
+&lt;/pre&gt;
+&lt;p&gt;
+Now, have to repeat this manually with all build dependencies. (?)
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/mpfr
+$ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+$ conda build conda-recipes/mpc
+BUILD START: mpc-1.0.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: mpfr
+&lt;/pre&gt;
+&lt;p&gt;
+Dunno.  Copying the built package seemed to get things going
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cp miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+$ conda build -b conda-recipes/mpc
+$ rm miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part
+$ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+$ mv mpc-1.0.1.tar.gz miniconda3/conda-bld/src_cache/
+$ conda build -b conda-recipes/mpc
+$ conda build -b conda-recipes/isl
+&lt;/pre&gt;
+&lt;p&gt;
+Then, the &lt;code&gt;mpc&lt;/code&gt; source download failed half way through.  Dunno why.  Remove the part and &lt;code&gt;wget&lt;/code&gt; the source into place manually.  Then &lt;code&gt;mpc&lt;/code&gt; is built and so is &lt;code&gt;isl&lt;/code&gt;.  Now:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build -b conda-recipes/gcc-4.9
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: mpc &amp;gt;=0.8.1
+&lt;/pre&gt;
+&lt;p&gt;
+WTF.  Where did &lt;code&gt;mpc&lt;/code&gt; package go?  It builds but never makes a &lt;code&gt;.tar.bz2&lt;/code&gt; package.    redoing the build but now without &lt;code&gt;-b&lt;/code&gt; makes the package.  This is driving me batty.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/mpc
+$ conda build conda-recipes/isl
+$ conda build conda-recipes/cloog
+&lt;/pre&gt;
+&lt;p&gt;
+Arg, cloog wants gmp 5.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/gmp
+$ conda build conda-recipes/cloog
+$ conda build conda-recipes/gcc-4.9
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: cloog 0.18.1
+&lt;/pre&gt;
+&lt;p&gt;
+Version shear, I guess &lt;code&gt;cloog&lt;/code&gt; recipe isn't updated.  Let's build GCC 4.8 instead.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda build conda-recipes/gcc-4.8
+checking for version 0.10 of ISL... no
+checking for version 0.11 of ISL... no
+checking for version 0.12 of ISL... no
+configure: error: Unable to find a usable ISL.  See config.log for details.
+Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gcc-4.8/build.sh
+&lt;/pre&gt;
+&lt;p&gt;
+WTF.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda install miniconda3/pkgs/gmp-5.1.2-5.tar.bz2 
+$ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+$ conda install miniconda3/pkgs/mpc-1.0.1-0.tar.bz2 
+$ conda install miniconda3/pkgs/isl-0.12.2-1.tar.bz2 
+$ conda build conda-recipes/gcc-4.8
+&lt;/pre&gt;
+&lt;p&gt;
+I have no idea what I'm doing.
+&lt;/p&gt;
+&lt;p&gt;
+Same failure.  Checking GCC &lt;code&gt;config.log&lt;/code&gt; shows undefined ref to GMP symbol in isl.  This is probably due to me switching to GMP5 after building ISL.  Ya think?
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ conda remove isl
+$ rm -r ./miniconda3/pkgs/isl-0.12.2-1*
+$ conda build conda-recipes/isl
+$ conda build conda-recipes/gcc-4.8
+&lt;/pre&gt;
+&lt;p&gt;
+This craps out again.  That's enough crap for now.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-7"&gt;
+&lt;h2 id="sec-7"&gt;&lt;span class="section-number-2"&gt;7&lt;/span&gt; One more try:&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-7"&gt;
+&lt;pre class="example"&gt;
+$ bash Miniconda3-3.7.3-Linux-x86_64.sh 
+$ which conda
+$ export PATH=/opt/bv/projects/conda/miniconda3/bin:$PATH
+$ conda update conda
+$ conda install conda-build
+$ conda build conda-recipes/gmp
+$ conda build conda-recipes/mpc
+$ conda install gmp
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gmp-5.1.2-5.tar.bz2
+$ conda build conda-recipes/mpc
+$ conda build conda-recipes/mpfr
+$ find . -name 'mpfr*.bz2'
+$ tar -tvf ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2
+$ cp ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+$ conda install miniconda3/conda-bld/linux-64/mpfr-3.1.2-0.tar.bz2 
+$ conda build conda-recipes/mpc
+$ ls /opt/bv/projects/conda/miniconda3/conda-bld/src_cache
+$ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+$ conda build conda-recipes/mpc
+$ find . -name 'mpc*'
+$ cat ./conda-recipes/mpc/meta.yaml 
+$ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+$ mv mpc-1.0.1.tar.gz /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/
+$ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+$ conda build conda-recipes/mpc
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/mpc-1.0.1-0.tar.bz2
+
+$ conda build conda-recipes/isl
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/isl-0.12.2-1.tar.bz2
+$ conda build conda-recipes/cloog
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/cloog-0.18.0-0.tar.bz2
+$ conda build conda-recipes/gcc-4.8
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gcc-4.8.2-2.tar.bz2
+&lt;/pre&gt;
+&lt;p&gt;
+Okay, success.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary></entry><entry><title>I wanna new desk.</title><link href="http://www.phy.bnl.gov/~bviren/desk" rel="alternate"></link><updated>2014-10-18T00:00:00-04:00</updated><author><name>Brett Viren</name></author><id>tag:www.phy.bnl.gov,2014-10-18:~bviren/desk</id><summary type="html">
+&lt;p&gt;
+This describes a desk.  Not an actual desk but the concept of a desk.  An evolution of a desk.  A desk as a process.  A place to sit that holds items at fixed distances from me and themselves and the center of the Earth.
+&lt;/p&gt;
+&lt;p&gt;
+(A note about this page: click on headings to collapse, on images for larger versions.)
+&lt;/p&gt;
+&lt;div class="outline-2" id="outline-container-sec-1"&gt;
+&lt;h2 id="sec-1"&gt;&lt;span class="section-number-2"&gt;1&lt;/span&gt; The current desk&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+The starting point for the path to a new desk starts with the current desk.
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="current-desk.jpg"&gt;&lt;img alt="current-desk-eighth.jpg" src="current-desk-eighth.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+It came from Ikea.  It's solid wood desktop on a metal frame.  The wood has a nice hard finish.  The metal frame screws to the wood through a rectangular frame under the desktop.  On the right of the desk is a hollow-core door resting on a couple of cabinets.  Functional and cheap but somewhat uninspiring.  The desk is in the corner of an upstairs room with a sloping ceiling meeting those short purple walls.
+&lt;/p&gt;
+&lt;p&gt;
+Each set of monitor, keyboard and mouse is attached to a Linux computer.  A little Raspberry Pi sitting on top of the left speaker and the main workstation ("haiku") just visible below the desk.    Haiku is an i7-4770K, 16GB RAM, with a modest SSD and 3TB HDD and lots of room to grow.  GPU is an EVGA GTX 750 Ti in an ASRock Z97 Extreme6 mobo.  It was bought from parts (from newegg) and assembled at home.
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="haiku.jpg"&gt;&lt;img alt="haiku-quarter.jpg" src="haiku-quarter.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+Haiku sits on a scrap of butcher block slab on casters and rolls nicely under the desk.  I'll keep this feature but want to address the cabling mess.  What is seen above is &lt;b&gt;after&lt;/b&gt; my attempt at cleaning thing up.
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="haiku-on-rollers.jpg"&gt;&lt;img alt="haiku-on-rollers-eighth.jpg" src="haiku-on-rollers-eighth.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-1"&gt;
+&lt;h3 id="sec-1-1"&gt;&lt;span class="section-number-3"&gt;1.1&lt;/span&gt; The connections&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-1"&gt;
+&lt;p&gt;
+This graph shows the connections between all the goodies.
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img alt="connections.svg" src="connections.svg"/&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-2"&gt;
+&lt;h2 id="sec-2"&gt;&lt;span class="section-number-2"&gt;2&lt;/span&gt; Other desks.&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+Here are some ideas to take from.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-1"&gt;
+&lt;h3 id="sec-2-1"&gt;&lt;span class="section-number-3"&gt;2.1&lt;/span&gt; Slide out surface&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-1"&gt;
+&lt;p&gt;
+I don't like keyboard trays.  They feel too low, like I have to thread my arms into some maze to find the keys.  I also like to rest my arms on the same surface as the keyboard.  However, I do like the idea of keeping a clear working surface free of keyboard, mouse and other things.  I also like keeping cables out of site.  Enter &lt;a href="http://www.3dbuzz.com/forum/threads/194044-Home-Made-computer-desk"&gt;this guys idea&lt;/a&gt;:
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="pulout-desk.jpg"&gt;&lt;img alt="pullout-desk-quarter.jpg" src="pullout-desk-quarter.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+I happen to have four telescoping, ball-bearing slides which I pulled out of the garbage at work.
+I've held on to these for years thinking, "some day these will be useful for &lt;b&gt;something&lt;/b&gt;".
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="sliders.jpg"&gt;&lt;img alt="sliders-eighth.jpg" src="sliders-eighth.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+I would not be surprised if they were specially designed and hand machined for some experimental setup.  Two of the four slide smoothly.  The other two can probably be smoothed up with some cleaning of the built-up aluminum oxide.  Their movement is otherwise very tight and precise.
+&lt;/p&gt;
+&lt;p&gt;
+They are made of three sections and are a total of 14" long when compressed and 27" when extended.  All sections lock open with two spring loaded hooks.  To retract them one can unlock the outer hook and pushing the slide in will hit the inner hook and unlock that.  This lock will allow a force to be applied without causing the sliders to retract.  The inner most slider also unhooks to allow it to be bolted on to something and slid back in.
+&lt;/p&gt;
+&lt;p&gt;
+Their 13" dynamic range would give about the same amount of extension seen in the picture of this other guys desk.  This may be a bit tighter than I'd like but if it is allowed to extend the full depth of the desk it puts me further away from the monitors than my bad eyes want.
+&lt;/p&gt;
+&lt;p&gt;
+these sliders are 3.5" wide which is somewhat undesirable given that the under-desk  platform will be about 1" or less thick.  I'm thinking maybe they can be mounted flat, as shown in the picture.  They are less than 1/2" thick so some spacers would be needed.  This could give a cool "floating" look to the under-desk shelf.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-2"&gt;
+&lt;h3 id="sec-2-2"&gt;&lt;span class="section-number-3"&gt;2.2&lt;/span&gt; Water cooled desk&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-2"&gt;
+&lt;p&gt;
+This guy shows in &lt;a href="http://linustechtips.com/main/topic/13922-custom-water-cooled-desk-56k-warning-lotsa-pictures-now-with-table-of-contents/"&gt;this mega huge thread with tons of pics&lt;/a&gt; how he built a nice computer desk/case.  He's also got some YT videos.  He has documented lots of details.  I very much like the idea of "desk as case".
+&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;a href="water-cooled-desk.jpg"&gt;&lt;img alt="water-cooled-desk-half.jpg" src="water-cooled-desk-half.jpg"/&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;
+This is a direction I might want to go in several years with "haiku" is considered slow and needs upgrading.  However, one failing I see with this particular design is that it leads to a rather thick desk.  It forces a significant distance between knees/lap and desktop.  It's going to either be cramped underneath or be too high or both.  Still, it's a nice idea and I love the cleanliness of it  That pic has no cabling yet but others show some nice, detailed cable routing.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-3"&gt;
+&lt;h2 id="sec-3"&gt;&lt;span class="section-number-2"&gt;3&lt;/span&gt; Some desired features&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+High-level requirements:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;clean
+&lt;/li&gt;
+&lt;li&gt;minimize visible cables
+&lt;/li&gt;
+&lt;li&gt;provide flexibility to reconfigure
+&lt;/li&gt;
+&lt;li&gt;handle workstation, laptop, rpi, USB disks, stereo, speakers
+&lt;/li&gt;
+&lt;li&gt;partial single-button power-down (stereo, monitors, any USB hubs, but not network switch nor workstation)
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+Ideas for providing these:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;built-in AC power, HDMI, USB connections.  "plug in the desk"
+&lt;/li&gt;
+&lt;li&gt;USB, RJ45 keystone jacks mounted on the desktop
+&lt;/li&gt;
+&lt;li&gt;mount USB hub flush with desk
+&lt;/li&gt;
+&lt;li&gt;mount power strips under desk
+&lt;/li&gt;
+&lt;li&gt;hidden/boxed cable routing
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-4"&gt;
+&lt;h2 id="sec-4"&gt;&lt;span class="section-number-2"&gt;4&lt;/span&gt; Parts&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;p&gt;
+Some possible parts for the desk
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://www.amazon.com/dp/B00FVS9U8O?psc=1"&gt;10 port powered USB 3 hub with flat face&lt;/a&gt;, same but &lt;a href="http://www.amazon.com/dp/B00FR795WA?psc=1"&gt;7 port, dedicated power&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.amazon.com/NETGEAR-ProSafe-Gigabit-Ethernet-Desktop/dp/B0000BVYT3/"&gt;5-port GbE switch&lt;/a&gt; and &lt;a href="http://www.amazon.com/NETGEAR-GS108NA-ProSafe-Gigabit-Ethernet/dp/B00006RVPW/"&gt;8-port&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.amazon.com/StarTech-AD3X3-3x3in-Wiring-Raceway/dp/B00006HQV5"&gt;67x3x3 inch plastic cable tray&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary></entry><entry><title>Managing a LArSoft Development Environment with Google Repo</title><link href="http://www.phy.bnl.gov/~bviren/build-larsoft-with-google-repo" rel="alternate"></link><updated>2014-07-25T00:00:00-04:00</updated><author><name>Brett Viren</name></author><id>tag:www.phy.bnl.gov,2014-07-25:~bviren/build-larsoft-with-google-repo</id><summary type="html">
+&lt;p&gt;
+This topic describes how to set up a development environment for modifying LArSoft code or developing packages built on top of LArSoft.  The methods here do not make use of "&lt;code&gt;mrb&lt;/code&gt;" but do rely on a "Fermilab compatible" UPS products area which provide the packages satisfying any dependencies any of the development packages require.
+&lt;/p&gt;
+&lt;p&gt;
+The development area consists of these directories:
+&lt;/p&gt;
+&lt;dl class="org-dl"&gt;
+&lt;dt&gt; &lt;code&gt;source/&lt;/code&gt; &lt;/dt&gt;&lt;dd&gt;a directory where all repositories are cloned
+&lt;/dd&gt;
+&lt;dt&gt; &lt;code&gt;build/&lt;/code&gt; &lt;/dt&gt;&lt;dd&gt;a directory from where building the source is done
+&lt;/dd&gt;
+&lt;dt&gt; &lt;code&gt;install/&lt;/code&gt; &lt;/dt&gt;&lt;dd&gt;a directory where the built binaries are placed
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+Each of these directories are independent from each other and may be placed where convenient.   Their contents are managed by the various steps as described below.  In the examples below, the use of these as relative directory paths indicate you should use whatever path locates them.  Where an absolute path is required, the absolute path &lt;code&gt;/path/to&lt;/code&gt; will be prepended.  For example:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd source/
+$ cd /path/to/build
+&lt;/pre&gt;
+&lt;div class="outline-2" id="outline-container-sec-1"&gt;
+&lt;h2 id="sec-1"&gt;&lt;span class="section-number-2"&gt;1&lt;/span&gt; Manual Setup&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+This section describes how to produce a development environment for a single package, "lbnecode"  a manual manner.  It uses as low-level methods as reasonable but stops before exposing the user to the morass of the underlying UPS/CET/CMake build system.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-1"&gt;
+&lt;h3 id="sec-1-1"&gt;&lt;span class="section-number-3"&gt;1.1&lt;/span&gt; Preliminaries&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-1"&gt;
+&lt;p&gt;
+Make the three areas, here assuming they are all next to each other:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ mkdir source build install
+&lt;/pre&gt;
+&lt;p&gt;
+The &lt;code&gt;install/&lt;/code&gt; directory will need to be primed with some UPS files which can be copied from the central UPS "products" area for the site.  This example assume you are using BNL's RACF.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cp -a /afs/rhic.bnl.gov/lbne/software/products/.up[sd]files install/
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-2"&gt;
+&lt;h3 id="sec-1-2"&gt;&lt;span class="section-number-3"&gt;1.2&lt;/span&gt; Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-2"&gt;
+&lt;p&gt;
+Clone the package repository into the source area
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd source/
+$ git clone http://cdcvs.fnal.gov/projects/lbnecode
+&lt;/pre&gt;
+&lt;p&gt;
+Note, this URL allows anonymous cloning of the repository but does not allow any commits that you may make to be pushed.  Later, if desired, you can add an additional remote that allows pushes so any commits you may make can be shared.
+&lt;/p&gt;
+&lt;p&gt;
+From this clone, decide which tag or branch to start with.  If you don't know what is available you can query the repository like:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd source/lbnecode/
+$ git tag
+$ git branch -a
+$ gitk --all
+&lt;/pre&gt;
+&lt;p&gt;
+A likely starting point is either the "master" or "develop" branch or some tag. If you intend to have other people use your modifications then starting from "master" is wise as it will make future merging easier than if you start from an older tag.  However, if you want to explicitly modify the code from some past tagged release, of courses use that tag next.
+&lt;/p&gt;
+&lt;p&gt;
+Once a starting point is found use its label in place of "&lt;code&gt;&amp;lt;branch-or-tag&amp;gt;&lt;/code&gt;" in the following "&lt;code&gt;checkout&lt;/code&gt;" command.  If not given then the default branch will be assumed.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ git checkout -b feature/MYWORK [&amp;lt;branch-or-tag&amp;gt;]
+&lt;/pre&gt;
+&lt;p&gt;
+The "&lt;code&gt;feature/MYWORK&lt;/code&gt;" follows the convention for holding development.  Pick a unique name for "&lt;code&gt;MYWORK&lt;/code&gt;" that indicates the intent of the development.  It should be brief but evocative.  It need not include any identifier as to who will be doing the work as any commits to the branch will, as always, will be attributed to your identity.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-3"&gt;
+&lt;h3 id="sec-1-3"&gt;&lt;span class="section-number-3"&gt;1.3&lt;/span&gt; The version lie&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-3"&gt;
+&lt;p&gt;
+The build, which is described below, will result in a UPS "product" binary package holding files for any executable, library, include, etc produced by the build.  This package lays out its files in a pattern that includes a version string and this version string must be supplied to the UPS "&lt;code&gt;setup&lt;/code&gt;" command by anyone who wishes to use these build outputs.
+&lt;/p&gt;
+&lt;p&gt;
+This version string is intended for release builds but it gets forced on you, the poor developer.  It will be set to whatever value was needed at the time of the last release build that occurred in the branch you decided to check out above.  Any modifications to the source past this release point will likely &lt;b&gt;not&lt;/b&gt; modify this version and thus will create a lie.  When reporting any results produced from a package that is in development you must take care not to quote them as being due to the release but qualify that the release was the basis for the development modifications.
+&lt;/p&gt;
+&lt;p&gt;
+With those caveats appreciated, you ignore the rest of this section.  
+&lt;/p&gt;
+&lt;p&gt;
+To make plain that your development build is not a release you may modify the release string.  It is set here:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ emacs source/lbnecode/ups/product_deps
+&lt;/pre&gt;
+&lt;p&gt;
+Look for a line beginning with "&lt;code&gt;parent&lt;/code&gt;".  For example: 
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+parent lbnecode v02_03_01
+&lt;/pre&gt;
+&lt;p&gt;
+Modify this string to indicate the development.  For example, tack on an identifier that can be associated with the branch name you chose above.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+parent lbnecode v02_03_01MYWORK
+&lt;/pre&gt;
+&lt;p&gt;
+The rest of the file can often be left untouched.  If the development requires a new direct dependency it may need to be added.  
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-4"&gt;
+&lt;h3 id="sec-1-4"&gt;&lt;span class="section-number-3"&gt;1.4&lt;/span&gt; Set up environment for building&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-4"&gt;
+&lt;p&gt;
+Before any development is started and before the first build of the checked out code one has to provide a meticulously crafted environment for the brittle UPS/CET/CMake-based build system to work.  This setup is site specific but in general it involves sourcing a shell script associated with a base UPS "products area" followed by sourcing one associated with the package being built.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ source /afs/rhic.bnl.gov/lbne/software/products/setup
+$ mkdir -p build/lbnecode
+$ cd build/lbnecode
+$ source /path/to/source/lbnecode/setup_for_development -p
+...
+env CC=gcc CXX=g++ FC=gfortran cmake -DCMAKE_INSTALL_PREFIX="/install/path" -DCMAKE_BUILD_TYPE=${CETPKG_TYPE} "${CETPKG_SOURCE}"
+&lt;/pre&gt;
+&lt;p&gt;
+The "&lt;code&gt;-p&lt;/code&gt;" flag in the last source indicates a "profile" build variant is desired.  
+&lt;/p&gt;
+&lt;p&gt;
+Take note of the "&lt;code&gt;cmake&lt;/code&gt;" command echoed by this second script as it will be used later.
+In general, building with CMake is best done in a directory outside the source directory and specific to each package:
+&lt;/p&gt;
+&lt;p&gt;
+Also, take note of that this last sourced file will add files to your current working directory which is why it is important to run it from the directory where build outputs should go.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-5"&gt;
+&lt;h3 id="sec-1-5"&gt;&lt;span class="section-number-3"&gt;1.5&lt;/span&gt; Build the package&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-5"&gt;
+&lt;p&gt;
+Next, issue that cmake command which was echoed by &lt;code&gt;setup_for_development&lt;/code&gt;.  Take note to edit the absolute path for the install prefix to suit your desired layout.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd build/lbnecode/
+$ env CC=gcc CXX=g++ FC=gfortran cmake -DCMAKE_INSTALL_PREFIX="/path/to/install" -DCMAKE_BUILD_TYPE=${CETPKG_TYPE} "${CETPKG_SOURCE}"
+$ make
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="outline-4" id="outline-container-sec-1-5-1"&gt;
+&lt;h4 id="sec-1-5-1"&gt;&lt;span class="section-number-4"&gt;1.5.1&lt;/span&gt; Using the build directly&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-1-5-1"&gt;
+&lt;p&gt;
+After the "&lt;code&gt;make&lt;/code&gt;" the "lbnecode" package is built into the "&lt;code&gt;build/&lt;/code&gt;" directory.  In sourcing the "&lt;code&gt;setup_for_development&lt;/code&gt;" script your environment was munged in order to locate the basic OS-level outputs of this build including executable and library files.  However, application-level files may not be yet be found if their location depends on additional environment variables.  Some examples:
+&lt;/p&gt;
+&lt;dl class="org-dl"&gt;
+&lt;dt&gt; FCL files &lt;/dt&gt;&lt;dd&gt;these are located through the environment variable "&lt;code&gt;FHICL_FILE_PATH&lt;/code&gt;".  This variable may be defined already but may not explicitly contain any elements pointing in to the build area.  It may contain the relative paths "&lt;code&gt;.&lt;/code&gt;" and "&lt;code&gt;./job&lt;/code&gt;" which may find FCL files while you remain in the &lt;code&gt;build/lbnecode/&lt;/code&gt; directory
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-6"&gt;
+&lt;h3 id="sec-1-6"&gt;&lt;span class="section-number-3"&gt;1.6&lt;/span&gt; Install the package&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-6"&gt;
+&lt;p&gt;
+The build products can be installed as a UPS "product" into the location specified by  the &lt;code&gt;CMAKE_INSTALL_PREFIX&lt;/code&gt; directive to the &lt;code&gt;cmake&lt;/code&gt; command with:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ make install
+&lt;/pre&gt;
+&lt;p&gt;
+Note that you should observe the output of this command copying files into a location with a directory named with your modified version string as above.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-4" id="outline-container-sec-1-6-1"&gt;
+&lt;h4 id="sec-1-6-1"&gt;&lt;span class="section-number-4"&gt;1.6.1&lt;/span&gt; Using the development UPS products area&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-1-6-1"&gt;
+&lt;p&gt;
+If the &lt;code&gt;install/&lt;/code&gt; area was prepped as a UPS "products area" as above then you will now have your own products area that you or anyone who can access it may use.  Since it only contains the development packages you have built and relies on the packages from the central UPS products area one must set up the environment to tell UPS about both.  You do this by prepending your products area to the &lt;code&gt;PRODUCTS&lt;/code&gt; environment variable:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ export PRODUCTS=/path/to/install:$PRODUCTS
+&lt;/pre&gt;
+&lt;p&gt;
+This assumes you have already sourced the central site UPS "&lt;code&gt;setup&lt;/code&gt;" script.
+&lt;/p&gt;
+&lt;p&gt;
+You can now see that your package is found by UPS, for example with:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ ups list -aK+ | grep lbnecode | grep MYWORK
+"lbnecode" "v02_03_01MYWORK" "Linux64bit+2.6-2.12" "e5:prof" ""
+&lt;/pre&gt;
+&lt;p&gt;
+Where "&lt;code&gt;MYWORK&lt;/code&gt;" is the label you added to break the version lie as shown in section &lt;a href="#sec-1-3"&gt;1.3&lt;/a&gt;.  To munge your environment to use this package do the usual dance:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ setup lbnecode v02_03_01MYWORK -q e5:prof
+&lt;/pre&gt;
+&lt;p&gt;
+This will munge your environment to give precedence to the installation in your personal UPS products area.  In particular, it will likely shadow any direct use of the build outputs.  You can see this in the example:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+echo $LD_LIBRARY_PATH|tr ':' '\n'
+/path/to/install/lbnecode/v02_03_01manual-build/slf6.x86_64.e5.prof/lib
+/path/to/build/lbnecode/lib
+# ... central UPS products library directories
+&lt;/pre&gt;
+&lt;p&gt;
+This means that you will need to do a full "&lt;code&gt;make install&lt;/code&gt;" in order to access the build output following any development of the source.
+&lt;/p&gt;
+&lt;p&gt;
+You may also wish to examine "&lt;code&gt;$FHICL_FILE_PATH&lt;/code&gt;" and determine that an absolute path into the "lbnecode" package in your personal UPS products area has been added.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ echo $FHICL_FILE_PATH|tr ':' '\n'
+.
+./job
+/path/to/install/lbnecode/v02_03_01manual-build/job
+.
+./job
+# ...
+&lt;/pre&gt;
+&lt;p&gt;
+Why are the "&lt;code&gt;.&lt;/code&gt;" and "&lt;code&gt;./job&lt;/code&gt;" directories repeated?  Dunno, don't ask me, I didn't write this.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-4" id="outline-container-sec-1-6-2"&gt;
+&lt;h4 id="sec-1-6-2"&gt;&lt;span class="section-number-4"&gt;1.6.2&lt;/span&gt; Rebuilding and using with a personal UPS products area&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-1-6-2"&gt;
+&lt;p&gt;
+As noted above, if you elect to munge your environment to use the contents of your personal UPS products area be aware that they will take precedence over the contents of your build area.  This means you must do a "&lt;code&gt;make install&lt;/code&gt;" before you may use the output of the rebuild. 
+&lt;/p&gt;
+&lt;p&gt;
+If you are developing multiple packages at once this environment must also be kept in mind.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-2"&gt;
+&lt;h2 id="sec-2"&gt;&lt;span class="section-number-2"&gt;2&lt;/span&gt; Using Google Repo&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+The above procedures in section &lt;a href="#sec-1-2"&gt;1.2&lt;/a&gt; for preparing the source area can be carried out manually for each package that shall be developed in conjunction.  However, this can be tedious and error prone.  Some things that must be kept in mind:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;clone a suite of package source repositories
+&lt;/li&gt;
+&lt;li&gt;assure checkouts of each package are from a consistent point in their development history
+&lt;/li&gt;
+&lt;li&gt;assure correct build dependencies are used 
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+This last one include the need to correctly use the correct packages from the centrally installed UPS products except when these packages are subject to the development effort.  For these packages one must build them in proper order and assure that their results are used when building subsequent packages.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-1"&gt;
+&lt;h3 id="sec-2-1"&gt;&lt;span class="section-number-3"&gt;2.1&lt;/span&gt; Source preparation with Repo&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-1"&gt;
+&lt;p&gt;
+To facilitate managing the source code for multiple packages the &lt;a href="https://code.google.com/p/git-repo/"&gt;repo&lt;/a&gt; tool developed by Google for Android development may be used to automate some steps.  This section walks through how to use Repo to prepare the packages providing the LArSoft source.
+&lt;/p&gt;
+&lt;p&gt;
+Repo is installed simply by downloading the tool into a location that is picked up in your "&lt;code&gt;$PATH&lt;/code&gt;" like so:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ curl http://commondatastorage.googleapis.com/git-repo-downloads/repo &amp;gt; ~/bin/repo
+$ chmod +x ~/bin/repo
+&lt;/pre&gt;
+&lt;p&gt;
+Repo uses a file called a "manifest".  These should not to be confused with similarly named but unrelated files which are part of a certain binary UPS product installation method.  A Repo manifest file is in XML format and describes the basic elements of a set of source repositories.  In particular it states for each repository:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;the base URL
+&lt;/li&gt;
+&lt;li&gt;the branch from which to checkout
+&lt;/li&gt;
+&lt;li&gt;the local directory
+&lt;/li&gt;
+&lt;li&gt;the repository name
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+These last two are usually identical and this last is appended to the base URL to locate the repository.  
+&lt;/p&gt;
+&lt;p&gt;
+Repo expects the manifest to, itself, live in a git repository.  This allows one to track development at a meta-level.  Feature branches across multiple repositories can be grouped in a manifest file which is itself tracked in a branch of the manifest repository.   Multiple manifest files may also be maintained.
+&lt;/p&gt;
+&lt;p&gt;
+LBNE maintains a manifest repository for LArSoft and it may be used with Repo as in this example:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd source/
+$ repo init -u https://github.com/drbenmorgan/larsoft-manifest.git
+$ repo sync
+$ ls -a
+.   larana   lardata          larevt       larpandora  larsim
+..  larcore  lareventdisplay  larexamples  larreco     .repo
+&lt;/pre&gt;
+&lt;p&gt;
+Note, the same top-level directory location conventions from Section &lt;a href="#sec-1"&gt;1&lt;/a&gt; are used here and this will become the source area for building.  
+&lt;/p&gt;
+&lt;p&gt;
+After the "&lt;code&gt;init&lt;/code&gt;" the manifest repository will be cloned into Repo's working area "&lt;code&gt;.repo/&lt;/code&gt;".   After the initial "&lt;code&gt;sync&lt;/code&gt;" the package source repositories listed in the manifest will be cloned.  These will be left checked out in a "headless" state not explicitly associated with a branch.  
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-2-2"&gt;
+&lt;h3 id="sec-2-2"&gt;&lt;span class="section-number-3"&gt;2.2&lt;/span&gt; Initial repository checkouts&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-2"&gt;
+&lt;p&gt;
+Each repository will need to be checked out to a local branch from a suitable starting location.  This may be done by repeating the "&lt;code&gt;git checkout&lt;/code&gt;" directions from section &lt;a href="#sec-1-2"&gt;1.2&lt;/a&gt; in each repository.  If there exists some symmetry among the repositories one may exploit it by applying the git checkout to each with a single command:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ repo forall -c git checkout -b feature/MYWORK [&amp;lt;branch-or-tag&amp;gt;]  
+Switched to a new branch 'feature/MYWORK'
+Switched to a new branch 'feature/MYWORK'
+...
+$ repo branches
+*  feature/MYWORK            | in all projects
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-3"&gt;
+&lt;h2 id="sec-3"&gt;&lt;span class="section-number-2"&gt;3&lt;/span&gt; Building multiple packages&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+At this point one can manually follow the instructions from section &lt;a href="#sec-1-5"&gt;1.5&lt;/a&gt; for each package honoring the correct build order.  The UPS/CET/CMake build system encodes this ordering in the &lt;code&gt;ups/products_deps&lt;/code&gt; file found in the source code.  If one wishes to correct the version lie described in section &lt;a href="#sec-1-3"&gt;1.3&lt;/a&gt; each package's &lt;code&gt;products_deps&lt;/code&gt; file will need modification in order to change the value of the &lt;code&gt;parent&lt;/code&gt; setting.  In addition, the packages dependencies satisfied through UPS are enumerated in this file in terms of their product name and version.  If any of these products will be supplied by the development build and with version strings that do not implement the version lie then these will need modification to match.  These are listed under the line starting with "&lt;code&gt;product&lt;/code&gt;".  For example the "larana" package has:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+product         version
+larreco         v02_03_01
+gcc             v4_8_2
+&lt;/pre&gt;
+&lt;p&gt;
+If the development of the "larreco" is reflected with a version string "&lt;code&gt;v02_03_01MYWORK&lt;/code&gt;" then this same version string must be set here.  
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary></entry><entry><title>ELog at BNL Physics Department</title><link href="http://www.phy.bnl.gov/~bviren/elog" rel="alternate"></link><updated>2014-07-18T00:00:00-04:00</updated><author><name>Brett Viren</name></author><id>tag:www.phy.bnl.gov,2014-07-18:~bviren/elog</id><summary type="html">
+&lt;p&gt;
+A few R&amp;amp;D groups, largely filled by members of the Electronic Detector Group in the BNL Physics department, recognized the need for an online logbook.  A survey was done to find what was available and &lt;a href="http://midas.psi.ch/elog/"&gt;ELog&lt;/a&gt; was selected.  This documents the selection, prototyping and production setup.
+&lt;/p&gt;
+&lt;div class="outline-2" id="outline-container-sec-1"&gt;
+&lt;h2 id="sec-1"&gt;&lt;span class="section-number-2"&gt;1&lt;/span&gt; Comparison with other potential systems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+ELog is by far the most popular system as judged by various Google searches.  There is also significant, prior experience with ELog among the primary users of the new system.  A few others were considered.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-1"&gt;
+&lt;h3 id="sec-1-1"&gt;&lt;span class="section-number-3"&gt;1.1&lt;/span&gt; Fermilab ECL&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-1"&gt;
+&lt;p&gt;
+&lt;a href="https://cdcvs.fnal.gov/redmine/projects/crl/wiki"&gt;ECL&lt;/a&gt; is a rewrite of a prior system from Fermilab called CRL but it had no expression of interest from the primaries.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-2"&gt;
+&lt;h3 id="sec-1-2"&gt;&lt;span class="section-number-3"&gt;1.2&lt;/span&gt; Evernote&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-2"&gt;
+&lt;p&gt;
+&lt;a href="../sci-log-book-comp/index.html"&gt;ELog and Evernote were compared&lt;/a&gt;.   
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-1-3"&gt;
+&lt;h3 id="sec-1-3"&gt;&lt;span class="section-number-3"&gt;1.3&lt;/span&gt; Bloknot&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-1-3"&gt;
+&lt;p&gt;
+After the Evernote comparison was done another option was found in our own backyard.  This was &lt;a href="http://bloknot.sourceforge.net/"&gt;bloknot&lt;/a&gt; written by our own Vlodya Tishchenko who uses it as his own personal logbook.  A few observations of this system
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;It has many similarities to ELog in content, presentation, and backend storage method
+&lt;/li&gt;
+&lt;li&gt;It's extensible through plugins (PHP).
+&lt;/li&gt;
+&lt;li&gt;It supports HTML, plain text and markdown
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+While it was recognized that bloknot was very impressive it was not selected largely due to the greater familiarity the primaries have with ELog and the lack of expected community/support for bloknot.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-2"&gt;
+&lt;h2 id="sec-2"&gt;&lt;span class="section-number-2"&gt;2&lt;/span&gt; Access policy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+The desired ELog access policy is:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;auth is required to read or write, no anonymous access
+&lt;/li&gt;
+&lt;li&gt;read-write accounts are per-individual (no sharing)
+&lt;/li&gt;
+&lt;li&gt;read-only accounts may be shared
+&lt;/li&gt;
+&lt;li&gt;write-once, read always (no edits nor deletes by normal users)
+&lt;/li&gt;
+&lt;li&gt;admin level access may delete entries
+&lt;/li&gt;
+&lt;li&gt;otherwise, a flat access control, any read-write user can write to
+any logbook, any auth'ed user can read any logbook
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-3"&gt;
+&lt;h2 id="sec-3"&gt;&lt;span class="section-number-2"&gt;3&lt;/span&gt; Logbook organization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+The organization is to be a hierarchy of groups of logbooks.  At top level are "WbLS" and "LAr" for these two R&amp;amp;D efforts.  Future groups are expected.  Organization below this top level is up to the group.  One expected future expansion might be to add a "Summer Students" group with one logbook per student.
+&lt;/p&gt;
+&lt;p&gt;
+Initial groups
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;WbLS
+&lt;/li&gt;
+&lt;li&gt;LAr
+&lt;/li&gt;
+&lt;li&gt;Compton Scattering
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-4"&gt;
+&lt;h2 id="sec-4"&gt;&lt;span class="section-number-2"&gt;4&lt;/span&gt; Installation&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;p&gt;
+The &lt;code&gt;elogd&lt;/code&gt; process will run as a dedicated user "&lt;code&gt;elog&lt;/code&gt;" and will be monitored by &lt;a href="http://supervisord.org/"&gt;supervisord&lt;/a&gt;.  It will only listen on &lt;code&gt;localhost&lt;/code&gt; and be exposed to the Internet via Apache (running as it's own user).  
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-1"&gt;
+&lt;h3 id="sec-4-1"&gt;&lt;span class="section-number-3"&gt;4.1&lt;/span&gt; Prerequisite package installation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-1"&gt;
+&lt;p&gt;
+Assuming SL6.5.
+&lt;/p&gt;
+&lt;p&gt;
+Apache:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+# yum install httpd mod_ssl crypto-utils
+&lt;/pre&gt;
+&lt;p&gt;
+To build ELog from source:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+# yum install git gcc openssl-devel
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-2"&gt;
+&lt;h3 id="sec-4-2"&gt;&lt;span class="section-number-3"&gt;4.2&lt;/span&gt; Prepare&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-2"&gt;
+&lt;p&gt;
+Make the user to run the ELog daemon:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ sudo useradd -c "ELog Server" -d /home/elog -m -r -s /bin/bash elog
+$ sudo su - elog
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-3"&gt;
+&lt;h3 id="sec-4-3"&gt;&lt;span class="section-number-3"&gt;4.3&lt;/span&gt; Install ELog&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-3"&gt;
+&lt;pre class="example"&gt;
+$ mkdir code
+$ cd code
+$ git clone https://bitbucket.org/ritt/elog.git
+$ git clone https://bitbucket.org/tmidas/mxml.git
+$ cd elog
+$ make ROOT=/home/elog/opt
+$ make ROOT=/home/elog/opt install
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-4"&gt;
+&lt;h3 id="sec-4-4"&gt;&lt;span class="section-number-3"&gt;4.4&lt;/span&gt; Initial Configure&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-4"&gt;
+&lt;pre class="example"&gt;
+$ mkdir ~/cfg
+$ cd ~/cfg
+$ cp ~/code/elog/elogd.cfg .
+$ git init
+$ git add elogd.cfg
+$ git commit -a -m "First commit of default config."
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-5"&gt;
+&lt;h3 id="sec-4-5"&gt;&lt;span class="section-number-3"&gt;4.5&lt;/span&gt; Test&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-5"&gt;
+&lt;pre class="example"&gt;
+$ ~/opt/usr/local/sbin/elogd -c ~/cfg/elogd.cfg -s ~/opt/usr/local/elog -d ~/logbooks
+&lt;/pre&gt;
+&lt;p&gt;
+And, visit: &lt;a href="http://localhost:8080/"&gt;http://localhost:8080/&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-6"&gt;
+&lt;h3 id="sec-4-6"&gt;&lt;span class="section-number-3"&gt;4.6&lt;/span&gt; Apache&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-6"&gt;
+&lt;p&gt;
+In an Apache's SSL site config file's &lt;code&gt;VirtualHost&lt;/code&gt; section, add:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+Redirect permanent / http://localhost:8080/
+ProxyPass / http://localhost:8080/
+&lt;/pre&gt;
+&lt;p&gt;
+ELog needs to be told what URL to assume:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+[global]
+port = 8080
+URL = https://lycastus.phy.bnl.gov/elog/
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-4-7"&gt;
+&lt;h3 id="sec-4-7"&gt;&lt;span class="section-number-3"&gt;4.7&lt;/span&gt; Supervisor&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-7"&gt;
+&lt;p&gt;
+The &lt;code&gt;superviord&lt;/code&gt; is used to keep Elog up and running.  Since nothing useful comes with Red Hat linux, we install it from source:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ cd ~/code
+$ wget https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.tar.gz
+$ tar -xvf virtualenv-1.11.tar.gz
+$ ./virtualenv-1.11/virtualenv
+$ source ./venv/bin/activate
+$ pip install supervisor
+$ emacs ~/cfg/supervisord.cfg ~/run-supervisord.sh
+&lt;/pre&gt;
+&lt;p&gt;
+The config:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+[supervisord]
+#nada
+[program:elog]
+command=/home/elog/opt/usr/local/sbin/elogd -v -c /home/elog/cfg/elogd.cfg -s /home/elog/opt/usr/local/elog
+&lt;/pre&gt;
+&lt;p&gt;
+The run script:
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-shell"&gt;#!/bin/bash
+source ~/code/venv/bin/activate
+supervisord -c ~/cfg/supervisord.cfg
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+Run it:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+$ ~/run-supervisord.sh
+&lt;/pre&gt;
+&lt;p&gt;
+Now, walk away.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-5"&gt;
+&lt;h2 id="sec-5"&gt;&lt;span class="section-number-2"&gt;5&lt;/span&gt; Configuration&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-5"&gt;
+&lt;p&gt;
+In the &lt;a href="#sec-4"&gt;4&lt;/a&gt; section is the minimum to get ELog to answer requests through Apache/SSL.  This section says how to configure ELog to implement the desired &lt;a href="#sec-2"&gt;2&lt;/a&gt;.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="outline-3" id="outline-container-sec-5-1"&gt;
+&lt;h3 id="sec-5-1"&gt;&lt;span class="section-number-3"&gt;5.1&lt;/span&gt; Devel Elog Config&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-5-1"&gt;
+&lt;p&gt;
+The various human managed files for Elog is kept in the &lt;code&gt;gitosis@gateway.phy.bnl.gov:elog&lt;/code&gt; git repository.  This lets changes be tested on a devel server before pushed and pulled down to the production server.  
+&lt;/p&gt;
+&lt;p&gt;
+Note, the &lt;code&gt;passwords&lt;/code&gt; file is not version controlled as Elog updates it all the time.
+&lt;/p&gt;
+&lt;p&gt;
+Repeat the Elog installation.  For testing Elog one does not need Apache nor &lt;code&gt;supervisord&lt;/code&gt; setup.  However, to keep the same paths in the configuration file, it is best to create an &lt;code&gt;elog&lt;/code&gt; account and install things identically in &lt;code&gt;/home/elog&lt;/code&gt; as above.
+&lt;/p&gt;
+&lt;p&gt;
+For the devel server:
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+elog$ git clone gitosis@gateway.phy.bnl.gov:elog
+elog$ mv elog/* elog/.git* .
+elog$ rmdir elog
+elog$ ~/opt/usr/local/sbin/elogd -c ~/cfg/elogd.cfg -s ~/opt/usr/local/elog -n localhost
+&lt;/pre&gt;
+&lt;p&gt;
+&lt;b&gt;Important note&lt;/b&gt;: one must tweak the URL setting in the config file to match the testing server and the remember to return it before committing.
+&lt;/p&gt;
+&lt;pre class="example"&gt;
+# production:
+#URL = https://elog.phy.bnl.gov/
+# testing:
+URL = http://localhost:8080/
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="outline-2" id="outline-container-sec-6"&gt;
+&lt;h2 id="sec-6"&gt;&lt;span class="section-number-2"&gt;6&lt;/span&gt; Security&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-6"&gt;
+&lt;/div&gt;&lt;div class="outline-3" id="outline-container-sec-6-1"&gt;
+&lt;h3 id="sec-6-1"&gt;&lt;span class="section-number-3"&gt;6.1&lt;/span&gt; Local file path leaks&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-6-1"&gt;
+&lt;p&gt;
+ELog will leak local file system paths on 404.  This makes BNL Nessus cranky.  This patch comments out the offending bits.
+&lt;/p&gt;
+&lt;div class="org-src-container"&gt;
+&lt;pre class="src src-diff"&gt;diff --git a/src/elogd.c b/src/elogd.c
+index 88b709f..277ba30 100755
+&lt;span style="font-weight: bold;"&gt;--- &lt;/span&gt;&lt;span style="font-weight: bold;"&gt;a/src/elogd.c&lt;/span&gt;
+&lt;span style="font-weight: bold;"&gt;+++ &lt;/span&gt;&lt;span style="font-weight: bold;"&gt;b/src/elogd.c&lt;/span&gt;
+&lt;span style="font-weight: bold;"&gt;@@ -8195,13 +8195,11 @@&lt;/span&gt;&lt;span style="font-weight: bold;"&gt; void send_file_direct(char *file_name)&lt;/span&gt;
+
+       rsprintf("&amp;lt;body&amp;gt;&amp;lt;h1&amp;gt;Not Found&amp;lt;/h1&amp;gt;\r\n");
+       rsprintf("The requested file &amp;lt;b&amp;gt;");
+-      /* 
+       strencode2(encodedname, file_name, sizeof(encodedname));
+       if (strchr(file_name, DIR_SEPARATOR))
+          rsprintf("%s", encodedname);
+       else
+          rsprintf("%s%c%s", dir, DIR_SEPARATOR, encodedname);
+-      */
+       rsprintf("&amp;lt;/b&amp;gt; was not found on this server&amp;lt;p&amp;gt;\r\n");
+       rsprintf("&amp;lt;hr&amp;gt;&amp;lt;address&amp;gt;ELOG version %s&amp;lt;/address&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;\r\n\r\n", VERSION);
+       return_length = strlen_retbuf;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary></entry></feed>

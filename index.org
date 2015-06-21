@@ -1,9 +1,0 @@
-#+setupfile: org/templates/top.org
-#+title: They Call Me Brett
-
------
-
- * [[https://github.com/brettviren][Github Project Pages]]
- * [[./topics/sitemap.html][Writings on Various topics]]
-
------
