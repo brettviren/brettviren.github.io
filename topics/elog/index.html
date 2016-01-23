@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Comparison with other potential systems</a><ul class="nav">
+<li class="">
+  <a href="#sec-1-1">1.1. Fermilab ECL</a></li>
+<li class="">
+  <a href="#sec-1-2">1.2. Evernote</a></li>
+<li class="">
+  <a href="#sec-1-3">1.3. Bloknot</a></li></ul></li>
+<li class="">
+  <a href="#sec-2">2. Access policy</a></li>
+<li class="">
+  <a href="#sec-3">3. Logbook organization</a></li>
+<li class="">
+  <a href="#sec-4">4. Installation</a><ul class="nav">
+<li class="">
+  <a href="#sec-4-1">4.1. Prerequisite package installation</a></li>
+<li class="">
+  <a href="#sec-4-2">4.2. Prepare</a></li>
+<li class="">
+  <a href="#sec-4-3">4.3. Install ELog</a></li>
+<li class="">
+  <a href="#sec-4-4">4.4. Initial Configure</a></li>
+<li class="">
+  <a href="#sec-4-5">4.5. Test</a></li>
+<li class="">
+  <a href="#sec-4-6">4.6. Apache</a></li>
+<li class="">
+  <a href="#sec-4-7">4.7. Supervisor</a></li></ul></li>
+<li class="">
+  <a href="#sec-5">5. Configuration</a><ul class="nav">
+<li class="">
+  <a href="#sec-5-1">5.1. Devel Elog Config</a></li></ul></li>
+<li class="">
+  <a href="#sec-6">6. Security</a><ul class="nav">
+<li class="">
+  <a href="#sec-6-1">6.1. Local file path leaks</a></li></ul></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+ELog at BNL Physics Department
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2014-07-28 14:10:53(revised 2014-11-12 16:08:02 )<blockquote>The ELog online logbook was selected for use by a few groups in BNL's Physics department.  This topic describes that selection, its setup and other related matters.</blockquote>
+<p>
+A few R&amp;D groups, largely filled by members of the Electronic Detector Group in the BNL Physics department, recognized the need for an online logbook.  A survey was done to find what was available and <a href="http://midas.psi.ch/elog/">ELog</a> was selected.  This documents the selection, prototyping and production setup.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Comparison with other potential systems</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+ELog is by far the most popular system as judged by various Google searches.  There is also significant, prior experience with ELog among the primary users of the new system.  A few others were considered.
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Fermilab ECL</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a href="https://cdcvs.fnal.gov/redmine/projects/crl/wiki">ECL</a> is a rewrite of a prior system from Fermilab called CRL but it had no expression of interest from the primaries.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Evernote</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<a href="../sci-log-book-comp/index.html">ELog and Evernote were compared</a>.   
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Bloknot</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+After the Evernote comparison was done another option was found in our own backyard.  This was <a href="http://bloknot.sourceforge.net/">bloknot</a> written by our own Vlodya Tishchenko who uses it as his own personal logbook.  A few observations of this system
+</p>
+
+<ul class="org-ul">
+<li>It has many similarities to ELog in content, presentation, and backend storage method
+</li>
+<li>It's extensible through plugins (PHP).
+</li>
+<li>It supports HTML, plain text and markdown
+</li>
+</ul>
+
+<p>
+While it was recognized that bloknot was very impressive it was not selected largely due to the greater familiarity the primaries have with ELog and the lack of expected community/support for bloknot.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Access policy</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The desired ELog access policy is:
+</p>
+
+<ul class="org-ul">
+<li>auth is required to read or write, no anonymous access
+</li>
+
+<li>read-write accounts are per-individual (no sharing)
+</li>
+
+<li>read-only accounts may be shared
+</li>
+
+<li>write-once, read always (no edits nor deletes by normal users)
+</li>
+
+<li>admin level access may delete entries
+</li>
+
+<li>otherwise, a flat access control, any read-write user can write to
+any logbook, any auth'ed user can read any logbook
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Logbook organization</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The organization is to be a hierarchy of groups of logbooks.  At top level are "WbLS" and "LAr" for these two R&amp;D efforts.  Future groups are expected.  Organization below this top level is up to the group.  One expected future expansion might be to add a "Summer Students" group with one logbook per student.
+</p>
+
+<p>
+Initial groups
+</p>
+
+<ul class="org-ul">
+<li>WbLS
+</li>
+<li>LAr
+</li>
+<li>Compton Scattering
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Installation</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The <code>elogd</code> process will run as a dedicated user "<code>elog</code>" and will be monitored by <a href="http://supervisord.org/">supervisord</a>.  It will only listen on <code>localhost</code> and be exposed to the Internet via Apache (running as it's own user).  
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Prerequisite package installation</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Assuming SL6.5.
+</p>
+
+<p>
+Apache:
+</p>
+
+<pre class="example">
+# yum install httpd mod_ssl crypto-utils
+</pre>
+
+<p>
+To build ELog from source:
+</p>
+
+<pre class="example">
+# yum install git gcc openssl-devel
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Prepare</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Make the user to run the ELog daemon:
+</p>
+
+<pre class="example">
+$ sudo useradd -c "ELog Server" -d /home/elog -m -r -s /bin/bash elog
+$ sudo su - elog
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Install ELog</h3>
+<div class="outline-text-3" id="text-4-3">
+<pre class="example">
+$ mkdir code
+$ cd code
+$ git clone https://bitbucket.org/ritt/elog.git
+$ git clone https://bitbucket.org/tmidas/mxml.git
+$ cd elog
+$ make ROOT=/home/elog/opt
+$ make ROOT=/home/elog/opt install
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> Initial Configure</h3>
+<div class="outline-text-3" id="text-4-4">
+<pre class="example">
+$ mkdir ~/cfg
+$ cd ~/cfg
+$ cp ~/code/elog/elogd.cfg .
+$ git init
+$ git add elogd.cfg
+$ git commit -a -m "First commit of default config."
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> Test</h3>
+<div class="outline-text-3" id="text-4-5">
+<pre class="example">
+$ ~/opt/usr/local/sbin/elogd -c ~/cfg/elogd.cfg -s ~/opt/usr/local/elog -d ~/logbooks
+</pre>
+
+<p>
+And, visit: <a href="http://localhost:8080/">http://localhost:8080/</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6"><span class="section-number-3">4.6</span> Apache</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+In an Apache's SSL site config file's <code>VirtualHost</code> section, add:
+</p>
+
+<pre class="example">
+Redirect permanent / http://localhost:8080/
+ProxyPass / http://localhost:8080/
+</pre>
+
+<p>
+ELog needs to be told what URL to assume:
+</p>
+
+<pre class="example">
+[global]
+port = 8080
+URL = https://lycastus.phy.bnl.gov/elog/
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-sec-4-7" class="outline-3">
+<h3 id="sec-4-7"><span class="section-number-3">4.7</span> Supervisor</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+The <code>superviord</code> is used to keep Elog up and running.  Since nothing useful comes with Red Hat linux, we install it from source:
+</p>
+
+<pre class="example">
+$ cd ~/code
+$ wget https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.tar.gz
+$ tar -xvf virtualenv-1.11.tar.gz
+$ ./virtualenv-1.11/virtualenv
+$ source ./venv/bin/activate
+$ pip install supervisor
+$ emacs ~/cfg/supervisord.cfg ~/run-supervisord.sh
+</pre>
+
+<p>
+The config:
+</p>
+
+<pre class="example">
+[supervisord]
+#nada
+[program:elog]
+command=/home/elog/opt/usr/local/sbin/elogd -v -c /home/elog/cfg/elogd.cfg -s /home/elog/opt/usr/local/elog
+</pre>
+
+<p>
+The run script:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-shell">#!/bin/bash
+source ~/code/venv/bin/activate
+supervisord -c ~/cfg/supervisord.cfg
+</pre>
+</div>
+
+<p>
+Run it:
+</p>
+
+<pre class="example">
+$ ~/run-supervisord.sh
+</pre>
+
+<p>
+Now, walk away.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Configuration</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+In the <a href="#sec-4">4</a> section is the minimum to get ELog to answer requests through Apache/SSL.  This section says how to configure ELog to implement the desired <a href="#sec-2">2</a>.
+</p>
+</div>
+
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Devel Elog Config</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+The various human managed files for Elog is kept in the <code>gitosis@gateway.phy.bnl.gov:elog</code> git repository.  This lets changes be tested on a devel server before pushed and pulled down to the production server.  
+</p>
+
+<p>
+Note, the <code>passwords</code> file is not version controlled as Elog updates it all the time.
+</p>
+
+<p>
+Repeat the Elog installation.  For testing Elog one does not need Apache nor <code>supervisord</code> setup.  However, to keep the same paths in the configuration file, it is best to create an <code>elog</code> account and install things identically in <code>/home/elog</code> as above.
+</p>
+
+<p>
+For the devel server:
+</p>
+
+<pre class="example">
+elog$ git clone gitosis@gateway.phy.bnl.gov:elog
+elog$ mv elog/* elog/.git* .
+elog$ rmdir elog
+elog$ ~/opt/usr/local/sbin/elogd -c ~/cfg/elogd.cfg -s ~/opt/usr/local/elog -n localhost
+</pre>
+
+<p>
+<b>Important note</b>: one must tweak the URL setting in the config file to match the testing server and the remember to return it before committing.
+</p>
+
+<pre class="example">
+# production:
+#URL = https://elog.phy.bnl.gov/
+# testing:
+URL = http://localhost:8080/
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Security</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Local file path leaks</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+ELog will leak local file system paths on 404.  This makes BNL Nessus cranky.  This patch comments out the offending bits.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-diff">diff --git a/src/elogd.c b/src/elogd.c
+index 88b709f..277ba30 100755
+--- a/src/elogd.c
++++ b/src/elogd.c
+@@ -8195,13 +8195,11 @@ void send_file_direct(char *file_name)
+
+       rsprintf("&lt;body&gt;&lt;h1&gt;Not Found&lt;/h1&gt;\r\n");
+       rsprintf("The requested file &lt;b&gt;");
+-      /* 
+       strencode2(encodedname, file_name, sizeof(encodedname));
+       if (strchr(file_name, DIR_SEPARATOR))
+	  rsprintf("%s", encodedname);
+       else
+	  rsprintf("%s%c%s", dir, DIR_SEPARATOR, encodedname);
+-      */
+       rsprintf("&lt;/b&gt; was not found on this server&lt;p&gt;\r\n");
+       rsprintf("&lt;hr&gt;&lt;address&gt;ELOG version %s&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;\r\n\r\n", VERSION);
+       return_length = strlen_retbuf;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2014-07-28 14:10:53<br>
+  Revised: 2014-11-12 16:08:02<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

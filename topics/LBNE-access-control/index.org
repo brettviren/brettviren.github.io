@@ -1,0 +1,96 @@
+#+TITLE: LBNE access control.
+#+DATE: [2014-07-01 Tue 12:46]
+#+DESCRIPTION: LBNE has various access control methods.  Some related to a particular site, some to the Grid and some which mix the two.  This topic collects information about these.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Certificates
+
+Certificates may be used for accessing DocDB or "grid" resources which includes remote-access of LBNE data.
+
+** DocDB and certificates
+
+to write: using SILogon, getting cert accepted by docdb
+
+** Grid Certificates
+
+There are two ways to obtain a "grid" certificate.  One is from the Open Science Grid (OSG) and one is to generate an ephemeral one from a Fermilab Kerberos ticket.
+
+to write:
+
+- getting a cert from kerberos using kx509
+- getting an OSG certificate, converting to .pem files, voms-init, adding to VO
+
+* FNAL
+
+** dCache
+
+See [[https://cdcvs.fnal.gov/redmine/projects/lbne-software-and-computing/wiki/Using_LBNE_dCache_Scratch_Space_at_Fermilab][here]] for example.
+
+#+BEGIN_EXAMPLE
+bviren@lycastus:~> ssh bv@lbnegpvm01.fnal.gov
+bv@lbnegpvm01:~> export ROLE=Analysis
+bv@lbnegpvm01:~> export EXPERIMENT=lbne
+bv@lbnegpvm01:~> kx509
+Service kx509/certificate
+ issuer= /DC=gov/DC=fnal/O=Fermilab/OU=Certificate Authorities/CN=Kerberized CA HSM
+ subject= /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv
+ serial=02C7AF3B
+ hash=1a58ef67
+bv@lbnegpvm01:~> voms-proxy-init -rfc -noregen -voms lbne:/lbne/Role=$ROLE -valid 24:00
+Your identity: /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv
+Contacting  voms1.fnal.gov:15029 [/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms1.fnal.gov] "lbne" Done
+Creating proxy ..................................................................................................... Done
+
+Your proxy is valid until Wed Jul  2 15:21:22 2014
+bv@lbnegpvm01:~> voms-proxy-info -all
+subject   : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv/CN=992229234
+issuer    : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv
+identity  : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv
+type      : RFC compliant proxy
+strength  : 1024 bits
+path      : /tmp/x509up_u9716
+timeleft  : 23:59:56
+key usage : Digital Signature, Key Encipherment
+=== VO lbne extension information ===
+VO        : lbne
+subject   : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Brett M. Viren/CN=UID:bv
+issuer    : /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms1.fnal.gov
+attribute : /lbne/Role=Analysis/Capability=NULL
+attribute : /lbne/Role=NULL/Capability=NULL
+timeleft  : 23:59:56
+uri       : voms1.fnal.gov:15029
+bv@lbnegpvm01:~> which root
+/usr/bin/which: no root in (/usr/krb5/bin:/usr/lib64/qt-3.3/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin)
+bv@lbnegpvm01:~> . /grid/fermiapp/products/common/etc/setups.sh
+bv@lbnegpvm01:~> setup ifdhc
+bv@lbnegpvm01:~> ups list -aK+ -z /grid/fermiapp/products/lbne/db |grep root
+"root" "v5_26_00" "Linux+2.6" "GCC_3_4_6" "" 
+"root" "v5_32_00" "Linux+2.6-2.5" "" "" 
+"root" "v5_32_00" "Linux64bit+2.6-2.5" "" "" 
+bv@lbnegpvm01:~>  setup root v5_32_00 -z /grid/fermiapp/products/lbne/db
+bv@lbnegpvm01:~> xrdcp root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_1.root /tmp/junk.root
+-bash: xrdcp: command not found
+bv@lbnegpvm01:~> root -l root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_1.root 
+ *** DISPLAY not set, setting it to 130.199.229.13:0.0
+dlopen error: libXrdOuc.so.0: cannot open shared object file: No such file or directory
+Load Error: Failed to load Dynamic link library /grid/fermiapp/products/lbne/prd/root/v5_32_00/Linux64bit-2-6-2-5/lib/libNetx.so
+root [0] 
+Attaching file root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_1.root as _file0...
+Error in <TPluginHandler::SetupCallEnv>: class TXNetSystem not found in plugin Netx
+Error in <TPluginHandler::SetupCallEnv>: class TXNetFile not found in plugin Netx
+#+END_EXAMPLE
+
+Okay, not xrootd there hunt through the UPS forest some more and:
+
+#+BEGIN_EXAMPLE
+bv@lbnegpvm01:~> ls -d /grid/fermiapp/products/*/xroot*
+/grid/fermiapp/products/larsoft/xrootd
+bv@lbnegpvm01:~> ups list -aK+ -z /grid/fermiapp/products/larsoft |grep root
+..."xrootd" "v3_3_6a" "Linux64bit+2.6-2.12" "e5:prof" "" 
+bv@lbnegpvm01:~> setup xrootd v3_3_6a -q e5:prof -z /grid/fermiapp/products/larsoft 
+bv@lbnegpvm01:~> xrdcp root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_1.root  /tmp/junk.root
+[xrootd] Total 117.07 MB	|====================| 100.00 % [119.7 MB/s]
+#+END_EXAMPLE
+
+Eventual success.
+

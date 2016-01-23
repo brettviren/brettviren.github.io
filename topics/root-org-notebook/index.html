@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Introduction</a></li>
+<li class="">
+  <a href="#sec-2">2. Graphics format</a></li>
+<li class="">
+  <a href="#sec-3">3. The Example</a></li>
+<li class="">
+  <a href="#sec-4">4. Exporting</a></li>
+<li class="">
+  <a href="#sec-5">5. Summary</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+ROOT Notebook with Org
+
+	  <small>Using Emacs org-mode to make ROOT notebooks
+
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-12-29 01:00:25(revised 2016-01-14 22:44:46 )<blockquote>Emacs Org mode has long provided a "notebook" functionalty.  ROOT's recent announement that it may be used as a Jupyter backend kernel to provide "notebook" functionality is an excuse to show how Org can be used in a similar manner.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>
+In the recent <a href="https://root.cern.ch/root-has-its-jupyter-kernel">ROOT v6.06 announcement</a> we got the interesting news that
+one can now run ROOT from an <a href="http://jupyter.org">Jupyter</a> (ne' <a href="http://ipython.org">ipython</a>) <i>notebook</i>.  The
+notebook feature forges a connection between a web browser UI and a
+backend <a href="https://github.com/ipython/ipython/wiki/IPython-kernels-for-other-languages">kernel</a> of which ROOT is one.  The notebook can be written to a
+Markdown document.  This document is strikingly similar to, although
+not as semantically rich as, an Org document.  The document you are
+reading is an attempt to provide a simple, if verbose, ``Org Notebook''
+example.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Graphics format</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>
+Org supports many graphics formats for inline viewing in Emacs or for
+export.  Different export formats ``like'' different graphics formats.
+To support exporting to both PDF (via LaTeX) and HTML in the most
+simple way, we have ROOT produce plots in SVG.  SVG is native for most
+HTML renderers but requires a few tweaks for LaTeX.  ROOT's SVG also
+may have some Unicode characters that cause problems with LaTeX.  In
+this example we deal with these issues by adding the following Org
+headers:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-org">#+LATEX_HEADER: \usepackage[clean,pdf]{svg}
+#+LATEX_HEADER: \DeclareUnicodeCharacter{2212}{-}
+#+LATEX_HEADER: \setsvg{pretex=\tiny}
+</pre>
+</div>
+
+<p>
+The <code>svg</code> package we use here will convert SVG to PDF on the fly.
+Take note of the ROOT-specific info in the <a href="http://ctan.uib.no/graphics/svg/svg.pdf"><code>svg</code> package documentation</a>.
+To allow the automatic SVG conversion, <code>pdflatex</code> needs to be told it is
+okay to run external programs.  You can either export the Org document
+to LaTeX (<code>C-c C-e l l</code>) and run <code>pdflatex</code> yourself or you can add
+<code>--shell-escape</code> to the <code>org-latex-pdf-process</code> variable.  You can set
+the variable directly or customize it.  Mine looks like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp">("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" 
+"pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f" 
+"pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> The Example</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Start with some general ROOT plotting setup.  This Python source block
+exports only the code and has no results.  We give it the <code>:session</code>
+argument so that the instance of Python is used for all subsequent
+code blocks.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">import ROOT
+# set batch so we don't have a TCanvas pop up
+ROOT.gROOT.SetBatch(True);
+c = ROOT.TCanvas("c")
+</pre>
+</div>
+
+<p>
+Next, we make a histogram, fill it, draw it and print the canvas to
+the SVG file.  Shown in the Org source for the document you are
+currently reading, the <code>:session</code> flag is given and thus the canvas
+variable <code>c</code> defined above can be used here.  Other directives tell
+Org that both code and results are exported and that the result of the
+code block is to interpreted as a file name.  
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">h = ROOT.TH1F("h","ROOT Histo;X;Y",64,-4,4)
+h.FillRandom("gaus",2000);
+h.Draw();
+fname = "output_0_1.svg"
+c.Print(fname)
+fname
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="output_0_1.svg" alt="output_0_1.svg" />
+</p>
+</div>
+
+<p>
+If you are reading this document from its Org sources in Emacs you may
+wish to toggle inline images with <code>C-c C-x C-v</code> to see the result
+above as a figure instead of just the file name.
+</p>
+
+<p>
+Next, we do some further operation on the histogram defined above and
+draw it again to a second file.  Note the increase in statistics.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">h.FillRandom("gaus")
+h.Draw()
+fname = "output_0_2.svg"
+c.Print(fname)
+fname
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="output_0_2.svg" alt="output_0_2.svg" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Exporting</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+You can export this Org file to PDF via LaTeX or to HTML with just a few key strokes.  You can further have the result load into a PDF or HTML viewer.  Try:
+</p>
+
+<dl class="org-dl">
+<dt> <code>C-c C-e l l</code> </dt><dd>export to LaTeX
+</dd>
+<dt> <code>C-c C-e l p</code> </dt><dd>as above plus run <code>pfdlatex</code> to make a PDF
+</dd>
+<dt> <code>C-c C-e l o</code> </dt><dd>as above plus open the PDF file in a viewer
+</dd>
+<dt> <code>C-c C-e h h</code> </dt><dd>export to HTML
+</dd>
+<dt> <code>C-c C-e h o</code> </dt><dd>as above plus open the HTML file in a browser
+</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Summary</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The addition of ROOT as a backend kernel for Jupyter is a nice
+development.  Through Python source blocks and ROOT's PyROOT binding
+one has for a while had ``Org Notebooks''.  For those that prefer to
+work inside Emacs and especially with Org markup, this provides a full
+featured alternative.  With some nominal setup, the Org file may be
+exported to both LaTeX/PDF and HTML using SVG graphics.
+</p>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2015-12-29 01:00:25<br>
+  Revised: 2016-01-14 22:44:46<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="/static/highlight/highlight.pack.js"></script>
+    
+    <script src="/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

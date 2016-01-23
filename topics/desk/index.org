@@ -1,0 +1,89 @@
+#+TITLE: I wanna new desk.
+#+DATE: [2014-10-18 Sat 14:34]
+#+DESCRIPTION: The making of a computer desk.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+This describes a desk.  Not an actual desk but the concept of a desk.  An evolution of a desk.  A desk as a process.  A place to sit that holds items at fixed distances from me and themselves and the center of the Earth.
+
+(A note about this page: click on headings to collapse, on images for larger versions.)
+
+* The current desk
+
+The starting point for the path to a new desk starts with the current desk.
+
+[[file:current-desk.jpg][file:current-desk-eighth.jpg]]
+
+It came from Ikea.  It's solid wood desktop on a metal frame.  The wood has a nice hard finish.  The metal frame screws to the wood through a rectangular frame under the desktop.  On the right of the desk is a hollow-core door resting on a couple of cabinets.  Functional and cheap but somewhat uninspiring.  The desk is in the corner of an upstairs room with a sloping ceiling meeting those short purple walls.
+
+Each set of monitor, keyboard and mouse is attached to a Linux computer.  A little Raspberry Pi sitting on top of the left speaker and the main workstation ("haiku") just visible below the desk.    Haiku is an i7-4770K, 16GB RAM, with a modest SSD and 3TB HDD and lots of room to grow.  GPU is an EVGA GTX 750 Ti in an ASRock Z97 Extreme6 mobo.  It was bought from parts (from newegg) and assembled at home.
+
+[[file:haiku.jpg][file:haiku-quarter.jpg]]
+
+Haiku sits on a scrap of butcher block slab on casters and rolls nicely under the desk.  I'll keep this feature but want to address the cabling mess.  What is seen above is *after* my attempt at cleaning thing up.
+
+[[file:haiku-on-rollers.jpg][file:haiku-on-rollers-eighth.jpg]]
+
+** The connections
+
+This graph shows the connections between all the goodies.
+
+[[file:connections.svg]]
+
+* Other desks.
+
+Here are some ideas to take from.
+
+** Slide out surface
+
+I don't like keyboard trays.  They feel too low, like I have to thread my arms into some maze to find the keys.  I also like to rest my arms on the same surface as the keyboard.  However, I do like the idea of keeping a clear working surface free of keyboard, mouse and other things.  I also like keeping cables out of site.  Enter [[http://www.3dbuzz.com/forum/threads/194044-Home-Made-computer-desk][this guys idea]]:
+
+[[file:pulout-desk.jpg][file:pullout-desk-quarter.jpg]]
+
+I happen to have four telescoping, ball-bearing slides which I pulled out of the garbage at work.
+I've held on to these for years thinking, "some day these will be useful for *something*".
+
+
+[[file:sliders.jpg][file:sliders-eighth.jpg]]
+
+I would not be surprised if they were specially designed and hand machined for some experimental setup.  Two of the four slide smoothly.  The other two can probably be smoothed up with some cleaning of the built-up aluminum oxide.  Their movement is otherwise very tight and precise.
+
+They are made of three sections and are a total of 14" long when compressed and 27" when extended.  All sections lock open with two spring loaded hooks.  To retract them one can unlock the outer hook and pushing the slide in will hit the inner hook and unlock that.  This lock will allow a force to be applied without causing the sliders to retract.  The inner most slider also unhooks to allow it to be bolted on to something and slid back in.
+
+Their 13" dynamic range would give about the same amount of extension seen in the picture of this other guys desk.  This may be a bit tighter than I'd like but if it is allowed to extend the full depth of the desk it puts me further away from the monitors than my bad eyes want.
+
+these sliders are 3.5" wide which is somewhat undesirable given that the under-desk  platform will be about 1" or less thick.  I'm thinking maybe they can be mounted flat, as shown in the picture.  They are less than 1/2" thick so some spacers would be needed.  This could give a cool "floating" look to the under-desk shelf.
+
+** Water cooled desk
+
+This guy shows in [[http://linustechtips.com/main/topic/13922-custom-water-cooled-desk-56k-warning-lotsa-pictures-now-with-table-of-contents/][this mega huge thread with tons of pics]] how he built a nice computer desk/case.  He's also got some YT videos.  He has documented lots of details.  I very much like the idea of "desk as case".
+
+[[file:water-cooled-desk.jpg][file:water-cooled-desk-half.jpg]]
+
+This is a direction I might want to go in several years with "haiku" is considered slow and needs upgrading.  However, one failing I see with this particular design is that it leads to a rather thick desk.  It forces a significant distance between knees/lap and desktop.  It's going to either be cramped underneath or be too high or both.  Still, it's a nice idea and I love the cleanliness of it  That pic has no cabling yet but others show some nice, detailed cable routing.
+
+
+* Some desired features
+
+High-level requirements:
+
+ - clean
+ - minimize visible cables
+ - provide flexibility to reconfigure
+ - handle workstation, laptop, rpi, USB disks, stereo, speakers
+ - partial single-button power-down (stereo, monitors, any USB hubs, but not network switch nor workstation)
+
+Ideas for providing these:
+
+ - built-in AC power, HDMI, USB connections.  "plug in the desk"
+ - USB, RJ45 keystone jacks mounted on the desktop
+ - mount USB hub flush with desk
+ - mount power strips under desk
+ - hidden/boxed cable routing
+
+* Parts
+
+Some possible parts for the desk
+
+ - [[http://www.amazon.com/dp/B00FVS9U8O?psc=1][10 port powered USB 3 hub with flat face]], same but [[http://www.amazon.com/dp/B00FR795WA?psc=1][7 port, dedicated power]]
+ - [[http://www.amazon.com/NETGEAR-ProSafe-Gigabit-Ethernet-Desktop/dp/B0000BVYT3/][5-port GbE switch]] and [[http://www.amazon.com/NETGEAR-GS108NA-ProSafe-Gigabit-Ethernet/dp/B00006RVPW/][8-port]]
+ - [[http://www.amazon.com/StarTech-AD3X3-3x3in-Wiring-Raceway/dp/B00006HQV5][67x3x3 inch plastic cable tray]] 

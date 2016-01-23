@@ -1,0 +1,28 @@
+#+KEYWORDS: keyword1 keyword2
+
+* A real heading
+
+#+BEGIN_EXAMPLE
+just some text
+for a verbatim
+example
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+some more text and
+*** this gets interpreted as a heading
+which it shouldn't
+#+END_EXAMPLE
+
+
+** A tagged heading				       :sometag:someothertag:
+
+blah blah
+
+* This should not be exported :noexport:
+
+You don't see me.
+
+* This is still needing work					       :todo:
+
+You shouldn't see me.

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Get ADB talking</a><ul class="nav">
+<li class="">
+  <a href="#sec-1-1">1.1. Install</a></li>
+<li class="">
+  <a href="#sec-1-2">1.2. =udev= permissions</a></li>
+<li class="">
+  <a href="#sec-1-3">1.3. Debug/devel access in CyanogenMod</a></li></ul></li>
+<li class="">
+  <a href="#sec-2">2. Install</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-1">2.1. ClockworkMod Recovery Touch 5.8.1.5</a></li>
+<li class="">
+  <a href="#sec-2-2">2.2. Try to upgrade to CyanogenMod 11</a></li>
+<li class="">
+  <a href="#sec-2-3">2.3. Find CWM 6! ... ?</a></li>
+<li class="">
+  <a href="#sec-2-4">2.4. Another source</a></li></ul></li>
+<li class="">
+  <a href="#sec-3">3. Upgrade to CM 12.1</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+Stuff done to my HTC Inspire 4G
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2014-07-05 12:28:12(revised 2015-07-05 14:44:02 )<blockquote>Keep track of things done to my old HTC Inspire 4G</blockquote>
+<p>
+These notes start after I've already put <a href="http://wiki.cyanogenmod.org/w/Ace_Info">CyanogenMod</a> 10 on my HTC Inspire 4G aka Desire HD aka "ace".
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Get ADB talking</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Install</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+On Ubuntu 14.04 install and test access
+</p>
+
+<pre class="example">
+$ sudo apt-get install android-tools-*
+$ adb devices
+List of devices attached
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> <code>udev</code> permissions</h3>
+<div class="outline-text-3" id="text-1-2">
+<pre class="example">
+# cat &lt;&lt;EOF &gt; /etc/udev/rules.d/51-android.rules
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bb4", MODE="0666", GROUP="plugdev"
+EOF
+# addgroup bv plugdev
+Adding user `bv' to group `plugdev' ...
+Adding user bv to group plugdev
+Done.
+</pre>
+
+<p>
+Still no contact
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Debug/devel access in CyanogenMod</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+<a href="http://forum.cyanogenmod.com/topic/74782-where-is-developer-mode-and-usb-debugging/">LOL</a> "Enable developer mode by tapping on Build Number 7 times under Settings -&gt; About Phone"
+</p>
+
+<p>
+Then select "Android debugging" in "Settings -&gt; Developer options".  Turn on other useful looking stuff.
+</p>
+
+<p>
+Closer:
+</p>
+
+<pre class="example">
+adb devices
+List of devices attached 
+????????????	no permissions
+</pre>
+
+<p>
+Oh, oops, I had the wrong vendor above (should be "<code>0bb4</code>" not "<code>04e8</code>", /var/log/syslog tells me, above fixed).
+</p>
+
+<p>
+Now, replug USB and phone asks to accept computer's key.
+</p>
+
+<pre class="example">
+adb devices
+List of devices attached 
+HT144T201050	device
+</pre>
+
+<p>
+Sweet.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Install</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> ClockworkMod Recovery Touch 5.8.1.5</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+I have 5.0 now and I'm not able to install CM11 with it due to <a href="http://android.stackexchange.com/questions/62982/flashing-cm-11-i-get-set-metadata-recursive-some-changes-failed">this error</a>.  That says I need CWMR 6, but 5.8 is the highest <a href="http://theunlockr.com/2012/10/02/how-to-install-clockworkmod-recovery-on-the-htc-desire-hd/">I can find to install</a>.  Latest <a href="http://www.clockworkmod.com/rommanager">ClockworkMod recovery are here</a>.  Following <a href="http://theunlockr.com/2012/10/02/how-to-install-clockworkmod-recovery-on-the-htc-desire-hd/">this</a>:
+</p>
+
+<pre class="example">
+$ adb reboot bootloader
+$ fastboot flash recovery recovery-clockwork-touch-5.8.1.5-ace.img
+sending 'recovery' (3554 KB)...
+OKAY [  0.661s]
+writing 'recovery'...
+OKAY [  0.628s]
+finished. total time: 1.289s
+$ fastboot reboot
+rebooting...
+
+finished. total time: 0.161s
+</pre>
+
+<p>
+Now we try.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Try to upgrade to CyanogenMod 11</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Reboot into recovery from "Developer options" enabled reboot menu or power off and VolDown+Power.  Follow <a href="http://forum.xda-developers.com/showthread.php?t=2533007">this</a>.  Unplug USB while doing so.  I've already copied the CM11 image to SD.
+</p>
+
+<p>
+Oooh, new CWM Touch is pretty&#x2026;.
+</p>
+
+<p>
+Installing CM11 still fails with
+</p>
+<pre class="example">
+Installing update...
+set_metadata_recursive: some changes failed
+E:Error in /sdcard/cm-11-20140621-UNOFFICIAL-ace.zip
+(Status 7)
+Installation aborted.
+</pre>
+
+<p>
+Reinstall the old CM10 image before leaving recovery.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Find CWM 6! &#x2026; ?</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+More searching finds <a href="http://forum.xda-developers.com/showthread.php?t=2583845">this</a> pointing to <a href="http://www.mediafire.com/download/s7jow6d8102vg6g/6.0.4.6-cooper_fix.zip">this</a>.
+</p>
+
+<p>
+<a href="http://forum.xda-developers.com/showthread.php?t=2583845&page=2">But, some confusion over which file</a>.
+</p>
+
+<pre class="example">
+$  md5sum 6.0.4.*
+c038c1d70c731f9774f6babf9d3c2ee7  6.0.4.5-cooper.zip
+3c02e1d2cf6472c8edd4f66e43136dce  6.0.4.6-cooper_fix.zip
+</pre>
+
+<p>
+This seems sketchy.  Cooper/ACE may not be the same as mine.  
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Another source</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>Looking <a href="http://www.teamandroid.com/2013/12/06/install-htc-desire-hd-android-44-unofficial-cm11-kitkat-custom-firmware/2/">here</a> points to <a href="http://goo.im/devs/Mustaavalkosta/cm-11-unofficial-ace">here</a>.  Download <a href="http://goo.im/devs/Mustaavalkosta/cm-11-unofficial-ace/releases/cm-11-20140609-UNOFFICIAL-BR4-ace.zip">latest released version</a>
+</li>
+</ul>
+
+<pre class="example">
+$ md5sum cm-11-20140609-UNOFFICIAL-BR4-ace.zip
+fa5852804b8bf049ec61038a55a43b57  cm-11-20140609-UNOFFICIAL-BR4-ace.zip
+$ unzip cm-11-20140609-UNOFFICIAL-BR4-ace.zip boot.img
+$ mv boot.img  cm-11-20140609-UNOFFICIAL-BR4-ace-boot.img
+</pre>
+
+<p>
+get <a href="http://www.androidfilehost.com/?fid=23501681358549550">gapps minimal</a>, md5 <code>18840b64fecf8c460a249541b6fb69b7</code>.
+</p>
+
+<p>
+Copy both zips to phone via USB.
+</p>
+
+<ul class="org-ul">
+<li>VolDown+Power On to get to fastboot
+</li>
+
+<li>flash the extracted boot image
+</li>
+</ul>
+
+<pre class="example">
+$ fastboot flash boot cm-11-20140609-UNOFFICIAL-BR4-ace-boot.img
+sending 'boot' (3312 KB)...
+OKAY [  0.622s]
+writing 'boot'...
+OKAY [  0.589s]
+finished. total time: 1.211s
+$ fastboot reboot
+</pre>
+
+<p>
+I had to replug USB to get this to work.  Also after the <code>fastboot reboot</code> I had to pull the battery.
+</p>
+
+<ul class="org-ul">
+<li>Enter Recovery
+</li>
+<li><code>wipe data/factory reset</code>
+</li>
+<li><code>wipe cache partition</code> (although the above does this)
+</li>
+<li><code>advanced</code> -&gt; <code>wipe dalvik cache</code>
+</li>
+<li>install the <code>cm-11-20140609-UNOFFICIAL-BR4-ace.zip boot.img</code>
+</li>
+</ul>
+
+<p>
+fingers crossed&#x2026;..
+</p>
+
+<p>
+Success!  woo hoo
+</p>
+
+<ul class="org-ul">
+<li>install GApps minimal 
+</li>
+</ul>
+
+<p>
+Rebootin' tootin' and we are good to go.  
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Upgrade to CM 12.1</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="http://www.thatsallnow.com/2015/04/17/android-5-1-lollipop-on-desire-hd-all-you-need-to-know/">here is one succinct set of instructions</a>
+</li>
+</ul>
+
+<pre class="example">
+9044f63fc16cf7d4b8d1612652bf4844  openrecovery-TWRP-ace-2.8.6.1-unofficial.img
+71bc66a23b289b382dbca2dd5b49ebc9  cm-12.1-20150701-UNOFFICIAL-ace.zip
+0b2634b2d57aec091aaf451cfce01150  L_SPEED_V2.2_REVOLUTION.zip
+dceef84c307c3565eabd014d675242a7  inspiremod-revamped-nobranding-20150303-signed.zip
+2ad33a2f749a1edf9e20b89ce71f0ca1  gapps-511-base-20150701-1-signed.zip
+</pre>
+
+<p>
+Results:
+</p>
+
+<ul class="org-ul">
+<li>really slow boot times.
+</li>
+<li>slow system but seems to be getting faster.
+</li>
+<li>future updates can be done through OTA updates.
+</li>
+</ul>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2014-07-05 12:28:12<br>
+  Revised: 2015-07-05 14:44:02<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

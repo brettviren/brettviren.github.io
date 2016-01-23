@@ -1,0 +1,96 @@
+#+TITLE: Cyanogenmod on ASUS TF300T 
+#+DATE: [2014-12-06 Sat 18:44]
+#+DESCRIPTION: Rootin' tootin'.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview
+
+This is a nice little tablet + keyboard.  The ASUS flavor of Android is fine although it's gotten slower over time.  Hopefully Cyanogenmod will breath some life into it.  The stock Android version is 4.2.1.  Following this general outline
+
+http://wiki.cyanogenmod.org/w/Install_CM_for_tf300t
+
+* Root
+
+The linked ASUS root tool link doesn't work but searching for TF300T on ASUS site finds it easy enough
+
+http://www.asus.com/Tablets_Mobile/ASUS_Transformer_Pad_TF300T/HelpDesk_Download/
+
+#+BEGIN_EXAMPLE
+  $ md5sum UnLock_Device_App_V7.apk 
+  41f99ec8404717fdfa3117fafa01a701  UnLock_Device_App_V7.apk
+  $ adb devices
+  List of devices attached 
+  C3OKCT028735  device
+  $ adb install UnLock_Device_App_V7.apk 
+  1324 KB/s (613535 bytes in 0.452s)
+          pkg: /data/local/tmp/UnLock_Device_App_V7.apk
+  Success
+#+END_EXAMPLE
+
+Run "Unlock Device" app.
+
+* Recovery
+
+The CM install page suggests recovery image with md5sum =f766c32992d5e6e8e29812d73250eba8=.  But the link is dead.  This thread has a more recent version:
+
+http://forum.xda-developers.com/showthread.php?t=2632095
+
+6.0.4.7
+
+#+BEGIN_EXAMPLE
+  $ md5sum recovery*
+  b33fe342f827834d5848791f6de8b440  recovery_6047.img
+  9f5a6e1fb77eb9fb32f1f7403a8c254d  recovery-clockwork-5.5.0.4-tf300t.img
+#+END_EXAMPLE
+
+The 5.5.0.4 version was found [[http://www.androidveterans.com/unlock-bootloader-install-clockworkmod-cwm-asus-transformer-pad-tf300t/][linked here]].
+
+#+BEGIN_EXAMPLE
+  $ adb reboot fastboot
+  $ fastboot devices
+  015d15b500600a07        fastboot
+  $ fastboot -i 0x0B05 flash recovery recovery_6047.img 
+  sending 'recovery' (7972 KB)...
+  OKAY [  3.051s]
+  writing 'recovery'...
+  OKAY [  8.373s]
+  finished. total time: 11.423s
+  $ fastboot -i 0x0B05 reboot
+#+END_EXAMPLE
+
+* Cyanogenmod
+
+*THIS WIPES THE TABLET*
+
+#+BEGIN_EXAMPLE
+  $ wget http://download.cyanogenmod.org/get/jenkins/93583/cm-11-20141206-NIGHTLY-tf300t.zip
+  $ md5sum cm-11-20141206-NIGHTLY-tf300t.zip 
+  e191897483ca136d4e8d454707e785a2  cm-11-20141206-NIGHTLY-tf300t.zip
+#+END_EXAMPLE
+
+In recovery:
+
+ - do a backup, just for fun.  This still is the original ROM.
+ - wipe data / factory reset
+ - choose zip from /sdcard after doing:
+
+#+BEGIN_EXAMPLE
+  $ adb push cm-11-20141206-NIGHTLY-tf300t.zip /sdcard/
+#+END_EXAMPLE
+
+ - Reboot system now.
+
+Woot! Second cyanogenmod device of the day.
+
+* Google apps
+
+Reboot back into recovery.  Try sideload this time.
+
+#+BEGIN_EXAMPLE
+  $ md5sum ../tf701t/gapps-kk-20140606-signed.zip 
+  d840e20fba6f0e2b85d1aebe493a88fa  ../tf701t/gapps-kk-20140606-signed.zip
+  $ adb sideload ../tf701t/gapps-kk-20140606-signed.zip 
+  sending: 'sideload'  100%    
+#+END_EXAMPLE
+
+Reboot.

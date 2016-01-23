@@ -1,0 +1,175 @@
+#+TITLE: Stuff done to my HTC Inspire 4G
+#+DATE: [2014-06-21 Sat 09:30]
+#+DESCRIPTION: Keep track of things done to my old HTC Inspire 4G
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+These notes start after I've already put [[http://wiki.cyanogenmod.org/w/Ace_Info][CyanogenMod]] 10 on my HTC Inspire 4G aka Desire HD aka "ace".
+
+* Get ADB talking
+
+** Install
+
+On Ubuntu 14.04 install and test access
+
+#+BEGIN_EXAMPLE
+$ sudo apt-get install android-tools-*
+$ adb devices
+List of devices attached 
+#+END_EXAMPLE
+
+** =udev= permissions 
+
+#+BEGIN_EXAMPLE
+# cat <<EOF > /etc/udev/rules.d/51-android.rules
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bb4", MODE="0666", GROUP="plugdev"
+EOF
+# addgroup bv plugdev
+Adding user `bv' to group `plugdev' ...
+Adding user bv to group plugdev
+Done.
+#+END_EXAMPLE
+
+Still no contact
+
+** Debug/devel access in CyanogenMod
+
+[[http://forum.cyanogenmod.com/topic/74782-where-is-developer-mode-and-usb-debugging/][LOL]] "Enable developer mode by tapping on Build Number 7 times under Settings -> About Phone"
+
+Then select "Android debugging" in "Settings -> Developer options".  Turn on other useful looking stuff.
+
+Closer:
+
+#+BEGIN_EXAMPLE
+adb devices
+List of devices attached 
+????????????	no permissions
+#+END_EXAMPLE
+
+Oh, oops, I had the wrong vendor above (should be "=0bb4=" not "=04e8=", /var/log/syslog tells me, above fixed).
+
+Now, replug USB and phone asks to accept computer's key.
+
+#+BEGIN_EXAMPLE
+adb devices
+List of devices attached 
+HT144T201050	device
+#+END_EXAMPLE
+
+Sweet.
+
+* Install
+
+** ClockworkMod Recovery Touch 5.8.1.5
+
+I have 5.0 now and I'm not able to install CM11 with it due to [[http://android.stackexchange.com/questions/62982/flashing-cm-11-i-get-set-metadata-recursive-some-changes-failed][this error]].  That says I need CWMR 6, but 5.8 is the highest [[http://theunlockr.com/2012/10/02/how-to-install-clockworkmod-recovery-on-the-htc-desire-hd/][I can find to install]].  Latest [[http://www.clockworkmod.com/rommanager][ClockworkMod recovery are here]].  Following [[http://theunlockr.com/2012/10/02/how-to-install-clockworkmod-recovery-on-the-htc-desire-hd/][this]]:
+
+#+BEGIN_EXAMPLE
+$ adb reboot bootloader
+$ fastboot flash recovery recovery-clockwork-touch-5.8.1.5-ace.img
+sending 'recovery' (3554 KB)...
+OKAY [  0.661s]
+writing 'recovery'...
+OKAY [  0.628s]
+finished. total time: 1.289s
+$ fastboot reboot
+rebooting...
+
+finished. total time: 0.161s
+#+END_EXAMPLE
+
+Now we try.
+
+** Try to upgrade to CyanogenMod 11
+
+Reboot into recovery from "Developer options" enabled reboot menu or power off and VolDown+Power.  Follow [[http://forum.xda-developers.com/showthread.php?t=2533007][this]].  Unplug USB while doing so.  I've already copied the CM11 image to SD.
+
+Oooh, new CWM Touch is pretty....
+
+Installing CM11 still fails with
+#+BEGIN_EXAMPLE
+Installing update...
+set_metadata_recursive: some changes failed
+E:Error in /sdcard/cm-11-20140621-UNOFFICIAL-ace.zip
+(Status 7)
+Installation aborted.
+#+END_EXAMPLE
+
+Reinstall the old CM10 image before leaving recovery.
+
+** Find CWM 6! ... ?
+
+More searching finds [[http://forum.xda-developers.com/showthread.php?t=2583845][this]] pointing to [[http://www.mediafire.com/download/s7jow6d8102vg6g/6.0.4.6-cooper_fix.zip][this]].
+
+[[http://forum.xda-developers.com/showthread.php?t=2583845&page=2][But, some confusion over which file]].
+
+#+BEGIN_EXAMPLE
+$  md5sum 6.0.4.*
+c038c1d70c731f9774f6babf9d3c2ee7  6.0.4.5-cooper.zip
+3c02e1d2cf6472c8edd4f66e43136dce  6.0.4.6-cooper_fix.zip
+#+END_EXAMPLE
+
+This seems sketchy.  Cooper/ACE may not be the same as mine.  
+
+** Another source
+
+- Looking [[http://www.teamandroid.com/2013/12/06/install-htc-desire-hd-android-44-unofficial-cm11-kitkat-custom-firmware/2/][here]] points to [[http://goo.im/devs/Mustaavalkosta/cm-11-unofficial-ace][here]].  Download [[http://goo.im/devs/Mustaavalkosta/cm-11-unofficial-ace/releases/cm-11-20140609-UNOFFICIAL-BR4-ace.zip][latest released version]]
+
+#+BEGIN_EXAMPLE
+$ md5sum cm-11-20140609-UNOFFICIAL-BR4-ace.zip
+fa5852804b8bf049ec61038a55a43b57  cm-11-20140609-UNOFFICIAL-BR4-ace.zip
+$ unzip cm-11-20140609-UNOFFICIAL-BR4-ace.zip boot.img
+$ mv boot.img  cm-11-20140609-UNOFFICIAL-BR4-ace-boot.img
+#+END_EXAMPLE
+
+get [[http://www.androidfilehost.com/?fid=23501681358549550][gapps minimal]], md5 =18840b64fecf8c460a249541b6fb69b7=.
+
+Copy both zips to phone via USB.
+
+- VolDown+Power On to get to fastboot
+
+- flash the extracted boot image
+
+#+BEGIN_EXAMPLE
+$ fastboot flash boot cm-11-20140609-UNOFFICIAL-BR4-ace-boot.img
+sending 'boot' (3312 KB)...
+OKAY [  0.622s]
+writing 'boot'...
+OKAY [  0.589s]
+finished. total time: 1.211s
+$ fastboot reboot
+#+END_EXAMPLE
+
+I had to replug USB to get this to work.  Also after the =fastboot reboot= I had to pull the battery.
+
+- Enter Recovery
+- =wipe data/factory reset=
+- =wipe cache partition= (although the above does this)
+- =advanced= -> =wipe dalvik cache=
+- install the =cm-11-20140609-UNOFFICIAL-BR4-ace.zip boot.img=
+
+fingers crossed.....
+
+Success!  woo hoo
+
+- install GApps minimal 
+
+Rebootin' tootin' and we are good to go.  
+
+* Upgrade to CM 12.1
+
+- [[http://www.thatsallnow.com/2015/04/17/android-5-1-lollipop-on-desire-hd-all-you-need-to-know/][here is one succinct set of instructions]]
+
+#+BEGIN_EXAMPLE
+9044f63fc16cf7d4b8d1612652bf4844  openrecovery-TWRP-ace-2.8.6.1-unofficial.img
+71bc66a23b289b382dbca2dd5b49ebc9  cm-12.1-20150701-UNOFFICIAL-ace.zip
+0b2634b2d57aec091aaf451cfce01150  L_SPEED_V2.2_REVOLUTION.zip
+dceef84c307c3565eabd014d675242a7  inspiremod-revamped-nobranding-20150303-signed.zip
+2ad33a2f749a1edf9e20b89ce71f0ca1  gapps-511-base-20150701-1-signed.zip
+#+END_EXAMPLE
+
+Results:
+
+- really slow boot times.
+- slow system but seems to be getting faster.
+- future updates can be done through OTA updates.
+

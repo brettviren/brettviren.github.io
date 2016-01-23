@@ -1,0 +1,240 @@
+#+TITLE: Better Music With Free Software
+#+DATE: [2014-12-31 Wed 13:57]
+#+DESCRIPTION: Setting up audio at home.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview
+
+The house has a couple of audio receivers that can take the usual gamut of analogue as well as optical S/PDIF and one can also take HDMI inputs.  There are also a collection of powered computer speakers.
+
+On the computer front, there is a relatively powerful desktop workstation (=haiku=, i7) and an older desktop (=hype=, Athlon II), a few laptops, a Raspberry Pi (=rpi=, rev B) and a BeagleBone Black (=bbb=, rev C).  All computers run some flavor or derivative of Debian.  
+
+Little gizmos include a half dozen Android devices in the form of phones, ex-phones and tablets and two Roku.
+
+The goal here is to have a way to play audio throughout the house with these features:
+
+ - Central location for audio files.
+ - Synchronized play on multiple "receivers".
+ - Limiting to one receiver.
+ - Control via Android.
+
+* Streaming methods
+
+** MPD + RTP + Pulse
+
+Try following this work:
+
+- http://www.hackerposse.com/~rozzin/journal/whole-home-pulseaudio.html
+- https://fruit.je/mpd-rtp
+- http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/RTP/
+- http://nickschicht.wordpress.com/2013/08/15/raspberry-pi-mpd-streaming-using-pulseaudio/
+- http://anarcat.koumbit.org/2013-02-03-live-radio-streaming-mpd-part-1-multicast-rtp
+- [[http://www.raspberrypi.org/forums/viewtopic.php?f=38&t=25684&start=25][thread with main players linked]]
+
+*** Overview
+
+- Run MPD on one server
+- Run Pulse on receivers 
+
+*** Server
+
+On =haiku=:
+
+#+BEGIN_EXAMPLE
+  # apt-get install mpd
+#+END_EXAMPLE
+
+In [[/etc/mpd.conf]] add/change:
+#+BEGIN_EXAMPLE
+  bind_to_address         "0.0.0.0"
+
+  audio_output {
+              type            "pulse"
+              name            "MPD Stream"
+              sink            "rtp"
+              description     "RTP from MPD"
+              mixer_type      "software"
+  }
+#+END_EXAMPLE
+
+In [[/etc/pulse/default.pa]] add
+#+BEGIN_EXAMPLE
+  load-module module-null-sink sink_name=rtp format=s16be channels=2 rate=44100
+  load-module module-rtp-send source=rtp.monitor
+#+END_EXAMPLE
+
+Also symlink some audio directories into =/var/lib/music=.
+
+*** Receiver
+
+On =rpi= (running =2014-12-24-wheezy-raspbian.img=).
+
+#+BEGIN_EXAMPLE
+  # apt-get update
+  # apt-get install pulseaudio pavucontrol
+#+END_EXAMPLE
+
+And, add to its =/etc/pulse/default.pa=
+
+#+BEGIN_EXAMPLE
+   load-module module-rtp-recv
+#+END_EXAMPLE
+
+*** Conclusions
+
+I can get the server side working so that I can use mplayer to play on =rpi=.  The play back is sometimes choppy.  This is fully on GbE wire.  From a wireless laptop there is more dropout than audio.  This sucks.
+
+I can get =rpi= pulseaudio working to play with =pacmd play-file <file> <sink>=.  I can also see pulseaudio accepting RTP traffic but I can not figure out how to make it forward this to the actual sound card sink.  Double sucks. 
+
+Try another tack.
+
+** p4sync
+
+https://snarfed.org/synchronizing_mp3_playback
+
+Build issues
+
+** SyncPlay
+
+http://syncplay.pl/
+
+Meant for videos.  Meant to sync well enough for people to irc/mumble about a shared viewing of a video.  Unclear what level of sync that is but I suspect not good enough.
+
+** Logitech Media Streamer
+
+Free of charge server, Free Software clients (Squeezelite)
+
+http://www.mysqueezebox.com/download
+
+** Gstreamer
+
+See [[./gstreamer.org]].
+
+** Icecast
+
+** Jack
+
+** Liquidsoap
+
+* Timing
+
+The method requires each computer playing a stream to have its clock synchronized with the server.  Their absolute time accuracy is not a concern.  Keeping computer clocks synced to a second is easy.  Getting that sync down to a millisecond become a challenge.  There is lots of work on this topic:
+
+- [[http://www.ntp.org/ntpfaq/NTP-s-sw-clocks-quality.htm][NTP FAQ entry]] defining terms of the art and with some analysis of clocks
+
+** Chrony
+
+I compared the clocks on the RPI and the BBB using =clockdiff= run from the media server.  With both running NTP, the RPi seems synced and stable but the BBB is way off and drifts up and down.  I switched all three computers to Chrony and ran =clockdiff= against the two overnight.  The results are shown below.  The BBB is black and the RPi is red (as is fitting!).
+
+Full series
+#+ATTR_HTML: :width 80% :align center
+[[./sync.svg]]
+
+Zoom into the start.  I don't know what that big jump is but =ntpdate= is still installed on the media server so it may have had it's own clock updated at that point.
+#+ATTR_HTML: :width 80% :align center
+[[./sync-zoom-to-start.svg]]
+
+Zoom the Y-axis to better see long-term small effects.  Eventually the sync within 1ms or less.
+#+ATTR_HTML: :width 80% :align center
+[[./sync-zoom-long-term.svg]]
+
+After a couple of hours, the long-term timing measurements from these plots are given in the table below:
+
+| measure  | rpi (ms) | bbb (ms) |
+| full avg |     0.10 |     0.98 |
+| full RMS |     0.97 |     4.42 |
+| l.t. avg |     0.03 |    -0.19 |
+| l.t. RMS |     0.42 |     0.42 |
+
+Here, "full" means the entire time while "l.t." means the long term measure after about two hours.
+
+* PTPd
+
+[[http://en.wikipedia.org/wiki/Precision_Time_Protocol][Precision Time Protocol]] is for sync across the LAN.  
+
+The version on the rpi/bbb is 2.3.0 while on Ubuntu 14.04 it is 2.2.2.  The command line options have changed between versions.  
+
+Following [[http://grepjuice.com/synchronizing-server-time-with-ptpd/][this blog entry]] I test on rpi/bbb (2.3.0) with:
+
+#+BEGIN_EXAMPLE
+  $ sudo ptpd -b eth0 -g -C -D -E --e2e
+#+END_EXAMPLE
+
+and on the server (2.2.2) with:
+
+#+BEGIN_EXAMPLE
+  $ sudo ptpd -G -b eth0 -c -D 
+#+END_EXAMPLE
+
+That seems to go well and checking with =clockdiff= gives mostly 0's.
+
+Make it stick in =/etc/default/ptpd= and start the daemons proper.  On rpi/bbb:
+
+#+BEGIN_EXAMPLE
+START_DAEMON=yes
+PTPD_OPTS="-i eth0 -s -E --e2e -f /var/log/ptpd.log"
+#+END_EXAMPLE
+
+Note, in trying to add "=-D=" on bbb it shows:
+
+#+BEGIN_EXAMPLE
+Runtime debug not enabled. Please compile with RUNTIME_DEBUG
+#+END_EXAMPLE
+
+Trying "=-V=" is too verbose for logging but it does who high precision offsets.
+
+On server:
+
+#+BEGIN_EXAMPLE
+START_DAEMON=yes
+PTPD_OPTS="-b eth0 -G"
+#+END_EXAMPLE
+
+This brings rpi/bbb solidly into the 0ms bin according to =clockdiff=.
+* Debian on BBB
+
+** Initial install
+
+- Got wheezy image from http://beagleboard.org/latest-images
+- =xz -cb image.xz > /dev/mmcblk0=
+- Move to BBB, power up with user/boot button pressed
+- can log in via SSH almost immediately (=root= and no password) but wait for flash to finish.  The BBB will power down
+- remove SD card and power back up
+
+** Pair down
+
+Remove all stuff related to running an X11 server session.
+
+#+BEGIN_EXAMPLE
+  # apt-get remove --purge xserver-xorg-core
+  # apt-get remove --purge  lxpanel lxsession lxterminal lxmenu-data lxde-core lxde-common lightdm lightdm-gtk-greeter
+  # apt-get remove --purge gnome-icon-theme gnome-keyring gnome-themes-standard gnome-themes-standard-data
+  # apt-get remove --purge gsettings-desktop-schemas xscreensaver xscreensaver-data xserver-common
+  # apt-get autoremove --purge
+#+END_EXAMPLE
+
+** Upgrade to jessie
+
+- edit =/etc/apt/sources.list= and add a =jessie= line for each existing =wheezy= one.  Note, the =beaglboard.org= one doesn't have a =jessie= counterpart.
+- =apt-get dist-upgrade=
+- =apt-get autoremove --purge=
+- =apt-get clean=
+- =reboot=
+
+Note: some problem upgrading =udev=.
+
+Remove all GStreamer 0.10 and install 
+#+BEGIN_EXAMPLE
+  # apt-get install libgstreamer1.0-dev gstreamer1.0-tools gstreamer1.0-plugins-base libgstreamer-plugins-base1.0-dev
+  # apt-get install autoconf automake
+  # apt-get install libjson-glib-dev libavahi-glib-dev libsoup2.4-dev libgtk-3-dev
+#+END_EXAMPLE
+
+* Build aurena
+
+#+BEGIN_EXAMPLE
+$ git clone https://github.com/thaytan/aurena.git
+$ cd aurena
+$ ./autogen.sh
+$ make
+#+END_EXAMPLE

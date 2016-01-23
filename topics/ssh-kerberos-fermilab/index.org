@@ -1,0 +1,70 @@
+#+TITLE: How to SSH to Fermilab using Kerberos
+#+DATE: [2014-04-22 Tue 13:04]
+#+DESCRIPTION: 
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+It ain't easy.
+
+* Nominal procedure
+
+If all is set up one does:
+
+#+BEGIN_EXAMPLE
+$ kinit principle@FNAL.GOV
+$ ssh principle@somehost.fnal.gov
+#+END_EXAMPLE
+
+Of course, nothing is nominal.
+
+* Unknown realm
+
+If =kinit= gives:
+#+BEGIN_EXAMPLE
+kinit: Cannot find KDC for requested realm while getting initial credentials
+#+END_EXAMPLE
+
+It means you system does not have the =FNAL.GOV= realm added to your [[/etc/krb5.conf]] file.  It needs a =FNAL.GOV= stanza like shown in [[http://security.fnal.gov/krb5.conf][this example]].  
+
+If you can not edit the system =krb5.conf= file you can make your own and call it out to Kerberos by setting:
+
+#+BEGIN_EXAMPLE
+$ wget http://security.fnal.gov/krb5.conf
+$ export KRB5_CONFIG=$HOME/krb5.conf
+#+END_EXAMPLE
+
+If your local system uses Kerberos as well then you should merge its krb5.conf and the one from Fermilab.
+
+* Weak Authentication
+
+Fermilab loves to call their use of Kerberos "strong authentication".  Well, to use it the first thing you have to do is configure to connect with weak crypto.  This boils down to adding the line:
+
+#+BEGIN_SRC config
+allow_weak_crypto = true
+#+END_SRC
+
+To you =krb5.conf= file.  See above for using a per-user version of this file.
+
+* Challenged for crypto card
+
+When ssh'ing you might see:
+
+#+BEGIN_EXAMPLE
+$ ssh principle@somehost.fnal.gov
+CryptoCard RB-1
+Press ENTER and compare this challenge to the one on your display
+Challenge is [34387079], Enter the displayed response: 
+#+END_EXAMPLE
+
+What is this antiquated thing?  Never mind, just try:
+
+#+BEGIN_EXAMPLE
+$ ssh -o "GSSAPIAuthentication yes" principle@somehost.fnal.gov
+#+END_EXAMPLE
+
+If that works, you can make it default by editing your [[~/.ssh/config]] file so it looks like:
+
+#+BEGIN_EXAMPLE
+host *.fnal.gov
+     GSSAPIAuthentication yes
+     # ... other options, "User" is a good one
+#+END_EXAMPLE

@@ -1,0 +1,96 @@
+#+TITLE: Using waf to produce a tarball for submission to the arXiv.
+#+DATE: [2014-03-08 Sat 14:44]
+#+DESCRIPTION: 
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+
+This topic discusses using =waf= to produce a tarball from a waf-built LaTeX source area which is suitable for submission to the [[http://www.arxiv.org][arXiv]].
+
+* Overview
+
+Waf has good built-in support for building LaTeX documents.  When submitting to the arXiv one has to prepare a tarball that contains just the files needed to produce the document and little more.  
+
+Waf also has =waf dist= to produce a tarball of the "source" files.  When I tried this in a LaTeX source area it tarred up everything.  Unfortunately [[https://cdcvs.fnal.gov/redmine/projects/lbne-sci-opp/repository/show/lbne-sci-opp][the document]] in question has a lot of extraneous files in the working directory (and repository) that should not be included.  This is particularly important as the arXiv has a size limit on the submitted files.
+
+I [[https://groups.google.com/forum/#!topic/waf-users/H_lPHWLBF5w][asked about it]] on waf's google groups and got some tips to try out.  Waf has to figure out all the files the document is built from in order to know when they change and a rebuild is needed.  So, a big part of the required files should be able to be automatically determined. 
+
+Testing this inside the desired document directory is dog slow so I mocked up a little test document [[./][here]].  This test document is a little unusual in order to mimic some "features" of the actual document.  In particular, two "main" files are required: [[./document.tex]] and [[./document-bib.tex]].  The first includes the Bibitex =.bbl= file produced as a side effect of building the second.  The two are otherwise identical.  These shenanigans are needed because arXiv does not run Bibtex for us and so we need a way to generate it and produce a main which is independent from Bibtex.
+
+The method I ended up adopting eschews =waf dist= so that I can do some massaging of the paths in the produced tar ball.  In particular I want to strip off the =build/= directory for files that are created during the build.  This flattening is only needed because arXiv runs =pdflatex= in the source directory and obviously doesn't know about waf nor its conventions.
+
+The only reason I wanted to use =waf dist= was in hopes I could leverage =waf distcheck= to check that the tarball is complete.  However, =distcheck= seems to ignore the =dist()= function and packages up the entire source directory (default =dist= behavior).  Something to follow up on.
+
+* The =wscript= file
+
+This section annotates the example [[./wscript][=wscript=]] file.  It starts by defining some conventional variables that waf normally uses for =dist= and hooking in the =tex= tool to do the heavy lifting building the document.
+
+#+INCLUDE: "wscript" src python :lines "1-13"
+
+Next comes the =build()= function.  It first defines two task generators, one for each main document.  The first is done just for building the =.bbl= file.  It ends in an =add_group()= in order to assure this file is built.  Next comes the task for the "real" document.  Some nodes are defined for use there and in the final task generator which is for making the distribution tarball.
+
+#+INCLUDE: "wscript" src python :lines "13-42"
+
+
+The =prefix= argument defines to this last =bld()= call is a string tacked on to each file as it's stored into the tarfile.  The =extra= parameter is a list of Ant globs to match files that are not otherwise picked up by waf's tex scanner.  These have to be determined by trial an error.  They must remain as unresolved globs as the files they match may not exist until after the document has been built.  Files that match under the =build/= directory are okay as described below.  
+
+The =tarball= rule invoked above is defined as:
+
+#+INCLUDE: "wscript" src python :lines "42-59" 
+
+Not much to say here.  The globs are resolved and added to the tar file one by one.  Any node which is under the build directory is stored in to the tar file at a location relative to the build directory.  Otherwise a path relative to the source directory is used.
+
+Next comes the heart of the glue into waf's "tex" feature.  Two methods are defined.  The first creates a task implemented by the second in such a way that all scanned files get passed. 
+
+#+INCLUDE: "wscript" src python :lines "59-74" 
+
+The second turns those scanned files into a "manifest" file.
+
+#+INCLUDE: "wscript" src python :lines "74-85" 
+
+
+
+* Building
+
+The document is built in the usual manner
+
+#+BEGIN_SRC sh :results value code :exports code :results none
+  waf configure build
+#+END_SRC
+
+
+
+
+
+* Testing
+
+As mentioned the =waf distcheck= doesn't seem to honor the tar file produced by =waf dist= and anyways this approach does not use =dist=.  So, testing is done by "hand".
+
+#+BEGIN_SRC sh :shebang #!/bin/bash :results value code :exports both :wrap EXAMPLE 
+  tar -xvf build/document-0.0.0.tar.gz
+  pushd document-0.0.0/ 
+  pdflatex document.tex > /dev/null
+  pdflatex document.tex > /dev/null
+  ls -l
+  popd
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+document-0.0.0/document-bib.bbl
+document-0.0.0/document.tex
+document-0.0.0/figs/waf-logo.png
+document-0.0.0/main.tex
+document-0.0.0/preamble.tex
+~/org-pub/topics/waf-latex-arxiv/document-0.0.0 ~/org-pub/topics/waf-latex-arxiv
+total 100
+-rw-r--r-- 1 bv bv   281 Mar  8 19:15 document.aux
+-rw-r--r-- 1 bv bv   410 Mar  8 19:11 document-bib.bbl
+-rw-r--r-- 1 bv bv  7131 Mar  8 19:15 document.log
+-rw-r--r-- 1 bv bv 67452 Mar  8 19:15 document.pdf
+-rw-r--r-- 1 bv bv   150 Mar  8 15:46 document.tex
+drwxr-xr-x 2 bv bv  4096 Mar  8 19:15 figs
+-rw-r--r-- 1 bv bv   184 Mar  8 18:16 main.tex
+-rw-r--r-- 1 bv bv    42 Mar  8 15:46 preamble.tex
+~/org-pub/topics/waf-latex-arxiv
+#+END_EXAMPLE
+

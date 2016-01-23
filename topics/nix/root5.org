@@ -1,0 +1,140 @@
+* User Install
+
+** Install in a PRoot
+
+PRoot is like a light-weight, user-level =chroot=.
+It is a native system package on my OS:
+
+#+BEGIN_EXAMPLE
+  $ sudo apt-get install proot
+#+END_EXAMPLE
+
+Following [[https://nixos.org/wiki/How_to_install_nix_in_home_%28on_another_distribution%29#PRoot_Installation][PRoot-based installation]] a Nix installation is prepared like:
+
+#+BEGIN_EXAMPLE
+  $ mkdir -p /path/to/mystuff
+  $ cd /path/to/mystuff
+  $ wget http://hydra.nixos.org/build/23017494/download/1/nix-1.9-x86_64-linux.tar.bz2
+  $ tar -xvf nix-1.9-x86_64-linux.tar.bz2
+  $ proot -b `pwd`/nix-1.9-x86_64-linux/:/nix bash
+  $ cd /nix
+  $ ls
+  install  store
+  $ ./install
+  $ source $HOME/.nix-profile/etc/profile.d/nix.sh
+
+  $ du -sh store
+  309M    store
+  $ nix-env -qa |wc -l
+  11624
+#+END_EXAMPLE
+
+** Native install
+
+As light-weight as PRoot is, there is apparently some run-time overhead.  From inside the environment it provides it is possible to build Nix packages that can run native and out of a different /package store/ root than the conventional =/nix=.
+
+Pick the directory wisely as it gets baked in to all the building that comes next.
+
+#+BEGIN_EXAMPLE
+  $ nix-channel --update
+  $ mkdir -p /path/to/nix
+  $ NIX_STORE_DIR=/path/to/nix nix-env -i nix
+#+END_EXAMPLE
+
+
+** Developing 
+
+https://nixos.org/wiki/Create_and_debug_nix_packages
+
+#+BEGIN_EXAMPLE
+  $ git clone https://github.com/NixOS/nixpkgs.git
+  $ export NIXPKGS=`pwd`/nixpkgs
+
+#+END_EXAMPLE
+
+* Build ROOT
+
+The goal here is to build ROOT6 as a Nix package.  Someone has already packaged ROOT5, let's try that first:
+
+#+BEGIN_EXAMPLE
+  $ nix-env -qa root
+  root-5.34.15
+  $ nix-env -i root
+  installing 'root-5.34.15'
+  ...
+  Linking CXX shared library ../../lib/libRGL.so
+  CMakeFiles/RGL.dir/src/TX11GL.cxx.o: In function `TX11GLManager::ReadGLBuffer(int)':
+  TX11GL.cxx:(.text+0x1b4): undefined reference to `XPutImage'
+  TX11GL.cxx:(.text+0x21c): undefined reference to `XCreateGC'
+  CMakeFiles/RGL.dir/src/TX11GL.cxx.o: In function `TX11GLManager::Flush(int)':
+  TX11GL.cxx:(.text+0x6ae): undefined reference to `XCopyArea'
+  TX11GL.cxx:(.text+0x731): undefined reference to `XCreateGC'
+  CMakeFiles/RGL.dir/src/TX11GL.cxx.o: In function `TX11GLManager::DeleteGLContext(int)':
+  TX11GL.cxx:(.text+0x835): undefined reference to `XFreeGC'
+  TX11GL.cxx:(.text+0x856): undefined reference to `XFreeGC'
+  CMakeFiles/RGL.dir/src/TX11GL.cxx.o: In function `TX11GLManager::InitGLWindow(unsigned long)':
+  TX11GL.cxx:(.text+0x11a2): undefined reference to `XGetGeometry'
+  TX11GL.cxx:(.text+0x1287): undefined reference to `XCreateColormap'
+  TX11GL.cxx:(.text+0x12e9): undefined reference to `XCreateWindow'
+  TX11GL.cxx:(.text+0x1303): undefined reference to `XMapWindow'
+  CMakeFiles/RGL.dir/src/TX11GL.cxx.o: In function `TX11GLManager::CreateGLPixmap(TX11GLManager::TGLContext_t&)':
+  TX11GL.cxx:(.text+0x14d3): undefined reference to `XCreatePixmap'
+  TX11GL.cxx:(.text+0x1561): undefined reference to `XCreateImage'
+  TX11GL.cxx:(.text+0x1596): undefined reference to `XInitImage'
+  TX11GL.cxx:(.text+0x178f): undefined reference to `XFreePixmap'
+  TX11GL.cxx:(.text+0x181b): undefined reference to `XFreePixmap'
+  CMakeFiles/RGL.dir/src/TGLWidget.cxx.o: In function `TGLWidget::CreateWindow(TGWindow const*, TGLFormat const&, unsigned int, unsigned int, std::pair<void*, void*>&)':
+  TGLWidget.cxx:(.text+0x9b3): undefined reference to `XCreateColormap'
+  TGLWidget.cxx:(.text+0xa08): undefined reference to `XCreateWindow'
+  CMakeFiles/RGL.dir/src/TGLWidget.cxx.o: In function `TGLWidget::~TGLWidget()':
+  TGLWidget.cxx:(.text+0x1665): undefined reference to `XFree'
+  CMakeFiles/RGL.dir/src/TGLFormat.cxx.o: In function `TGLFormat::InitAvailableSamples()':
+  TGLFormat.cxx:(.text+0x40a): undefined reference to `XGetVisualInfo'
+  TGLFormat.cxx:(.text+0x485): undefined reference to `XFree'
+  collect2: error: ld returned 1 exit status
+  graf3d/gl/CMakeFiles/RGL.dir/build.make:2445: recipe for target 'lib/libRGL.so' failed
+  make[2]: *** [lib/libRGL.so] Error 1
+  CMakeFiles/Makefile2:7032: recipe for target 'graf3d/gl/CMakeFiles/RGL.dir/all' failed
+  make[1]: *** [graf3d/gl/CMakeFiles/RGL.dir/all] Error 2
+  make[1]: *** Waiting for unfinished jobs....
+  Linking CXX shared library ../lib/libTMVA.so
+  [ 92%] Built target TMVA
+  Makefile:136: recipe for target 'all' failed
+  make: *** [all] Error 2
+  builder for '/nix/store/l88wsvbpjr3lrz7pzfc3b0mj6hhrg25j-root-5.34.15.drv' failed with exit code 2
+  error: build of '/nix/store/l88wsvbpjr3lrz7pzfc3b0mj6hhrg25j-root-5.34.15.drv' failed
+#+END_EXAMPLE
+
+Seems that the ROOT package doesn't depend on X11 libs.
+
+Let's get the latest from nixpkgs
+
+From inside the PRoot
+#+BEGIN_EXAMPLE
+  $ cd /nix
+  $ git clone https://github.com/NixOS/nixpkgs.git
+  $ export NIXPKGS=/nix/nixpkgs
+  $ nix-env -f $NIXPKGS -qa root
+  root-5.34.15
+  ...
+
+#+END_EXAMPLE
+
+** Debug the build
+
+#+BEGIN_EXAMPLE
+  $ proot -b /srv/nix/nix-1.9-x86_64-linux/:/nix bash -l
+  $ source $HOME/.nix-profile/etc/profile.d/nix.sh
+  $ nix-shell /nix/nixpkgs --pure -A root
+  $ genericBuild
+#+END_EXAMPLE
+
+When that =genericBuild= fails it kicks you out of the shell.  The individual steps are
+
+#+BEGIN_EXAMPLE
+  $ unpackPhase
+  $ cd root
+  $ patchPhase
+  $ cmakeConfigurePhase  # leaves you in root/build/
+  $ buildPhase
+#+END_EXAMPLE

@@ -1,0 +1,205 @@
+#+TITLE: Installing Debian/Ubuntu Over the Network
+#+DATE: [2015-03-28 Sat 11:32]
+#+DESCRIPTION: Network-based installation via PXE, FAI, DHCP, TFPT and maybe more acronyms.  Challenge: I don't own the network.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview
+
+This summer we will have more students than ever before, maybe as many as 10.  Last year we had five and managing the students workstations took substantial time and effort.  I suspect this effort increases greater than linear with the number of students.  The initial installation was just barely manageable in my "spare time".  But, the tipping point is reached and I need something more efficient.
+
+In the old Physics department co-op cluster, I used PXE to boot the worker nodes over the network.  This entailed cooperation with a server listening for DHCP requests in order to dole out the usual initial IP configuration as well as to handle the extra PXE info like "next-server" and "filename" for the PXE bootloader that the machine should boot.  The PXE bootloader then loaded Linux which mounted the root partition via NFS leaving the worker node effectively diskless.
+
+The [[http://fai-project.org/][FAI project]] provides a system that works like this except instead of the boot ending with a ready-to-run OS it ends with the installation OS of your favorite Linux distribution (assuming your favorite is Debian or Ubuntu or some lesser Redhat based ones).  The installation is preseeded with the answers to installation questions allowing for full installation to commence in a hands-off manner.
+
+For the students workstations there is an extra challenge.  With the co-op cluster the worker nodes and the DHCP/PXE server all lived on a non-routed private network.  I could configure the server simply by logging in and tweaking its configuration file.  In contrast, these workstations will be connected to the BNL internal network where the DHCP server is out of my hands and ITD reasonably does not want to maintain the very manual, detailed configuration that would be required to make it support PXE for my workstations.
+
+Like most problems in this world, others have encountered them.  Enter [[http://en.wikipedia.org/wiki/Preboot_Execution_Environment#Integration][proxyDHCP]] where the PXE half of the communication is relegated to a second server independent from the "real" DHCP server.  Both servers answer the broadcast sent by the PXE-booting workstation which aggregates the response and goes to town.  At least that's the theory.  We'll see how it goes.
+
+* The Plan
+
+The installation plan is to test this on my home network and look for anything that might be a problem if repeated on the BNL network. 
+
+- Use 192.168.1.x local wired network using an Asus RT-AC56U router running the Tomato firmware (v1.28).  It provides the DHCP server.
+- Use system "haiku" (Ubuntu 14.04) as server
+- Use two old crappy laptops (Sony Vaio "halfwit" and Dell Insipron, "crappydell")
+- Use [[http://www.thekelleys.org.uk/dnsmasq/doc.html][dnsmasq]] for proxyDHCP and TFTP and nothing else
+- Grab MAC addresses with =tcpdump=
+- Install Ubuntu 14.10 or 15.04, configuration details d.b.d.
+
+* Preparation
+
+** Server install
+
+#+BEGIN_EXAMPLE
+$ sudo apt-get install dnsmasq tcpdump fai-quickstart
+$ sudo apt-get remove tftpd-hpa
+$ sudo apt-get remove atftpd
+#+END_EXAMPLE
+
+We only want dnsmasq as a TFTP server.  The first remove is to get rid of the one that is brought in by FAI and the second is to get rid of the one that is brought in by removing the first.  WTF?   
+
+** MAC capture
+
+FAI [[http://fai-project.org/fai-guide/_anchor_id_booting_xreflabel_booting_preparing_booting.html][suggests]]:
+
+#+BEGIN_EXAMPLE
+  $ sudo tcpdump -qtel broadcast and port bootpc >/tmp/mac.list
+  00:22:19:dc:2e:bb (oui Unknown) > Broadcast, IPv4, length 590: 0.0.0.0.bootpc > 255.255.255.255.bootps: UDP, length 548
+  bc:ee:7b:8e:62:f8 (oui Unknown) > Broadcast, IPv4, length 342: router.home.bootps > 255.255.255.255.bootpc: UDP, length 300
+#+END_EXAMPLE
+
+This is capturing "crappydell" but fails to capture "halfwit".  Apparently it's Ethernet NIC is crapped out.  But, I can at least grab its wireless MAC the device list on the Tomato router's web page.
+
+#+BEGIN_EXAMPLE
+sony 00:13:CE:B3:39:18 (wireless)
+dell 00:22:19:dc:2e:bb (wire)
+#+END_EXAMPLE
+
+For now, just focus on the "crappydell".
+
+** Configuring dnsmasq
+
+There is not an overabundance of information on how to do this but it boils down to 
+editing the configuration file =/etc/dnsmasq.d/proxydhcp.conf=.
+
+Some links: [[https://help.ubuntu.com/community/UbuntuLTSP/ProxyDHCP][this]] and [[http://serverfault.com/questions/415857/can-isc-dhcpd-operate-as-a-proxy-dhcp-server-for-pxe-boot][this]] and [[http://howto.basjes.nl/linux/doing-pxe-without-dhcp-control][this]] and [[http://www.richud.com/wiki/Network_iPXE_dnsmasq_Examples_PXE_BOOT#dnsmasq.conf_proxy_DHCP_server][this]]
+
+Add to =/etc/dnsmasq.conf=
+#+BEGIN_EXAMPLE
+  # Ubuntu sets up to use self for resolving and resolv.conf lists
+  # localhost so avoid self reference
+  no-resolv
+
+  # Router is real DNS server
+  server=192.168.1.1
+
+  # limit what interface to listen on
+  interface=eth0
+  # probably partly redudant
+  listen-address=127.0.0.1,192.168.1.123
+
+  # load aux config chunks
+  conf-dir=/etc/dnsmasq.d
+#+END_EXAMPLE
+
+=/etc/dnsmasq.d/proxydhcp.conf=
+#+BEGIN_EXAMPLE
+  # log traffic info
+  log-dhcp
+  # Turn on the included TFTP server
+  enable-tftp
+  # Root directory for TFTP files
+  tftp-root=/var/lib/tftpboot
+  # PXE boot loader
+  dhcp-boot=pxelinux.0
+  # Act as proxyDHCP on given network
+  dhcp-range=192.168.1.0,proxy
+  # Ignore anybody we don't know
+  dhcp-ignore=tag:!known
+  # last arg is pxe file bootloader sans ".0"
+  pxe-service=x86PC, "Boot PXELinux", pxelinux
+#+END_EXAMPLE
+
+=/etc/dnsmasq.d/known-hosts.conf=
+#+BEGIN_EXAMPLE
+dhcp-host=00:22:19:dc:2e:bb
+#+END_EXAMPLE
+
+Put all known hosts in this file.  Any not listed will simply be ignored by =dnsmasq=.  Any changes to the config files requires a restart
+
+#+BEGIN_EXAMPLE
+  # service dnsmasq restart
+#+END_EXAMPLE
+
+Monitor dnsmasq with 
+
+#+BEGIN_EXAMPLE
+  # tail -f /var/log/syslog
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+  # cp /usr/lib/syslinux/pxelinux.0 /var/lib/tftpboot
+#+END_EXAMPLE
+
+This should be enough to get the one target host - and only that one host - booting the =pxelinux= bootloader.  It will then fail as no PXE configuration is yet set up.
+
+
+* Apt proxy
+
+#+BEGIN_EXAMPLE
+  # apt-get install approx
+  # mkdir /srv/approx # put it on a bigger disk.
+  # chown approx.approx /srv/approx
+#+END_EXAMPLE
+
+Configure proxy sources by first scoping out what a live system is using:
+
+#+BEGIN_EXAMPLE
+  $ cat /etc/apt/sources.list /etc/apt/sources.list.d/* | grep -E "^[^#]"  | cut -d " " -f2 | uniq
+#+END_EXAMPLE
+
+Edit =/etc/approx/approx.conf=
+
+#+BEGIN_EXAMPLE
+$cache          /srv/approx
+
+ubuntu http://us.archive.ubuntu.com/ubuntu/
+ubuntu-security http://security.ubuntu.com/ubuntu
+ubuntu-extras http://extras.ubuntu.com/ubuntu
+ubuntu-mate http://ppa.launchpad.net/ubuntu-mate-dev/ppa/ubuntu
+ubuntu-mate-trusty http://ppa.launchpad.net/ubuntu-mate-dev/trusty-mate/ubuntu
+#+END_EXAMPLE
+
+Then, might as well change over to using it on the server.
+
+* FAI
+
+** Configuration space
+
+Start with =/etc/fai/fai.conf=.  The default "config space" is =/srv/fai/config= which will be NFS-exported to the subnet.
+
+#+BEGIN_EXAMPLE
+  # echo '/srv/fai/config /nfs4/fai none bind,uid=1001 0 0' >> /etc/fstab
+  # echo '/nfs4/fai  192.168.1.0/24(ro,sync,no_subtree_check)' >> /etc/exports
+  # mkdir /nfs4/fai
+  # mount /nfs4/fai
+  # exportfs -a
+  # showmount -e | grep fai
+  /nfs4/fai     192.168.1.0/24
+#+END_EXAMPLE
+
+Test on some client:
+
+#+BEGIN_EXAMPLE
+  $ sudo mount -t nfs haiku:/nfs4/fai /mnt/tmp
+  $ ls /mnt/tmp
+  class  debconf  disk_config  files  hooks  package_config  scripts  tests
+  $ sudo umount /mnt/tmp
+#+END_EXAMPLE
+
+Then set in =/etc/fai/fai.conf=
+
+#+BEGIN_EXAMPLE
+  FAI_CONFIG_SRC=nfs://haiku/nfs4/fai
+#+END_EXAMPLE
+
+** Config files
+
+Edit:
+
+- =/etc/fai/sources.list= to add the =approx= apt-proxy/mirror instead of hitting ubuntu.com.
+- =/etc/fai/fai.conf= to set config space NFS URL
+- =/etc/fai/make-fai-nfsroot.conf= for various things including which release to target and to use approx mirror (=FAI_DEBOOTSTRAP=)
+
+** Make NFS-root
+
+#+BEGIN_EXAMPLE
+  # fai-setup -v
+  ...
+  Shadow passwords are now on.
+  You can log into install clients without password using /home/bv/.ssh/id_rsa.pub
+  cp: cannot stat '/home/sys/var/lib/fai/nfsroot/live/filesystem.dir/boot/vmlinu?-*': No such file or directory
+  cp: cannot stat '/home/sys/var/lib/fai/nfsroot/live/filesystem.dir/boot/initrd.img-*': No such file or directory
+  DHCP environment prepared. If you want to use it, you have to enable the dhcpd and the tftp-hpa daemon.
+  ERROR: No initrd installed.
+#+END_EXAMPLE

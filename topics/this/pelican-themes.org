@@ -1,0 +1,53 @@
+* Pelican Themes
+
+The desired themes should satisfy these criteria
+
+ - looks "good", if it fails this it gets a zero
+ - good difference between code and text, distinct but not jarring
+ - indices made up of "teasers" of articles, (this can probably be easily tweaked)
+ - large images should not be cut out (see GraphViz diagram in "desk" for example)
+ - prominently displays list of categories links
+ - prominently displays list of archives link
+ - prominently displays list of tags link
+ - must wrap long code lines
+ - must gracefully scale
+
+Testing
+
+ - check for screen shots in theme dir.  They are not often up-to-date at all, but if horrible, then pass.
+ - generate with =rm -rf output/*; pelican content -t ~/org-pub/pelican/pelican-themes/THEME=
+ - reload http://127.0.0.1:8000/.  Must hit reload to get all CSS refreshed.
+
+Selected:
+
+- elegant ::  Title-only indices, interesting category browser (super-script number counts the entries, kind of weird), drop down menu.  good but maybe too cutsie, tag searching, general search input but it is broken (no search.html).  Scaling to mobile.  dump scaling on far zoom out
+
+Top ranked
+
+- gum :: good side bar (pages, categories, tags), teaser indices, handles long code lines, nav bar, tags
+
+- pelipress ::  good nav, good scaling, teaser indices, scrolling code, collapsible sidebar, no home link, needs translation
+
+- fresh ::  good layout, style, scale.  good nav
+
+
+Second place
+
+- blueidea :: (3) most recent article followed by other articles with teasers. top category bar
+
+- bootstrap :: (3) teaser-based main, sidebar links, tags and categories easy access.  visual separation between teasers could use some kind of divider.
+
+- bootstrap2 :: (3) similar, a little more clear layout
+
+- cebong :: (3) looks very nice, main+teasers index, looks like LaTeX, cuts big images
+
+- Just-Read :: (3) good, single teaser followed by title-only index, no category listing
+
+- lannisport :: (3) overlayed side bar, full article index, "paper" background
+
+- pelican-sober :: (3) looks good, scales good, lacks some nav, full-article indices
+
+Questions:
+
+- how to control the teaser blurb?
+

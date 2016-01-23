@@ -1,0 +1,275 @@
+#+TITLE: Using Conda To Package Stuff
+#+DATE: [2014-11-21 Fri 19:28]
+#+DESCRIPTION: Oh dear, worch may just have been obsoleted.
+#+CATEGORY: Build
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview
+
+I was looking through SciPy 2014 talks and found a talk on something called "Conda".  This takes pip to the level of handling builds.  It uses the same idea of "shims" scripts that I gave to Fermilab plus a worch like engine to do installation+build.  The install layout is single-rooted and uses Nix-like behavior using hardlinking instead of soft to produce derived distributions.  The packages are relocatable, not just in the trivial surface manner as UPS packages but goes into executables and scripts to make sure build paths are made relocatable.
+
+It has a huge body of build recipes which includes GCC, BOOST and ROOT (no Geant4).
+
+In short, worch may be dead, UPS may be dead, mrb may be dead.  Long live Conda.
+
+Well, let's see.
+
+* Links
+
+ - [[https://conference.scipy.org/scipy2014/schedule/presentation/1708/][Sci Py 2014 Conda Abstract]]
+ - [[http://pyvideo.org/video/2735/conda-a-cross-platform-package-manager-for-any-b][pyvideo entry]] with link to the presentation video at YouTube
+ - [[http://conda.pydata.org/][Conda home page]]
+ - [[http://conda.pydata.org/docs/intro.html][Conda docs]]
+ - [[http://www.continuum.io/blog/conda][Blog entry]] with some description, Continuum support Conda devel
+ - [[https://binstar.org][Binstar]] is like github+pypi
+ - [[http://docs.binstar.org/][Binstar docs]]
+ - [[https://binstar.org/brettviren][My binstar account]]
+
+* Install =conda=
+
+The package management is through a single =conda= program.  
+
+It looks like I can use pip to get it, but it needs =libyaml-dev=:
+
+#+BEGIN_EXAMPLE
+  $ sudo apt-get install libyaml-dev
+  $ pip install --user conda
+#+END_EXAMPLE
+
+But there is also [[http://conda.pydata.org/miniconda.html][miniconda]] to try:
+
+#+BEGIN_EXAMPLE
+  $ sudo apt-get remove --purge libyaml-dev 
+  $ wget http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Linux-x86_64.sh
+  $ bash Miniconda3-3.7.3-Linux-x86_64.sh
+  (pick install location)
+  $ export PATH=/home/bv/opt/miniconda3/bin:$PATH
+  $ conda install conda-build
+  $ conda install binstar
+#+END_EXAMPLE
+
+This installs Python 3.4 and other stuff into the "root environment".
+
+* Try to install ROOT
+
+Let's see if we can get ROOT installed via =conda= without trying too hard
+
+#+BEGIN_EXAMPLE
+  $ conda search root
+  Fetching package metadata: ..
+#+END_EXAMPLE
+
+Hmm, nothing....  It probably needs to be pointed at the collection of recipes on GitHub.
+
+#+BEGIN_EXAMPLE
+  $ git clone https://github.com/conda/conda-recipes.git
+  $ conda build conda-recipes/root
+#+END_EXAMPLE
+
+This fails at test.
+
+* Make a Conda environment
+
+#+BEGIN_EXAMPLE
+  $ conda create -n rootenv-py27 python=2
+  $ source activate rootenv-py27
+  $ binstar search -t conda root
+  ...
+       jsw-fnal/root_numpy       |    3.3.1 | conda           | linux-64       
+                                            : An interface between ROOT and NumPy
+       jsw-fnal/rootpy           |    0.7.1 | conda           | linux-64       
+                                            : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+       kcolletti1/rootpy         |    0.7.1 | conda           | linux-64       
+                                            : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+       zhenxieit/root            |  5.99.05 | conda           | linux-64       
+                                            : http://root.cern.ch
+  ...
+  $ conda install --channel https://conda.binstar.org/zhenxieit root
+#+END_EXAMPLE
+
+That gets ROOT installed but in what I think is a wrong location.  I can try the usual setup:
+
+#+BEGIN_EXAMPLE
+  $ source miniconda3/envs/rootenv-py27/root/bin/thisroot.sh 
+#+END_EXAMPLE
+
+But, starting ROOT crashes and burns.  Maybe due to it being version 5.99.
+
+* Build up explicit devel env
+
+#+BEGIN_EXAMPLE
+  $ conda create -n gcc29py27 python=2 
+  $ source activate gcc29py27
+#+END_EXAMPLE
+
+Now, let's build GCC
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/gcc-4.9
+  There was an error importing jinja2.
+  Please run `conda install jinja2` to enable jinja template support
+  BUILD START: gcc-4.9.1-0
+  Fetching package metadata: ...
+  Error: No packages found in current linux-64 channels matching: gmp >=4.3.2
+#+END_EXAMPLE
+
+Hmm....
+
+#+BEGIN_EXAMPLE
+  $ ls -d conda-recipes/gmp*
+  conda-recipes/gmp  conda-recipes/gmp-4  conda-recipes/gmpy  conda-recipes/gmpy2
+#+END_EXAMPLE
+
+That first one is v5.  Use the second explicitly:
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/gmp-4
+  ...
+  ====================================
+  1 of 58 tests failed
+  Please report to gmp-bugs@gmplib.org
+  ====================================
+  make[4]: *** [check-TESTS] Error 1
+  make[4]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+  make[3]: *** [check-am] Error 2
+  make[3]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+  make[2]: *** [check-recursive] Error 1
+  make[2]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests'
+  make[1]: *** [check-recursive] Error 1
+  make[1]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2'
+  make: *** [check] Error 2
+  Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gmp-4/build.sh
+#+END_EXAMPLE
+
+Try again with =make check= commented out again.  Complete, and install like:
+
+#+BEGIN_EXAMPLE
+  $ conda install -n gcc29py27 miniconda3/pkgs/gmp-4.3.2-0.tar.bz2
+#+END_EXAMPLE
+
+Now, have to repeat this manually with all build dependencies. (?)
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/mpfr
+  $ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+  $ conda build conda-recipes/mpc
+  BUILD START: mpc-1.0.1-0
+  Fetching package metadata: ...
+  Error: No packages found in current linux-64 channels matching: mpfr
+#+END_EXAMPLE
+
+Dunno.  Copying the built package seemed to get things going
+
+#+BEGIN_EXAMPLE
+  $ cp miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+  $ conda build -b conda-recipes/mpc
+  $ rm miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part
+  $ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+  $ mv mpc-1.0.1.tar.gz miniconda3/conda-bld/src_cache/
+  $ conda build -b conda-recipes/mpc
+  $ conda build -b conda-recipes/isl
+#+END_EXAMPLE
+
+Then, the =mpc= source download failed half way through.  Dunno why.  Remove the part and =wget= the source into place manually.  Then =mpc= is built and so is =isl=.  Now:
+
+#+BEGIN_EXAMPLE
+  $ conda build -b conda-recipes/gcc-4.9
+  BUILD START: gcc-4.9.1-0
+  Fetching package metadata: ...
+  Error: No packages found in current linux-64 channels matching: mpc >=0.8.1
+#+END_EXAMPLE 
+
+WTF.  Where did =mpc= package go?  It builds but never makes a =.tar.bz2= package.    redoing the build but now without =-b= makes the package.  This is driving me batty.
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/mpc
+  $ conda build conda-recipes/isl
+  $ conda build conda-recipes/cloog
+#+END_EXAMPLE
+
+Arg, cloog wants gmp 5.
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/gmp
+  $ conda build conda-recipes/cloog
+  $ conda build conda-recipes/gcc-4.9
+  BUILD START: gcc-4.9.1-0
+  Fetching package metadata: ...
+  Error: No packages found in current linux-64 channels matching: cloog 0.18.1
+#+END_EXAMPLE
+
+Version shear, I guess =cloog= recipe isn't updated.  Let's build GCC 4.8 instead.
+
+#+BEGIN_EXAMPLE
+  $ conda build conda-recipes/gcc-4.8
+  checking for version 0.10 of ISL... no
+  checking for version 0.11 of ISL... no
+  checking for version 0.12 of ISL... no
+  configure: error: Unable to find a usable ISL.  See config.log for details.
+  Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gcc-4.8/build.sh
+  
+#+END_EXAMPLE
+
+WTF.
+
+#+BEGIN_EXAMPLE
+  $ conda install miniconda3/pkgs/gmp-5.1.2-5.tar.bz2 
+  $ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+  $ conda install miniconda3/pkgs/mpc-1.0.1-0.tar.bz2 
+  $ conda install miniconda3/pkgs/isl-0.12.2-1.tar.bz2 
+  $ conda build conda-recipes/gcc-4.8
+#+END_EXAMPLE
+
+I have no idea what I'm doing.
+
+Same failure.  Checking GCC =config.log= shows undefined ref to GMP symbol in isl.  This is probably due to me switching to GMP5 after building ISL.  Ya think?
+
+#+BEGIN_EXAMPLE
+  $ conda remove isl
+  $ rm -r ./miniconda3/pkgs/isl-0.12.2-1*
+  $ conda build conda-recipes/isl
+  $ conda build conda-recipes/gcc-4.8
+#+END_EXAMPLE
+
+This craps out again.  That's enough crap for now.
+
+* One more try:
+
+#+BEGIN_EXAMPLE
+  $ bash Miniconda3-3.7.3-Linux-x86_64.sh 
+  $ which conda
+  $ export PATH=/opt/bv/projects/conda/miniconda3/bin:$PATH
+  $ conda update conda
+  $ conda install conda-build
+  $ conda build conda-recipes/gmp
+  $ conda build conda-recipes/mpc
+  $ conda install gmp
+  $ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gmp-5.1.2-5.tar.bz2
+  $ conda build conda-recipes/mpc
+  $ conda build conda-recipes/mpfr
+  $ find . -name 'mpfr*.bz2'
+  $ tar -tvf ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2
+  $ cp ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+  $ conda install miniconda3/conda-bld/linux-64/mpfr-3.1.2-0.tar.bz2 
+  $ conda build conda-recipes/mpc
+  $ ls /opt/bv/projects/conda/miniconda3/conda-bld/src_cache
+  $ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+  $ conda build conda-recipes/mpc
+  $ find . -name 'mpc*'
+  $ cat ./conda-recipes/mpc/meta.yaml 
+  $ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+  $ mv mpc-1.0.1.tar.gz /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/
+  $ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+  $ conda build conda-recipes/mpc
+  $ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/mpc-1.0.1-0.tar.bz2
+  
+  $ conda build conda-recipes/isl
+  $ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/isl-0.12.2-1.tar.bz2
+  $ conda build conda-recipes/cloog
+  $ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/cloog-0.18.0-0.tar.bz2
+  $ conda build conda-recipes/gcc-4.8
+  $ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gcc-4.8.2-2.tar.bz2
+  
+#+END_EXAMPLE
+
+Okay, success.

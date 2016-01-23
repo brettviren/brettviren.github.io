@@ -1,0 +1,99 @@
+- aboutwilson :: (2) simple, nice looking, teaser followed by category and tags list, navigation footer.
+
+- notmyidea :: (0) default, nice looking, shows entire article on main index, gives categories in a header bar.
+
+- alchemy :: (2) nice looking, simple style, shows heads of 5 articles on main index, no category bar.
+
+- backdrop :: (0) fails =CRITICAL: UndefinedError: 'articles_paginator' is undefined=
+
+- basic :: (1) looks okay, content all on LHS of screen, teaser, no categories/tags
+
+- bluegrasshopper :: (1) thin strip of content, no yeaser, highly styled, bad font scaling
+
+- blue-penguine :: (2) not blue, clean, white, full articles on main page, link to "Archive", no category bar, no teasers.
+
+- bold :: (0) fails =CRITICAL: TypeError: expected string or buffer=
+
+- bootlex :: (1) looks nice, teasers on main page, links in RHS sidebar, tags but no categories.  Would needs translating to en and some fine-tuning of text (eg, removal of "Blog" title).
+
+- brownstone :: (2) main+teaser layout, nice but too stylish for me
+
+- BT3-Flat :: (0) picture-scroll-reveal style.  Looks like a damn startup company page.
+
+- buildtexts :: (2) last+teaser layout
+
+- burrito :: (0) failed =CRITICAL: TemplateSyntaxError: Encountered unknown tag 'assets'=
+
+
+- chunk :: (2) lots of unused space.  no distinction between links and categories
+
+- croswsfoot :: (2) unused space, but zoomable, teasers, images okay
+
+- foundation-default-colours :: (2) looks good, teaser indices, no archive, side bar
+
+- franticworld :: (0) too stylish
+
+- html5-dopetrope :: (0) 
+
+- irfan :: (0) failed
+
+- iris :: (1) looks nice but more for text, not great text rendering, long code lines don't wrap
+
+- jesuislibre :: (0)
+
+- lazystrap :: (0) failed
+
+- lightweight :: (2) looks nice, no tags, teaser indices, needs translations, background needs work
+
+- lovers :: (1) too bloggy, resizes dumbly
+
+- maggner-pelican :: (0) fails
+
+- martin-pelican :: (1) styled for mobile
+
+- martyalchin :: (1) somewhat broken, looks nice, not much navigation
+
+- mg :: (2) okay, looks like some MicroSoft-world blog, fonts are hard on the eyes
+
+- mnmlist :: (1) too much so
+
+- monospace :: (2) is what it claims to be, not enough differentiation between text and code, bad placements of nav
+
+- neat :: (1) no styling
+
+- nest :: (1) okay, gigantic header, but no nav
+
+- new-bootstrap :: (2) three column index with teasers, bad scaling
+
+- nikhil-theme :: (2) date-teaser columns for index, no archive/category nav, broken tag/category links
+
+- niu-x2 :: (0) failed
+
+- nmnmlist :: (1) too much so, just darker
+
+- notebook :: (1) chokes on pre-heading text
+
+- Nuja :: (2) full-article indices, wasted space
+
+- pelican-cait :: (1) wasted side space
+
+- pelican-simplgrey :: (2) bad scaling
+
+
+- plumage :: (2) bad nav, good scaling, teaser indices, scrolling code, 
+
+- pujanga :: (0) some script freaks firefox
+
+- pure :: (0) wasted side space
+
+- relapse :: (0) meh
+
+- Responsive-Pelican :: (2) it's okay.  not sure what's "responsive" about it
+
+- voidy-bootstrap :: (2) nav bad, wasted header
+
+- waterspill-en :: (1) cute, but too stylish
+
+
+
+

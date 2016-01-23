@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+Install Ubuntu with Cobbler
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-03-28 22:19:10<blockquote>Let's see if this is easier than FAI.</blockquote>
+<p>
+Following 
+</p>
+<ul class="org-ul">
+<li><a href="https://help.ubuntu.com/community/Cobbler">https://help.ubuntu.com/community/Cobbler</a>
+</li>
+</ul>
+
+<pre class="example">
+# apt-get install cobbler cobbler-web debmirror
+# cobbler check
+# cobbler get-loaders
+# service cobbler restart
+# cobbler sync
+task started: 2015-03-28_162453_sync
+task started (id=Sync, time=Sat Mar 28 16:24:53 2015)
+running pre-sync triggers
+cleaning trees
+mkdir: /var/lib/tftpboot/pxelinux.cfg
+mkdir: /var/lib/tftpboot/grub
+mkdir: /var/lib/tftpboot/images
+mkdir: /var/lib/tftpboot/s390x
+mkdir: /var/lib/tftpboot/ppc
+mkdir: /var/lib/tftpboot/etc
+removing: /var/lib/tftpboot/grub/images
+copying bootloaders
+copying: /var/lib/cobbler/loaders/pxelinux.0 -&gt; /var/lib/tftpboot/pxelinux.0
+copying: /var/lib/cobbler/loaders/menu.c32 -&gt; /var/lib/tftpboot/menu.c32
+copying: /usr/lib/syslinux/pxelinux.0 -&gt; /var/lib/tftpboot/pxelinux.0
+copying: /usr/lib/syslinux/menu.c32 -&gt; /var/lib/tftpboot/menu.c32
+copying: /usr/lib/syslinux/chain.c32 -&gt; /var/lib/tftpboot/chain.c32
+copying: /boot/memtest86+.bin -&gt; /var/lib/tftpboot/images/memtest86+.bin
+copying: /boot/memtest86+_multiboot.bin -&gt; /var/lib/tftpboot/images/memtest86+_multiboot.bin
+copying: /boot/memtest86+.elf -&gt; /var/lib/tftpboot/images/memtest86+.elf
+copying: /var/lib/cobbler/loaders/yaboot -&gt; /var/lib/tftpboot/yaboot
+copying: /usr/lib/syslinux/memdisk -&gt; /var/lib/tftpboot/memdisk
+copying: /var/lib/cobbler/loaders/grub-x86_64.efi -&gt; /var/lib/tftpboot/grub/grub-x86_64.efi
+copying: /var/lib/cobbler/loaders/grub-x86.efi -&gt; /var/lib/tftpboot/grub/grub-x86.efi
+copying distros to tftpboot
+copying images
+generating PXE configuration files
+generating PXE menu structure
+rendering TFTPD files
+generating /etc/xinetd.d/tftp
+cleaning link caches
+running post-sync triggers
+running python triggers from /var/lib/cobbler/triggers/sync/post/*
+running python trigger cobbler.modules.sync_post_restart_services
+running shell triggers from /var/lib/cobbler/triggers/sync/post/*
+running python triggers from /var/lib/cobbler/triggers/change/*
+running python trigger cobbler.modules.scm_track
+running shell triggers from /var/lib/cobbler/triggers/change/*
+*** TASK COMPLETE ***
+</pre>
+
+<p>
+Import ISO
+</p>
+
+<pre class="example">
+# wget http://releases.ubuntu.com/14.10/ubuntu-14.10-desktop-amd64.iso
+# mount -o loop ubuntu-14.10-desktop-amd64.iso /mnt
+# cobbler signature update
+# cobbler import --name=utopic --path=/mnt --breed=ubuntu
+No signature matched in /var/www/cobbler/ks_mirror/utopic
+!!! TASK FAILED !!!
+</pre>
+
+<p>
+Apparently no <a href="http://www.cobblerd.org/manuals/2.6.0/3/2/3_-_Distro_Signatures.html">distro signatures</a>.
+</p>
+
+<pre class="example">
+# cobbler signature update
+# cobbler signature report --name=ubuntu
+Currently loaded signatures:
+ubuntu:
+        lucid
+        oneiric
+        precise
+        quantal
+        raring
+        saucy
+        trusty
+
+Breed 'ubuntu' has 7 total signatures
+</pre>
+
+<pre class="example">
+# umount /mnt
+# wget http://releases.ubuntu.com/14.04/ubuntu-14.04.2-desktop-amd64.iso
+# mount -o loop ubuntu-14.04.2-desktop-amd64.iso /mnt
+# cobbler import --name=trusty --path=/mnt --breed=ubuntu
+</pre>
+
+<p>
+Same deal.  
+</p>
+
+<p>
+Okay, found 3 day old message on a <a href="https://github.com/cobbler/cobbler/issues/1331">GitHub issue</a> saying I really can't use Desktop, gotta use the server variant.
+</p>
+
+<pre class="example">
+# wget http://releases.ubuntu.com/14.04/ubuntu-14.04.2-server-amd64.iso
+# rm -rf /var/www/cobbler/ks_mirror/{trusty,ubuntu-14.04.2,ubuntu-desktop,utopic}
+# mount -o loop ubuntu-14.04.2-server-amd64.iso /mnt
+# cobbler import --name=ubuntu-14.04.2 --path=/mnt
+</pre>
+
+<p>
+Okay, completed.  Next.
+</p>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2015-03-28 22:19:10<br>
+  Revised: 2015-03-28 22:19:10<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

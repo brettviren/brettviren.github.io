@@ -1,0 +1,11 @@
+#+TITLE: Using Docker to do LBNE Builds
+#+DATE: [2014-12-20 Sat 12:21]
+#+DESCRIPTION: Docker is a way to make Linux containers.  Let's see how we can use them to increase the sanity level in building LBNE software.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Docker
+
+[https://www.docker.com/ Docker] provides a way to create Linux "containers" which are like  VM images but are more like =chroot= jails.  As such they run closer to the bare host and are less process intensive and quick to provision, start up and bring down.  Docker manages its images in a space-efficient manner and provides for versioning somewhat like one has with a git repository.
+
+The main benefit I see in using Docker is that I can precisely define the base Linux distribution hosting the build as well as exactly what additional OS-level modifications needed.  And I can do this on many different distributions without the overhead of buying dedicated hardware .  
+

@@ -1,0 +1,35 @@
+#+TITLE: A NAS To Build
+#+SUBTITLE: There's never enough disk space.
+#+CATEGORY: hardware
+#+TAGS: build,todo
+#+DATE: [2015-07-05 Sun 15:58]
+#+DESCRIPTION: Some notes for building a NAS.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Software
+
+ - FreeNAS (FreeBSD + management front end)
+
+ - [[http://www.openmediavault.org/][OpenMediaVault]] like above but on Linux
+
+ - [[http://snapraid.sourceforge.net][SnapRAID]] userland backup-by-RAID
+
+* Possible hardware
+
+Requirements are an exercise in contradictions
+
+- lowish electrical power but enough CPU to handle Plex transcoding and streaming.  
+
+- smallish case but enough room for at least 4 3.5 HDD and one 2.5 SSD
+
+** Avoton
+
+ - ASRock [[http://www.newegg.com/Product/Product.aspx?Item=N82E16813157419][C2550D4I]] (4 core) or [[http://www.newegg.com/Product/Product.aspx?Item=N82E16813157475][C2750D4I]] (8 core) Avoton. 8xSATA3, 4xSATA2, 4 DDR3 max 64GB.  Also on [[http://www.amazon.com/gp/product/B00HIDQG6E][amazon]]. ($300/$400)
+- Mini-ITX [[http://www.newegg.com/Product/Product.aspx?Item=N82E16811163255][SilverStone DS380B]] 8 hotswap front bays for 3.5 inch, 4 internal for 2.5 inch, 2x USB3.  Also on [[http://www.amazon.com/gp/product/B00IAELTAI/][amazon]]. ($150)
+- 2x8GB ECC DDR3 1600MT/s ($150)
+- PS [[https://www.amazon.com/gp/product/B00FA4KP8S][Silverstone 300W]] ($50)
+- HDD [[https://www.amazon.com/gp/product/B005T3GRLY][Seagate 3TB]] ($90 per)
+
+WIth 4 disks this is a ~$1200 build.
+
+The apparent high cost of the mobo+cpu is not that high.  There are no comparable AMD systems which have at least 8 SATA3 and mini-ITX form.  The ones that get close are approaching $300.

@@ -1,0 +1,140 @@
+#+TITLE: Building with waf
+#+DATE: [2014-03-01 Sat 09:56]
+#+MODIFIED: [2015-03-01 Sat 09:56]
+#+DESCRIPTION: Making a better build system with waf.
+#+SUBTITLE: Making a better build system with waf.
+#+CATEGORY: Build
+#+TAGS: overview,waf
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+The venerable workhorse of building software has long been [[https://www.gnu.org/software/make/][=make=]] driven by its quirky and sometimes cryptic =Makefile= configurations.  Anytime I must write even a moderately complex build system based on =make= I dream of having a simple, consistent and real programming language to describe the configuration instead of the language of a =Makefile=.  Lacking it, when I use =make= I end up relying on a zoo of external tools which leads to a hodgepodge.
+
+At some point I came across [[http://www.scons.org/][=scons=]] and thought my wishes were answered.  It uses the lovely Python programming language so must be perfect. Unfortunately as I tried to use it I found a few problems and personal dislikes.  It was difficult to extend and I found the built-in functionality awkward.  These are admittedly very personal judgments.
+
+More recently I came across [[https://code.google.com/p/waf/][=waf=]] and found it just about exactly what I was looking for.  It uses Python, it can be extended easily (it forms the basis of my meta-build system [[https://github.com/brettviren/worch][worch]]).  It has good, if not great [[http://docs.waf.googlecode.com/git/][documentation]].  This latter issue is what this topic is meant to address.  It is written to collect my understanding as a user of waf and hopefully fill a needed gap.  It tries to provide concrete examples of how to do various things and refer to the official documentation wherever possible.
+
+* Gestalt of waf
+
+Waf is like =make= but with a =Makefile= called =wscript= and written in Python.  Waf is unlike in several ways:
+
+- waf can be [[http://docs.waf.googlecode.com/git/book_17/single.html#_writing_re_usable_waf_tools][extended]] by providing Python modules loaded through =wscript= files
+
+- waf can be [[http://docs.waf.googlecode.com/git/book_17/single.html#_obtaining_the_waf_file][bundled]] along with extensions to provide a single executable that performs specific tasks
+
+- waf is cross-platform, no compilation needed and can be included as a single file along with the project it builds
+
+- waf is parallel by default, it will run tasks as parallel as possible constrained by available CPU, dependencies or any limits imposed by the user
+
+
+* The waf configuration file
+
+Waf expects to find a file called =wscript= in the current directory.  
+
+** Commands
+
+Functions in this file become exposed through waf as command line commands.  For example:
+
+#+INCLUDE: "examples/commands/wscript" src python
+
+can be exercised as:
+
+#+BEGIN_SRC sh :results value code :exports both :wrap EXAMPLE 
+  cd examples/commands/
+  waf chirp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+<waflib.Context.Context object at 0x28c0090>
+'chirp' finished successfully (0.000s)
+#+END_EXAMPLE
+
+
+** Context object
+
+A waf command function is given a context object.  This context object may be specialized depending on the function called.  The figure from the  [[http://docs.waf.googlecode.com/git/apidocs_17/Context.html][context reference docs]] shows the inheritance:
+
+#+CAPTION: Inheritance of context classes.  Note, the arrows are reversed from the sense they would be drawn in a UML inheritance diagram. 
+#+NAME: fig:context-inheritance
+[[./context-inheritance.png]]
+
+* Predefined commands
+
+Certain commands are reserved and treated special by waf.
+
+** Options
+
+The =options(ctx)= function will be passed an [[http://docs.waf.googlecode.com/git/apidocs_17/Options.html][options]] context object.  This function can be used to define command line options that waf will recognize on behalf of the project.
+
+#+INCLUDE: "examples/options/wscript" src python
+
+#+BEGIN_SRC sh  :results value code :exports both :wrap EXAMPLE 
+  cd examples/options/
+  waf --extra='Just a bit of extra stuff' chirp
+#+END_SRC
+
+** Configure
+
+The =configure(cfg)= function is passed a [[http://docs.waf.googlecode.com/git/apidocs_17/Configure.html][configuration]] context object.  This function can be used to persist any information between other command calls.  On possible use is to make command line options persisted.
+
+#+INCLUDE: "examples/configure/wscript" src python
+
+#+BEGIN_SRC sh  :results value code :exports both :wrap EXAMPLE 
+  cd examples/configure/
+  waf -x 'Persist This' configure 
+  echo "Configure done"
+  waf
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+Setting top to                           : /home/bv/org-pub/topics/waf/examples/configure 
+Setting out to                           : /home/bv/org-pub/topics/waf/examples/configure/build 
+'configure' finished successfully (0.003s)
+Configure done
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/configure/build'
+The little bit of extra is: "Persist This"
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/configure/build'
+'build' finished successfully (0.002s)
+#+END_EXAMPLE
+
+** Build
+
+In the =build(bld)= function is where one describes to waf how to build everything.    It is passed a [[http://docs.waf.googlecode.com/git/apidocs_17/Build.html][build]] context object.  There are several ways to do this but a simple and powerful way is to declare a task generator by calling =bld= as a callable object.
+
+#+INCLUDE: "examples/build/wscript" src python
+
+#+BEGIN_SRC sh  :results value code :exports both :wrap EXAMPLE 
+  cd examples/build
+  rm -rf build install
+  waf --prefix=install configure build install
+  ls -l build
+  ls -l install/examples
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+Setting top to                           : /home/bv/org-pub/topics/waf/examples/build 
+Setting out to                           : /home/bv/org-pub/topics/waf/examples/build/build 
+'configure' finished successfully (0.003s)
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/build/build'
+[1/2] one.txt:  -> build/one.txt
+[2/2] two.txt: build/one.txt -> build/two.txt
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/build/build'
+'build' finished successfully (0.015s)
+Waf: Entering directory `/home/bv/org-pub/topics/waf/examples/build/build'
++ install /home/bv/org-pub/topics/waf/examples/build/install/examples/one.txt (from build/one.txt)
++ install /home/bv/org-pub/topics/waf/examples/build/install/examples/two.txt (from build/two.txt)
+Waf: Leaving directory `/home/bv/org-pub/topics/waf/examples/build/build'
+'install' finished successfully (0.005s)
+total 16
+drwxr-xr-x 2 bv bv 4096 Mar  1 19:10 c4che
+-rw-r--r-- 1 bv bv  376 Mar  1 19:10 config.log
+-rw-r--r-- 1 bv bv   29 Mar  1 19:10 one.txt
+-rw-r--r-- 1 bv bv   58 Mar  1 19:10 two.txt
+total 8
+-rw-r--r-- 1 bv bv 29 Mar  1 19:10 one.txt
+-rw-r--r-- 1 bv bv 58 Mar  1 19:10 two.txt
+#+END_EXAMPLE
+
+In this example two files are created, =one.txt= out of thin air and =two.txt= based on =one.txt=.  Both of these files are then installed into a location based on the value of =PREFIX= which is set by the standard waf =--prefix= command line option.  A task is generated for each invocation of =bld()= as set by the =rule=.  Here the rule is a [[http://docs.waf.googlecode.com/git/book_16/single.html#_scriptlet_expressions][scriptlet]] which is essentially a shell script command with some string interpolation.  As can be seen, file redirection and other shell operators can be used.

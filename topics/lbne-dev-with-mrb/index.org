@@ -1,0 +1,41 @@
+#+TITLE: Developing LBNE code with =mrb=
+#+DATE: [2014-04-22 Tue 12:39]
+#+DESCRIPTION: Notes on how to use =mrb= to develop LBNE code.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+Fermilab pushes the use of a fairly new tool called =mrb= developed by Fermilab (by Lynn?) for developing packages built with art-flavor =CMakeList.txt= files.  This includes larsoft and lbnecode and is intimately entwined with UPS and all that entails. 
+
+This topic holds notes on attempts at following this paradigm.
+
+* Links
+
+- [[https://cdcvs.fnal.gov/redmine/projects/larsoft/wiki/_Quick-start_guide_to_using_and_developing_LArSoft_code_][Quick-start guide to using and developing LArSoft code]] (very long)
+- [[http://lbne2-docdb.fnal.gov:8080/cgi-bin/ShowDocument?docid=8441][LBNE DocDB 8441]] "Introduction to LArSoft under git / mrb / ups"
+
+* Exercising it on RACF
+
+** First try
+
+An initial [[./racf-try.org][try]] on RACF based on 8441.
+
+Executive summary: mrb considered dangerous. 
+
+Details of problems of first attempt:
+
+- =mrb -h= does not work.  The error at least says one must set some =MRB_PROJECT= variable to the "master product" whatever that means.
+- =mrb newDev= command doc says it has not required options but it does actually require =-v= and =-q=
+- There is no version involved in development of a package, and certainly not a set of packages so this version is bogus at face value
+- Specifying qualifiers is meaningless as they have to do with release quantities and mrb is supposed to be about development and anyways, qualifiers it wants only pertain to Fermilab-local installation details.
+- "git flow" is required by mrb and it is available as a UPS packaged yet the user must know to "=setup gitflow=".  Instead, "setup mrb" should be enough and "gitflow" should be set up implicitly as a dependency
+- after manually doing "=setup gitflow=" and repeating the =mrb gitCheckout= it fails.  The step is neither atomic nor  idempotent.  Apparently the only solution is to nuke the directory and repeat.
+- repeating "=mrb newDev=" after nuking the area gives a cryptic warning message about some directory not being a directory.  I guess this is due to running it in an previous set up user environment?
+- sourcing the "=localProducts*/setup=" script grows the =PRODUCTS= variable each time with duplicate entries.
+- mrb only partly hides what it does but still requires the user to know and adhere to a directory structure and it is a directory structure that it sets the conventions for.  Commands are directory dependent and it's up to the user to be clairvoyant to know these details. 
+- finally after wading through all these problems I try to actually build =lbnecode= which is all I wanted in the first place and it fails due to me apparently not guessing correctly about the "release" qualifiers to use for this development code.
+
+This =mrb= software has absolutely no business being released.  I can't believe people put up with this lack of quality and usability.
+
+** Second try
+
+A [[./racf-try2.org][second try]] was then made with an attempt to work around the problems with mrb.  It was successful.
+

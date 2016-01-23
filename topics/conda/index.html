@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Overview</a></li>
+<li class="">
+  <a href="#sec-2">2. Links</a></li>
+<li class="">
+  <a href="#sec-3">3. Install =conda=</a></li>
+<li class="">
+  <a href="#sec-4">4. Try to install ROOT</a></li>
+<li class="">
+  <a href="#sec-5">5. Make a Conda environment</a></li>
+<li class="">
+  <a href="#sec-6">6. Build up explicit devel env</a></li>
+<li class="">
+  <a href="#sec-7">7. One more try:</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+Using Conda To Package Stuff
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2014-11-22 18:08:13(revised 2015-06-21 21:48:18 )<blockquote>Oh dear, worch may just have been obsoleted.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I was looking through SciPy 2014 talks and found a talk on something called "Conda".  This takes pip to the level of handling builds.  It uses the same idea of "shims" scripts that I gave to Fermilab plus a worch like engine to do installation+build.  The install layout is single-rooted and uses Nix-like behavior using hardlinking instead of soft to produce derived distributions.  The packages are relocatable, not just in the trivial surface manner as UPS packages but goes into executables and scripts to make sure build paths are made relocatable.
+</p>
+
+<p>
+It has a huge body of build recipes which includes GCC, BOOST and ROOT (no Geant4).
+</p>
+
+<p>
+In short, worch may be dead, UPS may be dead, mrb may be dead.  Long live Conda.
+</p>
+
+<p>
+Well, let's see.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Links</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><a href="https://conference.scipy.org/scipy2014/schedule/presentation/1708/">Sci Py 2014 Conda Abstract</a>
+</li>
+<li><a href="http://pyvideo.org/video/2735/conda-a-cross-platform-package-manager-for-any-b">pyvideo entry</a> with link to the presentation video at YouTube
+</li>
+<li><a href="http://conda.pydata.org/">Conda home page</a>
+</li>
+<li><a href="http://conda.pydata.org/docs/intro.html">Conda docs</a>
+</li>
+<li><a href="http://www.continuum.io/blog/conda">Blog entry</a> with some description, Continuum support Conda devel
+</li>
+<li><a href="https://binstar.org">Binstar</a> is like github+pypi
+</li>
+<li><a href="http://docs.binstar.org/">Binstar docs</a>
+</li>
+<li><a href="https://binstar.org/brettviren">My binstar account</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Install <code>conda</code></h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The package management is through a single <code>conda</code> program.  
+</p>
+
+<p>
+It looks like I can use pip to get it, but it needs <code>libyaml-dev</code>:
+</p>
+
+<pre class="example">
+$ sudo apt-get install libyaml-dev
+$ pip install --user conda
+</pre>
+
+<p>
+But there is also <a href="http://conda.pydata.org/miniconda.html">miniconda</a> to try:
+</p>
+
+<pre class="example">
+$ sudo apt-get remove --purge libyaml-dev 
+$ wget http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Linux-x86_64.sh
+$ bash Miniconda3-3.7.3-Linux-x86_64.sh
+(pick install location)
+$ export PATH=/home/bv/opt/miniconda3/bin:$PATH
+$ conda install conda-build
+$ conda install binstar
+</pre>
+
+<p>
+This installs Python 3.4 and other stuff into the "root environment".
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Try to install ROOT</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Let's see if we can get ROOT installed via <code>conda</code> without trying too hard
+</p>
+
+<pre class="example">
+$ conda search root
+Fetching package metadata: ..
+</pre>
+
+<p>
+Hmm, nothing&#x2026;.  It probably needs to be pointed at the collection of recipes on GitHub.
+</p>
+
+<pre class="example">
+$ git clone https://github.com/conda/conda-recipes.git
+$ conda build conda-recipes/root
+</pre>
+
+<p>
+This fails at test.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Make a Conda environment</h2>
+<div class="outline-text-2" id="text-5">
+<pre class="example">
+$ conda create -n rootenv-py27 python=2
+$ source activate rootenv-py27
+$ binstar search -t conda root
+...
+     jsw-fnal/root_numpy       |    3.3.1 | conda           | linux-64       
+                                          : An interface between ROOT and NumPy
+     jsw-fnal/rootpy           |    0.7.1 | conda           | linux-64       
+                                          : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+     kcolletti1/rootpy         |    0.7.1 | conda           | linux-64       
+                                          : A pythonic layer on top of the ROOT framework's PyROOT bindings.
+     zhenxieit/root            |  5.99.05 | conda           | linux-64       
+                                          : http://root.cern.ch
+...
+$ conda install --channel https://conda.binstar.org/zhenxieit root
+</pre>
+
+<p>
+That gets ROOT installed but in what I think is a wrong location.  I can try the usual setup:
+</p>
+
+<pre class="example">
+$ source miniconda3/envs/rootenv-py27/root/bin/thisroot.sh
+</pre>
+
+<p>
+But, starting ROOT crashes and burns.  Maybe due to it being version 5.99.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Build up explicit devel env</h2>
+<div class="outline-text-2" id="text-6">
+<pre class="example">
+$ conda create -n gcc29py27 python=2 
+$ source activate gcc29py27
+</pre>
+
+<p>
+Now, let's build GCC
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/gcc-4.9
+There was an error importing jinja2.
+Please run `conda install jinja2` to enable jinja template support
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: gmp &gt;=4.3.2
+</pre>
+
+<p>
+Hmm&#x2026;.
+</p>
+
+<pre class="example">
+$ ls -d conda-recipes/gmp*
+conda-recipes/gmp  conda-recipes/gmp-4  conda-recipes/gmpy  conda-recipes/gmpy2
+</pre>
+
+<p>
+That first one is v5.  Use the second explicitly:
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/gmp-4
+...
+====================================
+1 of 58 tests failed
+Please report to gmp-bugs@gmplib.org
+====================================
+make[4]: *** [check-TESTS] Error 1
+make[4]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+make[3]: *** [check-am] Error 2
+make[3]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests/mpz'
+make[2]: *** [check-recursive] Error 1
+make[2]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2/tests'
+make[1]: *** [check-recursive] Error 1
+make[1]: Leaving directory `/home/bv/projects/conda/miniconda3/conda-bld/work/gmp-4.3.2'
+make: *** [check] Error 2
+Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gmp-4/build.sh
+</pre>
+
+<p>
+Try again with <code>make check</code> commented out again.  Complete, and install like:
+</p>
+
+<pre class="example">
+$ conda install -n gcc29py27 miniconda3/pkgs/gmp-4.3.2-0.tar.bz2
+</pre>
+
+<p>
+Now, have to repeat this manually with all build dependencies. (?)
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/mpfr
+$ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+$ conda build conda-recipes/mpc
+BUILD START: mpc-1.0.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: mpfr
+</pre>
+
+<p>
+Dunno.  Copying the built package seemed to get things going
+</p>
+
+<pre class="example">
+$ cp miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+$ conda build -b conda-recipes/mpc
+$ rm miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part
+$ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+$ mv mpc-1.0.1.tar.gz miniconda3/conda-bld/src_cache/
+$ conda build -b conda-recipes/mpc
+$ conda build -b conda-recipes/isl
+</pre>
+
+<p>
+Then, the <code>mpc</code> source download failed half way through.  Dunno why.  Remove the part and <code>wget</code> the source into place manually.  Then <code>mpc</code> is built and so is <code>isl</code>.  Now:
+</p>
+
+<pre class="example">
+$ conda build -b conda-recipes/gcc-4.9
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: mpc &gt;=0.8.1
+</pre>
+
+<p>
+WTF.  Where did <code>mpc</code> package go?  It builds but never makes a <code>.tar.bz2</code> package.    redoing the build but now without <code>-b</code> makes the package.  This is driving me batty.
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/mpc
+$ conda build conda-recipes/isl
+$ conda build conda-recipes/cloog
+</pre>
+
+<p>
+Arg, cloog wants gmp 5.
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/gmp
+$ conda build conda-recipes/cloog
+$ conda build conda-recipes/gcc-4.9
+BUILD START: gcc-4.9.1-0
+Fetching package metadata: ...
+Error: No packages found in current linux-64 channels matching: cloog 0.18.1
+</pre>
+
+<p>
+Version shear, I guess <code>cloog</code> recipe isn't updated.  Let's build GCC 4.8 instead.
+</p>
+
+<pre class="example">
+$ conda build conda-recipes/gcc-4.8
+checking for version 0.10 of ISL... no
+checking for version 0.11 of ISL... no
+checking for version 0.12 of ISL... no
+configure: error: Unable to find a usable ISL.  See config.log for details.
+Command failed: /bin/bash -x -e /home/bv/projects/conda/conda-recipes/gcc-4.8/build.sh
+</pre>
+
+<p>
+WTF.
+</p>
+
+<pre class="example">
+$ conda install miniconda3/pkgs/gmp-5.1.2-5.tar.bz2 
+$ conda install miniconda3/pkgs/mpfr-3.1.2-0.tar.bz2 
+$ conda install miniconda3/pkgs/mpc-1.0.1-0.tar.bz2 
+$ conda install miniconda3/pkgs/isl-0.12.2-1.tar.bz2 
+$ conda build conda-recipes/gcc-4.8
+</pre>
+
+<p>
+I have no idea what I'm doing.
+</p>
+
+<p>
+Same failure.  Checking GCC <code>config.log</code> shows undefined ref to GMP symbol in isl.  This is probably due to me switching to GMP5 after building ISL.  Ya think?
+</p>
+
+<pre class="example">
+$ conda remove isl
+$ rm -r ./miniconda3/pkgs/isl-0.12.2-1*
+$ conda build conda-recipes/isl
+$ conda build conda-recipes/gcc-4.8
+</pre>
+
+<p>
+This craps out again.  That's enough crap for now.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> One more try:</h2>
+<div class="outline-text-2" id="text-7">
+<pre class="example">
+$ bash Miniconda3-3.7.3-Linux-x86_64.sh 
+$ which conda
+$ export PATH=/opt/bv/projects/conda/miniconda3/bin:$PATH
+$ conda update conda
+$ conda install conda-build
+$ conda build conda-recipes/gmp
+$ conda build conda-recipes/mpc
+$ conda install gmp
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gmp-5.1.2-5.tar.bz2
+$ conda build conda-recipes/mpc
+$ conda build conda-recipes/mpfr
+$ find . -name 'mpfr*.bz2'
+$ tar -tvf ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2
+$ cp ./miniconda3/conda-bld/broken/mpfr-3.1.2-0.tar.bz2 miniconda3/conda-bld/linux-64/
+$ conda install miniconda3/conda-bld/linux-64/mpfr-3.1.2-0.tar.bz2 
+$ conda build conda-recipes/mpc
+$ ls /opt/bv/projects/conda/miniconda3/conda-bld/src_cache
+$ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+$ conda build conda-recipes/mpc
+$ find . -name 'mpc*'
+$ cat ./conda-recipes/mpc/meta.yaml 
+$ wget http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+$ mv mpc-1.0.1.tar.gz /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/
+$ rm /opt/bv/projects/conda/miniconda3/conda-bld/src_cache/mpc-1.0.1.tar.gz.part 
+$ conda build conda-recipes/mpc
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/mpc-1.0.1-0.tar.bz2
+
+$ conda build conda-recipes/isl
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/isl-0.12.2-1.tar.bz2
+$ conda build conda-recipes/cloog
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/cloog-0.18.0-0.tar.bz2
+$ conda build conda-recipes/gcc-4.8
+$ conda install /opt/bv/projects/conda/miniconda3/conda-bld/linux-64/gcc-4.8.2-2.tar.bz2
+</pre>
+
+<p>
+Okay, success.
+</p>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2014-11-22 18:08:13<br>
+  Revised: 2015-06-21 21:48:18<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

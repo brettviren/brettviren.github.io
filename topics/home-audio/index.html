@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Overview</a></li>
+<li class="">
+  <a href="#sec-2">2. Streaming methods</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-1">2.1. MPD + RTP + Pulse</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-1-1">2.1.1. Overview</a></li>
+<li class="">
+  <a href="#sec-2-1-2">2.1.2. Server</a></li>
+<li class="">
+  <a href="#sec-2-1-3">2.1.3. Receiver</a></li>
+<li class="">
+  <a href="#sec-2-1-4">2.1.4. Conclusions</a></li></ul></li>
+<li class="">
+  <a href="#sec-2-2">2.2. p4sync</a></li>
+<li class="">
+  <a href="#sec-2-3">2.3. SyncPlay</a></li>
+<li class="">
+  <a href="#sec-2-4">2.4. Logitech Media Streamer</a></li>
+<li class="">
+  <a href="#sec-2-5">2.5. Gstreamer</a></li>
+<li class="">
+  <a href="#sec-2-6">2.6. Icecast</a></li>
+<li class="">
+  <a href="#sec-2-7">2.7. Jack</a></li>
+<li class="">
+  <a href="#sec-2-8">2.8. Liquidsoap</a></li></ul></li>
+<li class="">
+  <a href="#sec-3">3. Timing</a><ul class="nav">
+<li class="">
+  <a href="#sec-3-1">3.1. Chrony</a></li></ul></li>
+<li class="">
+  <a href="#sec-4">4. PTPd</a></li>
+<li class="">
+  <a href="#sec-5">5. Debian on BBB</a><ul class="nav">
+<li class="">
+  <a href="#sec-5-1">5.1. Initial install</a></li>
+<li class="">
+  <a href="#sec-5-2">5.2. Pair down</a></li>
+<li class="">
+  <a href="#sec-5-3">5.3. Upgrade to jessie</a></li></ul></li>
+<li class="">
+  <a href="#sec-6">6. Build aurena</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+Better Music With Free Software
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-01-19 11:09:53<blockquote>Setting up audio at home.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The house has a couple of audio receivers that can take the usual gamut of analogue as well as optical S/PDIF and one can also take HDMI inputs.  There are also a collection of powered computer speakers.
+</p>
+
+<p>
+On the computer front, there is a relatively powerful desktop workstation (<code>haiku</code>, i7) and an older desktop (<code>hype</code>, Athlon II), a few laptops, a Raspberry Pi (<code>rpi</code>, rev B) and a BeagleBone Black (<code>bbb</code>, rev C).  All computers run some flavor or derivative of Debian.  
+</p>
+
+<p>
+Little gizmos include a half dozen Android devices in the form of phones, ex-phones and tablets and two Roku.
+</p>
+
+<p>
+The goal here is to have a way to play audio throughout the house with these features:
+</p>
+
+<ul class="org-ul">
+<li>Central location for audio files.
+</li>
+<li>Synchronized play on multiple "receivers".
+</li>
+<li>Limiting to one receiver.
+</li>
+<li>Control via Android.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Streaming methods</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> MPD + RTP + Pulse</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Try following this work:
+</p>
+
+<ul class="org-ul">
+<li><a href="http://www.hackerposse.com/~rozzin/journal/whole-home-pulseaudio.html">http://www.hackerposse.com/~rozzin/journal/whole-home-pulseaudio.html</a>
+</li>
+<li><a href="https://fruit.je/mpd-rtp">https://fruit.je/mpd-rtp</a>
+</li>
+<li><a href="http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/RTP/">http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/RTP/</a>
+</li>
+<li><a href="http://nickschicht.wordpress.com/2013/08/15/raspberry-pi-mpd-streaming-using-pulseaudio/">http://nickschicht.wordpress.com/2013/08/15/raspberry-pi-mpd-streaming-using-pulseaudio/</a>
+</li>
+<li><a href="http://anarcat.koumbit.org/2013-02-03-live-radio-streaming-mpd-part-1-multicast-rtp">http://anarcat.koumbit.org/2013-02-03-live-radio-streaming-mpd-part-1-multicast-rtp</a>
+</li>
+<li><a href="http://www.raspberrypi.org/forums/viewtopic.php?f=38&t=25684&start=25">thread with main players linked</a>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Overview</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Run MPD on one server
+</li>
+<li>Run Pulse on receivers 
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Server</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+On <code>haiku</code>:
+</p>
+
+<pre class="example">
+# apt-get install mpd
+</pre>
+
+<p>
+In <a href="file:///etc/mpd.conf">file:///etc/mpd.conf</a> add/change:
+</p>
+<pre class="example">
+bind_to_address         "0.0.0.0"
+
+audio_output {
+            type            "pulse"
+            name            "MPD Stream"
+            sink            "rtp"
+            description     "RTP from MPD"
+            mixer_type      "software"
+}
+</pre>
+
+<p>
+In <a href="file:///etc/pulse/default.pa">file:///etc/pulse/default.pa</a> add
+</p>
+<pre class="example">
+load-module module-null-sink sink_name=rtp format=s16be channels=2 rate=44100
+load-module module-rtp-send source=rtp.monitor
+</pre>
+
+<p>
+Also symlink some audio directories into <code>/var/lib/music</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-3" class="outline-4">
+<h4 id="sec-2-1-3"><span class="section-number-4">2.1.3</span> Receiver</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+On <code>rpi</code> (running <code>2014-12-24-wheezy-raspbian.img</code>).
+</p>
+
+<pre class="example">
+# apt-get update
+# apt-get install pulseaudio pavucontrol
+</pre>
+
+<p>
+And, add to its <code>/etc/pulse/default.pa</code>
+</p>
+
+<pre class="example">
+load-module module-rtp-recv
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-4" class="outline-4">
+<h4 id="sec-2-1-4"><span class="section-number-4">2.1.4</span> Conclusions</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+I can get the server side working so that I can use mplayer to play on <code>rpi</code>.  The play back is sometimes choppy.  This is fully on GbE wire.  From a wireless laptop there is more dropout than audio.  This sucks.
+</p>
+
+<p>
+I can get <code>rpi</code> pulseaudio working to play with <code>pacmd play-file &lt;file&gt; &lt;sink&gt;</code>.  I can also see pulseaudio accepting RTP traffic but I can not figure out how to make it forward this to the actual sound card sink.  Double sucks. 
+</p>
+
+<p>
+Try another tack.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> p4sync</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<a href="https://snarfed.org/synchronizing_mp3_playback">https://snarfed.org/synchronizing_mp3_playback</a>
+</p>
+
+<p>
+Build issues
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> SyncPlay</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+<a href="http://syncplay.pl/">http://syncplay.pl/</a>
+</p>
+
+<p>
+Meant for videos.  Meant to sync well enough for people to irc/mumble about a shared viewing of a video.  Unclear what level of sync that is but I suspect not good enough.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Logitech Media Streamer</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Free of charge server, Free Software clients (Squeezelite)
+</p>
+
+<p>
+<a href="http://www.mysqueezebox.com/download">http://www.mysqueezebox.com/download</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> Gstreamer</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+See <a href="./gstreamer.html">./gstreamer.html</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> Icecast</h3>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> Jack</h3>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="section-number-3">2.8</span> Liquidsoap</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Timing</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The method requires each computer playing a stream to have its clock synchronized with the server.  Their absolute time accuracy is not a concern.  Keeping computer clocks synced to a second is easy.  Getting that sync down to a millisecond become a challenge.  There is lots of work on this topic:
+</p>
+
+<ul class="org-ul">
+<li><a href="http://www.ntp.org/ntpfaq/NTP-s-sw-clocks-quality.htm">NTP FAQ entry</a> defining terms of the art and with some analysis of clocks
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Chrony</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+I compared the clocks on the RPI and the BBB using <code>clockdiff</code> run from the media server.  With both running NTP, the RPi seems synced and stable but the BBB is way off and drifts up and down.  I switched all three computers to Chrony and ran <code>clockdiff</code> against the two overnight.  The results are shown below.  The BBB is black and the RPi is red (as is fitting!).
+</p>
+
+<p>
+Full series
+</p>
+
+<div class="figure">
+<p><img src="./sync.svg" alt="sync.svg" width="80%" align="center" />
+</p>
+</div>
+
+<p>
+Zoom into the start.  I don't know what that big jump is but <code>ntpdate</code> is still installed on the media server so it may have had it's own clock updated at that point.
+</p>
+
+<div class="figure">
+<p><img src="./sync-zoom-to-start.svg" alt="sync-zoom-to-start.svg" width="80%" align="center" />
+</p>
+</div>
+
+<p>
+Zoom the Y-axis to better see long-term small effects.  Eventually the sync within 1ms or less.
+</p>
+
+<div class="figure">
+<p><img src="./sync-zoom-long-term.svg" alt="sync-zoom-long-term.svg" width="80%" align="center" />
+</p>
+</div>
+
+<p>
+After a couple of hours, the long-term timing measurements from these plots are given in the table below:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">measure</td>
+<td class="right">rpi (ms)</td>
+<td class="right">bbb (ms)</td>
+</tr>
+
+<tr>
+<td class="left">full avg</td>
+<td class="right">0.10</td>
+<td class="right">0.98</td>
+</tr>
+
+<tr>
+<td class="left">full RMS</td>
+<td class="right">0.97</td>
+<td class="right">4.42</td>
+</tr>
+
+<tr>
+<td class="left">l.t. avg</td>
+<td class="right">0.03</td>
+<td class="right">-0.19</td>
+</tr>
+
+<tr>
+<td class="left">l.t. RMS</td>
+<td class="right">0.42</td>
+<td class="right">0.42</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Here, "full" means the entire time while "l.t." means the long term measure after about two hours.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> PTPd</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="http://en.wikipedia.org/wiki/Precision_Time_Protocol">Precision Time Protocol</a> is for sync across the LAN.  
+</p>
+
+<p>
+The version on the rpi/bbb is 2.3.0 while on Ubuntu 14.04 it is 2.2.2.  The command line options have changed between versions.  
+</p>
+
+<p>
+Following <a href="http://grepjuice.com/synchronizing-server-time-with-ptpd/">this blog entry</a> I test on rpi/bbb (2.3.0) with:
+</p>
+
+<pre class="example">
+$ sudo ptpd -b eth0 -g -C -D -E --e2e
+</pre>
+
+<p>
+and on the server (2.2.2) with:
+</p>
+
+<pre class="example">
+$ sudo ptpd -G -b eth0 -c -D
+</pre>
+
+<p>
+That seems to go well and checking with <code>clockdiff</code> gives mostly 0's.
+</p>
+
+<p>
+Make it stick in <code>/etc/default/ptpd</code> and start the daemons proper.  On rpi/bbb:
+</p>
+
+<pre class="example">
+START_DAEMON=yes
+PTPD_OPTS="-i eth0 -s -E --e2e -f /var/log/ptpd.log"
+</pre>
+
+<p>
+Note, in trying to add "<code>-D</code>" on bbb it shows:
+</p>
+
+<pre class="example">
+Runtime debug not enabled. Please compile with RUNTIME_DEBUG
+</pre>
+
+<p>
+Trying "<code>-V</code>" is too verbose for logging but it does who high precision offsets.
+</p>
+
+<p>
+On server:
+</p>
+
+<pre class="example">
+START_DAEMON=yes
+PTPD_OPTS="-b eth0 -G"
+</pre>
+
+<p>
+This brings rpi/bbb solidly into the 0ms bin according to <code>clockdiff</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Debian on BBB</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Initial install</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>Got wheezy image from <a href="http://beagleboard.org/latest-images">http://beagleboard.org/latest-images</a>
+</li>
+<li><code>xz -cb image.xz &gt; /dev/mmcblk0</code>
+</li>
+<li>Move to BBB, power up with user/boot button pressed
+</li>
+<li>can log in via SSH almost immediately (<code>root</code> and no password) but wait for flash to finish.  The BBB will power down
+</li>
+<li>remove SD card and power back up
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Pair down</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Remove all stuff related to running an X11 server session.
+</p>
+
+<pre class="example">
+# apt-get remove --purge xserver-xorg-core
+# apt-get remove --purge  lxpanel lxsession lxterminal lxmenu-data lxde-core lxde-common lightdm lightdm-gtk-greeter
+# apt-get remove --purge gnome-icon-theme gnome-keyring gnome-themes-standard gnome-themes-standard-data
+# apt-get remove --purge gsettings-desktop-schemas xscreensaver xscreensaver-data xserver-common
+# apt-get autoremove --purge
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="section-number-3">5.3</span> Upgrade to jessie</h3>
+<div class="outline-text-3" id="text-5-3">
+<ul class="org-ul">
+<li>edit <code>/etc/apt/sources.list</code> and add a <code>jessie</code> line for each existing <code>wheezy</code> one.  Note, the <code>beaglboard.org</code> one doesn't have a <code>jessie</code> counterpart.
+</li>
+<li><code>apt-get dist-upgrade</code>
+</li>
+<li><code>apt-get autoremove --purge</code>
+</li>
+<li><code>apt-get clean</code>
+</li>
+<li><code>reboot</code>
+</li>
+</ul>
+
+<p>
+Note: some problem upgrading <code>udev</code>.
+</p>
+
+<p>
+Remove all GStreamer 0.10 and install 
+</p>
+<pre class="example">
+# apt-get install libgstreamer1.0-dev gstreamer1.0-tools gstreamer1.0-plugins-base libgstreamer-plugins-base1.0-dev
+# apt-get install autoconf automake
+# apt-get install libjson-glib-dev libavahi-glib-dev libsoup2.4-dev libgtk-3-dev
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Build aurena</h2>
+<div class="outline-text-2" id="text-6">
+<pre class="example">
+$ git clone https://github.com/thaytan/aurena.git
+$ cd aurena
+$ ./autogen.sh
+$ make
+</pre>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2015-01-19 11:09:53<br>
+  Revised: 2015-01-19 11:09:53<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="/static/highlight/highlight.pack.js"></script>
+    
+    <script src="/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

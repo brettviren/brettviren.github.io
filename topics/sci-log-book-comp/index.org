@@ -1,0 +1,85 @@
+#+TITLE: Comparison of Online Scientific Logbooks
+#+DATE: [2014-07-15 Tue 14:18]
+#+DESCRIPTION: Some online note taking "logbooks" are compared for use in a scientific or lab setting.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview and Requirements
+
+In a multi-participant experiment or laboratory setting a method for recording shared notes, events, experimental conditions and other meta-data about the effort is needed.  Today, this calls for an online equivalent to a paper logbook.  Such a logbook should have the following functionality:
+
+- allow multiple users to add entries to the system which consist of text, inline images and attached documents.
+- entries must be identified by creation date and author
+- the system must support a write-once-read-many paradigm, editing of existing entries must not be required
+- there must be mechanisms for associating entries to a category
+- the system must allow for followup entries to be associated with an existing entry without requiring the editing of the existing entry
+- searching and browsing of existing entries
+- individual-based access control on writing and reading
+
+* The considered systems
+
+The systems compared are:
+
+- [[http://midas.psi.ch/elog/][ELog]] :: Web server using web browser and command-line clients.
+- [[http://evernote.com/][Evernote]] :: Web service with web browser and application clients.
+
+Each are described more below.  Both meet the requirements above.  For each system, a list of unique pros/cons are given.  Before that some direct comparisons are noted.  These differences are not necessarily good or bad but to strongly affect how the systems are used.
+
+The difference in the user interfaces and data schema of the two systems is one point of comparison.  ELog is more rigidly organized into predefined hierarchy of log books which is defined by the administrator while Evernote allows new logbooks to be created on the fly.  Likewise, in ELog tags (called "types") are predefined by the server administrator (but new ones can be created users) while Evernote allows the notebook owner to define new ones and anyone sharing the notebook to apply them.  ELog explicitly implements "conversation thread" type of information organization where one may "reply" to an entry.  Evernote can emulate this with it's "stacked" notebooks feature which comes at the expense of manual organizing notebooks.  This equates an Evernote notebook with an Elog thread.
+
+Another point of comparison is that Elog is essentially fully centralized (ignoring inter-server sync) in the sense that all users of the server share the same logbooks.  While Evernote is a single-server the each user owns their own notebooks but may choose to share specific notebooks with other.  The sharing is asymmetric with the owner retaining some privileges not shared (eg, inventing new tags). 
+
+** ELog
+
+ELog provides an HTTP/HTTPS server written in C managing and serving a plain-text back-end data store.  The primary user interface is via web browser but a command line program allows posting and downloading log entries.  ELog software is Free Software (GPL).
+
+*** Pros
+
+- ELog is Free Software with all that implies
+- The database can be under control of users and uses a transparent format
+- Location of server is left to the user
+- Location-based access controls possible
+- Inter-server synchronizing (both mirror and read-write)
+- Allows entries made for anonymous or ad-hoc identities
+
+*** Cons
+
+- Requires setup and administration with all that implies
+- Performance problems due to single-thread execution
+- Source code is not conducive to further development
+- No free form tagging mechanism
+
+** Evernote
+
+Evernote is a free or paid service.  Server software is unavailable.  Primary user interface is direct web browsing but dedicated client applications exist on all major web browser, computer, tablet, smart phone and Emacs platforms.  Both Free Software and proprietary applications exist but typically not overlapping the same platform.
+
+Evernote has [[http://evernote.com/contact/support/kb/#!/article/23283158][service levels]] "free", "premium" and "business".  They largely determine monthly upload bandwidth allowance.  Storage is not limited but number of notes is.  Download is unlimited.
+
+ - free :: no cost for 60MB/month/user upload bandwidth, 25MB for any single note, 100 K-notes total.  Quota is per individual
+- premium :: $5/mo/user or $45/year for 1GB/mo, 100MB for any single note.  100 K-notes total. Quota is per individual.
+- business :: 2GB/mo/user, 100MB for any single note, 500 K-notes total.  Quota is shared by group.
+
+Limits also exist on number of notebooks, tags, inbound and outbound emails, saved searches and other aspects.  
+
+
+*** Pros
+
+- User self-administration (and minimal group administration if "business" level purchased)
+- Variety of client options, including adding notes via email.
+- Has todo/alarm/reminder feature for upcoming events
+
+*** Cons
+
+- Data on 3rd party server (but can be exported in bulk).
+- No cost service level may restrict usage in the case of high upload bandwidth or many users (>100)
+- No explicit "conversation threads"
+
+
+* Conclusions
+
+The two options available are both adequate.  A choice of one over the other comes down to selecting the best fitting trade-offs.
+
+ELog's main cost is the initial setup, configuration and then ongoing administration but it allows complete ownership of the logbook information.  Novel extensions could be developed in the future as other groups have done, although this potential is tempered somewhat after understanding the internal code of ELog.  ELog's user interface and related functionality is closer to what one thinks of in a paper logbook.
+
+ELog is simpler to use on a wide variety of platforms and is largely administration-free.  It's main drawbacks are that data is not fully owned by the users (although it can be exported) and that the interface and data schema is less rigid and left open to users to interpret into a traditional logbook paradigm.  
+
+

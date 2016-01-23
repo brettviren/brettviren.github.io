@@ -1,0 +1,196 @@
+* Info
+
+See [[http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/cr-48-chrome-notebook-developer-information/how-to-boot-ubuntu-on-a-cr-48][this page]] to understand the partitions.
+
+ - chrome OS ping-pongs between A and B
+ - it refers to =/dev/sda= but I see =/dev/mmcblk0=
+
+See [[http://chromeos-cr48.blogspot.com/2013/05/chrubuntu-one-script-to-rule-them-all_31.html][this page]] for ChrUbuntu install.
+
+* Get Debian booting from eMMC
+
+ - Get developer mode with esc-swirly-power key combo.
+ - ctrl-alt-f2 (top-row right arrow)
+ - Login =chronos= no password
+
+#+BEGIN_EXAMPLE
+  $ sudo -s
+  # chromeos-firmwareupdate --mode=todev
+  # cgpt show /dev/mmcblk0
+#+END_EXAMPLE
+
+Find STATE.  I have (after applying full recovery)
+
+- start :: 8,671,232
+- size :: 22,073,344
+
+ - Give space for a "KERN-C" partition taken from STATE
+
+#+BEGIN_EXAMPLE
+  # cgpt add -i 1 -b 8671232 -s 22040576 -t data -l STATE /dev/mmcblk0
+  # cgpt add -i 6 -b 30711808 -s 32768 -t kernel -l KERN-C /dev/mmcblk0
+#+END_EXAMPLE
+
+Need to reboot now to make these changes stick.
+
+#+BEGIN_EXAMPLE
+  # reboot
+#+END_EXAMPLE
+
+Will get spinning wheel "Your system is repairing itself. Please wait".  ETA 15 minutes.
+
+#+BEGIN_EXAMPLE
+  $ sudo -s
+  # 
+#+END_EXAMPLE
+
+
+ - check partitions again to find which has highest priority (KERN-A in my case) and that KERN-C is 32k
+
+#+BEGIN_EXAMPLE
+  # cgpt show /dev/mmcblk0
+  ...
+  2 Label: "KERN-A"
+  Attr: priority=1
+  4 Label: "KERN-B"
+  Attr: priority=0
+  6 Label: "KERN-C"
+  Attr: priority=0
+#+END_EXAMPLE
+
+ - download full image from https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook and =dd= to 8GB SD 
+
+ - insert SD and mount 
+
+#+BEGIN_EXAMPLE
+  # mkdir /tmp/sd-root
+  # mount /dev/mmcblk1p3 /tmp/sd-root
+  # cd /tmp/sd-root/root
+  # echo 'console=tty1 debug verbose root=/dev/mmcblk1p1 rootwait rw lsm.module_locking=0' > config
+  # dd if=/dev/mmcblk0p2 of=kern-a
+  # vbutil_kernel --repack newkern \
+  --keyblock /usr/share/vboot/devkeys/kernel.keyblock \
+  --version 1 \
+  --signprivate \
+      /usr/share/vboot/devkeys/kernel_data_key.vbprivk \
+  --config=config \
+  --oldblob kern-a
+  # dd if=newkern of=/dev/mmcblk0p6
+  # cgpt add -i 6 -S 1 -P 5 /dev/mmcblk0
+#+END_EXAMPLE
+
+This =newkern= is only 4.5MB.
+
+Copy from chromeos
+
+#+BEGIN_EXAMPLE
+  # cd /tmp/sd-root
+  # cp -ar /lib/firmware lib/
+  # cp -ar /lib/modules lib/
+  # cp -ar /usr/share/alsa/ucm usr/share/alsa/
+  # cp -ar /usr/bin/alsaucm usr/bin
+  # chmod 755 usr/bin/alsaucm
+#+END_EXAMPLE
+
+Take care with the slashes.
+
+* ChrUbuntu
+
+Besides being hard to spell, ChrUbuntu appears to be the easiest way
+to get Debian onto the internal flash.  
+
+ - [[https://github.com/jay0lee/chrubuntu-script][ChrUbuntu github]] 
+ - [[http://chromeos-cr48.blogspot.com/][ChrUbuntu blog]] with links to releases of the script
+ - [[http://chromeos-cr48.blogspot.com/2013/05/chrubuntu-one-script-to-rule-them-all_31.html][This post]] with [[http://goo.gl/s9ryd][s9ryd]] was used initially [[./s9ryd][local copy]]
+
+What follows are the steps I took.
+
+** Prep on Chrome OS side
+
+ - Get into [[http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/samsung-arm-chromebook#TOC-Developer-Mode][developer mode]]
+ - Create a Chromebook Recovery Media following [[https://support.google.com/chromebook/answer/6002417][these instructions]] which boil down to downloading and running [[https://dl.google.com/dl/edgedl/chromeos/recovery/linux_recovery.sh][linux_recovery.sh]].  
+ - Boot the recovery to apply it.  This wipes system and may not be needed, but I do it just to start from a known point.
+ - Get through initial Chrome OS setup just enough to set network and click through to the sign in screen.
+ - Stop there and hit =ctrl-alt-f2= (=f2= = forward arrow) to get a console.
+ - Log in as user =chronos=, no pass.
+ - At some point in the initial playing around I did
+#+BEGIN_EXAMPLE
+  chronos$ sudo chromeos-firmwareupdate --mode=todev
+  chronos$ sudo crossystem dev_boot_usb=1 dev_boot_legacy=1 dev_boot_signed_only=0
+#+END_EXAMPLE
+
+** Installing ChrUbuntu
+
+Despite what the blog says about =s9ryd= not supporting newer releases it actually is clever enough to find 14.04 when asked for "lts".  This time, around let's try to install 14.10 directly.  Also, I eventually want a desktop environment using MATE+Sawfish so start without any extra packages for a DE I will not use and that means =ubuntu-standard=.
+
+#+BEGIN_EXAMPLE
+  chronos$ curl -L -O http://goo.gl/s9ryd
+  chronos$ sudo bash s9ryd ubuntu-standard 14.10 
+#+END_EXAMPLE
+
+** Choosing the partition size
+
+The script asks for a storage size to reserve for Ubuntu.  It uses the 3rd pair of boot/root partitions available, leaving Chrome OS's first two pairs alone.  This pair is essentially empty and so it takes space from the largest partition normally used for user files.  I mostly want to use this laptop for Ubuntu but want to keep the option to boot Chrome OS so I choose the recommended max of 9GB.  This gives ample space for the OS and a small home area.  
+
+As soon as the answer is given the laptop reboots.  Hit =ctrl-d= to get past the scary screen and it will go in to "Your system is repairing itself.  Please wait".  It takes a couple of minutes.  Boots again back to scary boot screen.  =ctrl-d= to get past.
+
+** One more time
+
+Go though the setup screen one more time just to get network.  Then =ctrl-alt-f2= and repeat the download and running:
+
+#+BEGIN_EXAMPLE
+  chronos$ curl -L -O http://goo.gl/s9ryd
+  chronos$ sudo bash s9ryd ubuntu-standard 14.10 
+  ...
+  Chome device model is: SNOW LATITUDEAG AA-J 5406
+  ...
+#+END_EXAMPLE
+
+Hit enter to continue and it goes to town.  While it churns I survey the =s9ryd= script:
+
+ - partitions and formats the flash
+ - produces the base OS via a tarball from Ubuntu
+ - sets up this area as a =chroot=
+ - finishes up the install with =apt-get=
+ - copies Chrome OS kernel modules and firmware
+ - makes =user/user=.
+
+ Hit enter and system reboots to  Ubuntu.  Let's make this permanent following the last bit of guidance the =s9ryd= script gives us
+
+#+BEGIN_EXAMPLE
+  chrubuntu$ sudo cgpt add -i 6 -P 5 -S 1 /dev/mmcblk0
+#+END_EXAMPLE 
+
+Okay, immediate show stopper.  No =wpa_supplicant= in the =s9ryd=.  Let's try this again.
+
+Fork [[https://github.com/jay0lee/chrubuntu-script][jay0lee's repo]] and follow [[https://github.com/blog/985-git-io-github-url-shortener][this guidance]] on making an easy to type URL.  Commit and push and browse the latest version to get the "raw" URL then do:
+
+#+BEGIN_EXAMPLE
+  $  curl -i http://git.io -F "url=https://raw.githubusercontent.com/brettviren/chrubuntu-script/d10cf0df5b54e75c5790eb996068be744cb7fb55/chrubuntu-install.sh"
+  ...
+  Location: http://git.io/F5zJ
+  ...
+#+END_EXAMPLE
+
+GitHub is so cool!
+
+Set the boot record to go back into ChrUbuntu:
+
+#+BEGIN_EXAMPLE
+  $ sudo cgpt add -i 6 -P 0 -S 1 /dev/mmcblk0
+  $ sudo reboot
+#+END_EXAMPLE
+
+Then in chrome OS:
+
+#+BEGIN_EXAMPLE
+  chronos$ curl -L -O http://git.io/F5zJ
+  chronos$ sudo bash F5zJ ubuntu-standard 14.10
+#+END_EXAMPLE
+
+Rerunning this skips the partitioning step and goes straight to formatting the root partition, downloading the core tarball and installing the system.
+
+Okay, rebooting seems to have bricked that partition.  It just goes to a black screen.  Stick recovery flash in and redo the dance.  This time using =s9ryd= and the xubuntu option.
+
+
+

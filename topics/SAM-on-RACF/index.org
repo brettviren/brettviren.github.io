@@ -1,0 +1,386 @@
+#+TITLE: Use of SAM at BNL RACF
+#+DATE: [2014-07-01 Tue 09:12]
+#+DESCRIPTION: SAM is a file catalog system developed at Fermilab and expected to be used by LBNE.  This topic collects information about its use at BNL's RACF.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Client Installation.
+
+Try to install the "=samweb=" command.
+
+** Eyeball MINOS instructions
+
+There is no obvious SAM "home page" but [[http://www-numi.fnal.gov/sam/][MINOS]] and [[http://www-d0.fnal.gov/computing/sam/][D0]] come up in Google with some info.  Following [[http://www-numi.fnal.gov/sam/get_data.html][Getting Data offsite using SAM]] from MINOS, download is from:
+
+ftp://ftp.fnal.gov/products/sam_web_services_client/v0_9_2/NULL/
+
+These files are from 2005.....
+
+Get the [[ftp://ftp.fnal.gov/products/sam_web_services_client/v0_9_2/NULL/sam_web_services_client_v0_9_2_NULL.tar.gz][tarball]].  This contains the source (including CVS subdirs and compiled .pyc files) with a =bin/= and =lib/= areas holding links into =src/=.  It spews all its files to the current working directory.  It has some =sam_setup.*= scripts which interact with UPS.
+
+There is nothing called "samweb" in this distribution....
+
+Google ="samweb" site:fnal.gov= brings up lots of mention in presentations but no useful resources.
+
+** Eyeball FNAL environment
+
+#+BEGIN_EXAMPLE
+local> ssh bv@lbnegpvm01.fnal.gov
+fnal> source /nusoft/app/externals/setup
+fnal> ups list -aK+ | grep sam
+"sam_web_client" "v1_2" "NULL" "" "" 
+"sam_web_client" "v1_3" "NULL" "" "current" 
+ERROR: No instance matches were made between the 
+version file (/nusoft/app/externals/cppunit/v1_12_1.version) and the 
+table file (cppunit.table) for flavor (Linux64bit+2.6-2.5) and qualifiers (gcc45)
+ERROR: Possible UPS database (/nusoft/app/externals) corruption in product 'cppunit'.
+ERROR: No instance matches were made between the 
+version file (/nusoft/app/externals/postgresql/v9_1_3.version) and the 
+table file (postgresql.table) for flavor (Linux64bit+2.6-2.5) and qualifiers (gcc46)
+ERROR: Possible UPS database (/nusoft/app/externals) corruption in product 'postgresql'.
+#+END_EXAMPLE
+
+Presumably those ERRORs mean UPS is working extra hard to make my life more complicated than it needs to be.
+
+Anyways,
+
+#+BEGIN_EXAMPLE
+fnal> setup sam_web_client
+fnal> echo $PYTHONPATH
+/nusoft/app/externals/sam_web_client/v1_3/NULL/python
+fnal> ls /nusoft/app/externals/sam_web_client/v1_3/NULL/python
+samweb_client  samweb_cli.py  samweb_cli.pyc  simplejson_209
+fnal> ls /nusoft/app/externals/sam_web_client/v1_3/NULL/bin
+samweb
+#+END_EXAMPLE
+
+Attempt to reproduce Robert Illingworth's example which is:
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne get-file-access-url --schema=root 35T_singleparticle_pizero_30_0.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_0.root
+#+END_EXAMPLE
+
+Now my turn:
+
+#+BEGIN_EXAMPLE
+samweb -e lbne get-file-access-url --schema=root 35T_singleparticle_pizero_30_0.root
+Unknown command get-file-access-url
+usage: samweb [base options] <command> [command options] ...
+#+END_EXAMPLE
+
+We are not off to a good start here, folks.
+
+Eyeballing some NoVA SAM tutorial presentation (why tf is there no established web info on all this???) and reading through their layers of setup scripts I see that they use:
+
+#+BEGIN_EXAMPLE
+$ setup sam_web_client v1_5 -z /grid/fermiapp/products/common/db
+#+END_EXAMPLE
+
+That UPS area has =sam_web_client= up to version 1.7.  This UPS area has an installation pattern I've not seen before.  The actual installed files are in "=../prd/=".
+
+That 1.5 version also doesn't do it for me.  This does:
+
+#+BEGIN_EXAMPLE
+fnal> unsetup sam_web_client
+fnal> setup sam_web_client v1_7 -z /grid/fermiapp/products/common/db
+fnal> samweb -e lbne get-file-access-url --schema=root 35T_singleparticle_pizero_30_0.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_0.root
+#+END_EXAMPLE
+
+What a mess.
+
+** Eyeballing Redmine
+
+Oh, look, SAM has a [[https://cdcvs.fnal.gov/redmine/projects/sam-main][huge presence in FNAL Redmine]].  I wonder why Google fails to find this.  I suspect =robots.txt= is shunning the crawlers. 
+
+Okay, reboot this.
+
+#+BEGIN_EXAMPLE
+$ git clone http://cdcvs.fnal.gov/projects/sam-web-client
+$ ls -l sam-web-client/
+total 24
+drwxr-xr-x 2 bvlbne lbne 4096 Jul  1 10:14 bin
+-rw-r--r-- 1 bvlbne lbne  628 Jul  1 10:14 Makefile
+drwxr-xr-x 4 bvlbne lbne 4096 Jul  1 10:14 python
+-rwxr-xr-x 1 bvlbne lbne  357 Jul  1 10:14 release.sh
+drwxr-xr-x 2 bvlbne lbne 4096 Jul  1 10:14 test
+drwxr-xr-x 2 bvlbne lbne 4096 Jul  1 10:14 ups
+$ ls -l sam-web-client/python/
+total 48
+drwxr-xr-x 2 bvlbne lbne  4096 Jul  1 10:14 samweb_client
+-rw-r--r-- 1 bvlbne lbne 39091 Jul  1 10:14 samweb_cli.py
+drwxr-xr-x 2 bvlbne lbne  4096 Jul  1 10:14 simplejson_209
+$ ls -l sam-web-client/bin/
+total 4
+-rwxr-xr-x 1 bvlbne lbne 324 Jul  1 10:14 samweb
+#+END_EXAMPLE
+
+And:
+
+#+BEGIN_EXAMPLE
+./sam-web-client/bin/samweb -e lbne get-file-access-url --schema=root 35T_singleparticle_pizero_30_0.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_0.root
+#+END_EXAMPLE
+
+
+Okay, this is much more reasonable!
+
+** Package it
+
+It sure would be nice if this was a Python package.
+
+#+BEGIN_EXAMPLE
+from distutils.core import setup
+setup(name = 'sam-web-client',
+      version = '1.7',
+      description = 'Python client and command line interface to SAM Web',
+      author = 'SAM Team',
+      author_email = 'sam-users@listserv.fnal.gov',
+      url = 'https://cdcvs.fnal.gov/redmine/projects/sam-web-client',
+      package_dir = {'':'python'},
+      py_modules = ['samweb_cli'],
+      packages = ['samweb_client', 'simplejson_209'],
+      scripts = ['bin/samweb'],
+      )
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+$ python setup.py sdist
+$ ls -l dist/sam-web-client-1.7.tar.gz 
+-rw-r--r-- 1 bvlbne lbne 40359 Jul  1 10:42 dist/sam-web-client-1.7.tar.gz
+$ virtualenv ~/venv/sam
+$ python setup.py install
+$ source ~/venv/sam/bin/activate
+$ samweb -e lbne get-file-access-url --schema=root 35T_singleparticle_pizero_30_0.root
+root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/lbne/mc/lbne/simulated/001/35T_singleparticle_pizero_30_0.root
+#+END_EXAMPLE
+
+Now we are cooking!
+
+* Playing with samweb
+
+What kind of trouble can I get into now?
+
+** Help and usage
+
+#+BEGIN_EXAMPLE
+$ samweb -h
+[ usage ]
+$ samweb
+[... list of commands ...]
+#+END_EXAMPLE
+
+Metadata:
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne get-metadata 35T_singleparticle_pizero_30_0.root
+            File Name: 35T_singleparticle_pizero_30_0.root
+              File Id: 4837
+            File Type: mc
+          File Format: root
+            File Size: 142974667
+                  Crc: 2012523085 (adler 32 crc type)
+       Content Status: good
+                Group: lbne
+            Data Tier: simulated
+          Application: art lar s2013.04.21
+          Event Count: 100
+          First Event: 1
+           Last Event: 100
+           Start Time: 2013-04-24T10:15:10
+             End Time: 2013-04-24T10:15:10
+lbne_MC.detector_type: 35t
+         lbne_MC.name: 35T_singleparticle_pizero_30
+                 Runs: 1 (physics)
+#+END_EXAMPLE
+
+** Definitions
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne list-definitions
+diesburg-test-project-01
+diesburg-test-project-02
+genieCRY_20130423_anuflux_nuebarflux_nuebar_g280_Ar40
+genieCRY_20130423_anuflux_nueflux_nue_g280_Ar40
+genieCRY_20130423_anuflux_numubarflux_nuebar_g280_Ar40
+genieCRY_20130423_anuflux_numubarflux_numubar_g280_Ar40
+mwm_test_1
+qtest1
+singleparticle-test
+
+$ samweb -e lbne list-definition-files singleparticle-test
+35T_singleparticle_piplus_01.root
+35T_singleparticle_proton_01.root
+#+END_EXAMPLE
+
+** Projects
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne list-projects
+...
+diesburg_singleparticle-test_20140109152050
+...
+
+$ samweb -e lbne find-project diesburg_singleparticle-test_20140109152050
+http://samweb.fnal.gov:8480/sam/lbne/api/projects/lbne/diesburg_singleparticle-test_20140109152050
+
+$ wget http://samweb.fnal.gov:8480/sam/lbne/api/projects/lbne/diesburg_singleparticle-test_20140109152050
+--2014-07-01 11:16:35--  http://samweb.fnal.gov:8480/sam/lbne/api/projects/lbne/diesburg_singleparticle-test_20140109152050
+Connecting to 192.168.1.130:3128... connected.
+Proxy request sent, awaiting response... 404 Not Found
+2014-07-01 11:16:35 ERROR 404: Not Found.
+#+END_EXAMPLE
+
+** Server info
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne server-info
+SAMWeb API for lbne
+Server version: 1.7.6
+Cherrypy version: 3.2.4
+HTTP User-Agent: SAMWebClient/unknown (samweb) python/2.6.6
+User information:
+  Untrusted identity: bvlbne@lbne0001.rcf.bnl.gov
+  Unauthenticated
+#+END_EXAMPLE
+
+*** TODO Need to figure out authentication.
+
+** Admin
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne list-applications
+art	lar	dev2013.07.19
+demo	demo	demo
+art	lar	s2013.04.21
+demo	demo	1
+art	lar	s2013.10.21
+test	test	1
+
+$ samweb -e lbne list-data-disks
+lbnedata:/lbne/data
+
+$ samweb -e lbne list-parameters
+lbne_MC.overlay (string)
+lbne_MC.geometry_version (string)
+lbne_MC.miscellaneous (string)
+lbne_MC.mass_hierarchy (string)
+lbne_MC.neutrino_flavors (string)
+lbne_MC.detector_type (string)
+lbne_MC.name (string)
+lbne_MC.trigger-list-version (string)
+lbne_MC.oscillationP (string)
+lbne_MC.generators (string)
+lbne_MC.beam_flux_ID (true_int)
+lbne_MC.beam_energy (true_float)
+
+$  samweb -e lbne list-users
+...
+bv
+...
+#+END_EXAMPLE
+
+Hey, that's me!
+
+#+BEGIN_EXAMPLE
+$ samweb -e lbne list-values --help-categories
+Available database categories:
+
+data_tiers
+    Data tier of a file (raw, simulated, reconstructed, etc)
+run_types
+    Type of a run
+groups
+    Work groups
+data_streams
+    Data stream names
+file_formats
+    Format of the file
+file_types
+    Type (ie general purpose) of a file
+
+$ samweb -e lbne list-values data_tiers
+simulated
+raw
+hit-reconstructed
+full-reconstructed
+generated
+
+$ samweb -e lbne list-values run_types
+cosmic
+test
+calibration
+physics
+special
+
+$ samweb -e lbne list-values groups
+lbne
+
+$ samweb -e lbne list-values data_streams
+
+$ samweb -e lbne list-values file_formats
+unknown
+root
+tar
+text
+
+$ samweb -e lbne list-values file_types
+mc
+test-data
+unknown
+fastmc
+physics-data
+calib-data
+#+END_EXAMPLE
+
+Grand.
+
+
+** Environment
+
+I see [[https://cdcvs.fnal.gov/redmine/projects/sam-web/wiki/Using-samweb][here]] that one can set =SAM_EXPERIMENT=lbne= to avoid "=-e lbne=" option each time.
+
+* Certificates
+
+While not strictly related to SAM, to use SAM to actually access files one needs a certificate registered into the LBNE VO.  Once this is done one may do:
+
+#+BEGIN_EXAMPLE
+$ source /afs/usatlas.bnl.gov/osg/client/@sys/current/setup.sh
+$ voms-proxy-init -voms lbne
+#+END_EXAMPLE
+
+Note, we piggy back on ATLAS for setting up Grid stuff.  
+
+If you see:
+
+#+BEGIN_EXAMPLE
+$ voms-proxy-init -voms lbne
+Enter GRID pass phrase:
+Your identity: /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brett Viren 2598
+Creating temporary proxy ................................................... Done
+Contacting  voms.fnal.gov:15029 [/DC=org/DC=doegrids/OU=Services/CN=http/voms.fnal.gov] "lbne" Failed
+
+Error: lbne: User unknown to this VO.
+
+None of the contacted servers for lbne were capable
+of returning a valid AC for the user.
+#+END_EXAMPLE
+
+It means you need to [[https://voms.fnal.gov:8443/voms/lbne/register][register your cert with LBNE VO]].
+
+If you see:
+
+#+BEGIN_EXAMPLE
+voms-proxy-init -voms lbne
+Enter GRID pass phrase:
+Your identity: /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brett Viren 2598
+Creating temporary proxy .......................................................................................... Done
+Contacting  voms.fnal.gov:15029 [/DC=org/DC=doegrids/OU=Services/CN=http/voms.fnal.gov] "lbne" Done
+Creating proxy ........................... Done
+
+Your proxy is valid until Wed Jul  2 00:57:54 2014
+Error: verify failed.
+Cannot verify AC signature!
+#+END_EXAMPLE
+
+It means...

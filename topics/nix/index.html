@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Nix in a Nut Shell</a><ul class="nav">
+<li class="">
+  <a href="#sec-1-1">1.1. The Nix Package Store</a></li>
+<li class="">
+  <a href="#sec-1-2">1.2. User Environment</a></li>
+<li class="">
+  <a href="#sec-1-3">1.3. Package Definition</a></li></ul></li>
+<li class="">
+  <a href="#sec-2">2. Impedance mismatches between Nix and HEP</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-1">2.1. Issues with existing HEP build systems</a></li></ul></li>
+<li class="">
+  <a href="#sec-3">3. Plan for a Prototype</a></li>
+<li class="">
+  <a href="#sec-4">4. See also</a><ul class="nav">
+<li class="">
+  <a href="#sec-4-1">4.1. Links</a></li></ul></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+HEP/Nix Packages.
+
+	  <small>Issues with using the Nix package manager for HEP.
+
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-08-15 17:46:35(revised 2015-08-23 15:27:14 )<blockquote>A note investigating the use of the Nix package manager from NixOS for HEP.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Nix in a Nut Shell</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://nixos.org/nix/">Nix</a> is the package manager used by NixOS and can be used entirely from user space on POSIX'sh OSes.  Its basic design is unique in the realm of software packaging (there is a similar, derived implementation called <a href="http://www.gnu.org/software/guix/">Guix</a> which differs only in the configuration language used).  
+</p>
+
+<p>
+To begin to understand Nix, it is useful to compare and contrast it to systems which are already familiar to some in the HEP community which is done in the following sections.
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> The Nix Package Store</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+In contrast with other systems, Nix does not interleave the files of a package under a single-rooted file-system hierarchy such as the <a href="http://www.pathname.com/fhs/">FHS</a> (ie, the usual <code>/usr/{lib,bin,include}</code>) like Debian GNU/Linux nor does it  produce isolated bundles which leverage a base file-system hierarchy such as in Mac OS X.  
+</p>
+
+<p>
+The Nix <i>package store</i> contains the directly installed file contents of Nix packages.  It is somewhat similar to  the "<a href="https://www.fnal.gov/docs/products/ups/ReferenceManual/html/overview.html#32926">product database</a>" of UPS, the module area of <a href="http://modules.sourceforge.net/">Environment Modules</a> and the LCGCMT "externals" area.  Some common features include:
+</p>
+
+<ul class="org-ul">
+<li>a well defined root directory containing the files of the installed packages.
+</li>
+<li>a per-package directory under this root named with identifiers used to later build a working environment.
+</li>
+<li>an FHS-like layout within each package directory.
+</li>
+</ul>
+
+<p>
+The Nix <i>package store</i> differs from these other systems in some important ways:
+</p>
+
+<ul class="org-ul">
+<li>There is a <b>single directory root</b> common among all compatible installations.  The prevailing convention is to place the store under <code>/nix/</code>.  This must be a mount, not just a symlink.  Other root directory conventions may be chosen but all packages must be built for that mount point.
+</li>
+<li>While a package's directory is named with the package name, version and other human-oriented identifiers it also contains a cryptographic hash formed from the dependencies required to build that package.
+</li>
+<li>A package directory is self-contained in that all files associated with the installation of that package reside in the directory (the others allow for, and in the case of UPS in practice, violate this).
+</li>
+</ul>
+
+<p>
+These unique aspects of the Nix package store allow for a number of beneficial features:
+</p>
+
+<ul class="org-ul">
+<li>Packages can be shared in binary form with robust dependency resolution.
+</li>
+<li>Binary executable and library files do not need environment variables to locate dependencies due to the common path.
+</li>
+<li>Packages are precisely reproducible from source and binary can be validated.  This allows for a wide pool of package builders to share binary packages with a wide community of users.  This additional level of verification and validity is fully lacking in any other packaging system known to be used in HEP.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> User Environment</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Another unique aspect of Nix packages is how a user environment is produced.  To speak generally, a user environment is created as some aggregation or view of a larger package store.  This aggregation can be performed in a number of ways and typically relies partly on environment variables and the file system.
+</p>
+
+<p>
+In the case of conventional GNU/Linux or Mac OS X user environments, the default environment is provided by the FHS-like directory hierarchy typically rooted in <code>/usr</code> and brief settings of a small number of environment variables such as <code>PATH</code> to find executable files and relying on conventions "baked" into the loader to find libraries.
+</p>
+
+<p>
+The packaging commonly used in HEP layers on top of this OS-default aggregation which relies heavily both on environment variable settings and some file system organization as described in the previous section.  The environment settings typically extend the standard <code>PATH</code>-like variables, typically with one additional component for every package or project being aggregated.  Many package require their own <code>PATH</code>-like variables (eg <code>PYTHONPATH</code>) or single-location variables (eg ROOT's <code>ROOTSYS</code>) to be extended or set.  Also typical is to set one or more "standard" variables for every single package "just in case they might be needed" (eg CMT and UPS set a <code>&lt;PACKAGE&gt;_DIR</code> variable).
+</p>
+
+<p>
+Heavily relying on environment variable-based aggregation is problematic for a few reasons:
+</p>
+
+<ul class="org-ul">
+<li>it is ephemeral, existing only in the shell session.
+</li>
+<li>its construction is ill-defined, depending on what setup scripts were run and in what order.
+</li>
+<li>its often confusing to users.
+</li>
+<li>it can lead to inconsistencies, particularly during development.
+</li>
+</ul>
+
+<p>
+Nix takes a more file-system-oriented approach and NixOS is entirely based on this approach such that the entire OS-level environment is subsumed.  With Nix, a user may have one or more "profiles".  Each profile provides the files for the working environment and which are aggregated into a single directory that follows an FSH-like convention.  The file-system hierarchy in the profile is recorded through symbolic links into the Nix <i>package store</i>.  
+</p>
+
+<p>
+This file-system aggregation has a number of benefits:
+</p>
+
+<ul class="org-ul">
+<li>the profile directory provides a tangible record of the user environment.
+</li>
+<li>user environment variables require minimal modification (single entry added to <code>PATH</code>-like variables).
+</li>
+<li>profiles can be populated in an indirect manner allowing site-wide or group-wide release definitions (eg, defining through a "pro", "dev" etc pattern, or through release definitions).
+</li>
+<li>atomic upgrades and rollback patterns are trivial.
+</li>
+<li>profile directories at a site may be automatically queried by site administrators to determine what packages are actually in use and which can be safely purged.
+</li>
+<li>profiles are amenable to <code>chroot</code> or similar containment.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Package Definition</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Another way in which Nix is unique among the systems in use in HEP is that it is comprehensive in providing for configuration management, build automation, package distribution and installation and user environment management.  None of the other systems managed, by themselves, cover this necessary ground.  
+</p>
+
+<p>
+Nix package definitions are short text files in the Nix packaging language.  They provide parameters interpreted by functionality built in to Nix or provide any special shell commands needed for less common build methods.  These specifications are highly portable due to leveraging a well characterized build environment - that of all the other Nix packages.  This allows for a huge amount of shared effort not obtainable by other systems.  For example, one individual or small group can maintain the Nix package specification for ROOT and the entire world can benefit from its use. 
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Impedance mismatches between Nix and HEP</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+At the heart of Nix is the <i>package store</i> and its contents are produced based on the other packages it already contains.  Because of the hashing mechanism the location of this store is "baked" into the package names and binaries are built against their dependencies located under the <i>package store</i>.  
+</p>
+
+<p>
+The implication of this is that any package can be considered part of a "package realm" defined by the mount point.  An apparently trivial change of this mount point requires rebuilding all packages.  The benefit of accepting this limitation is that packages need not be /relocatable/<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup> and that binaries built by one individual can be shared and need not be built by any other individual using the same mount point.
+</p>
+
+<p>
+For NixOS installations this limitation is invisible as the system itself relies on the <i>package store</i> to be found at the <code>/nix</code> root.  However, essentially all HEP computer installations do not run NixOS and thus a common Nix <i>package store</i> mount must be created in context of whatever native policies exist.  The main issues with this are:
+</p>
+
+<ul class="org-ul">
+<li>many HEP users do not have administrator privileges on the computer systems they use.
+</li>
+
+<li>HEP clusters (and the wider Grid) have local policies driven by various forces and negotiations are needed to established a shared <code>/nix</code> mount.
+</li>
+</ul>
+
+<p>
+There are two known solutions to this issue.
+</p>
+
+<p>
+The first is to give up on a global <i>package store</i> mount point and leave it to each installation to pick one and simply spend the CPU time to populate the store by building packages from source.  Some increased coverage could be had by exploiting the global AFS namespace.  CVMFS is becoming more prevalent and with it another common convention for mount points is possible.  Both provide a delivery mechanism although that is redundant with the one that Nix also provides.
+</p>
+
+<p>
+The other solution is to use the functionality of <a href="http://proot.me/">PRoot</a> which is a user-level <code>chroot</code> container mechanism.  It is a light weight way to effectively produce a "virtual" mount in the context of a single job.  The globally <code>/nix</code> mount can then be provided even if it may reside in a user's home directory, or a group location or otherwise not directly mounted.  This virtual mount is achieved through some intercepted system calls and so some small performance overhead is suffered.  Quantifying this overhead would be a necessary task to accepting this otherwise good solution.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Issues with existing HEP build systems</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Some software is resistant to producing Nix packages.  Because Nix is designed to build from source any software that is difficult to build from source is resistant to using in a Nix based system.  
+</p>
+
+<p>
+Of some small importance to HEP is proprietary, binary-only packages.  To deal with this, the "source" of the build is the provided binaries.  Nix has developed PatchELF to rewrite compiled-in paths to match the <i>package store</i> path, allowing the result to be truly relocatable.
+</p>
+
+<p>
+More problematic are existing large, important software projects which have grown intricately intertwined with local computing infrastructure and installation patterns.  An example is the <code>UPS/cetbuilttools</code> based software largely developed at Fermilab for US HEP Intensity Frontier experiments.  It is effectively not packages are not possible to build these package from "first principles" and instead they require, down to their low-level package build configuration and source code, intricate intertwining with the end-user environment management system (UPS).  As a consequence, they are built for a small number of OS platforms and can only be built for a Nix-based system after some significant effort and buy-in by Fermilab.   
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Plan for a Prototype</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+To determine if Nix can be used in a practical sense in HEP, some prototyping is the first plan of action.  The pat to this is:
+</p>
+
+<ol class="org-ol">
+<li>Use the PRoot approach to provide <code>/nix</code>.
+</li>
+<li>Work on package specification for common HEP packages, starting with ROOT<sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>.
+</li>
+<li>Include releases of experiment-level package.
+</li>
+<li>Develop methods and helper tools to develop on experiment packages.
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> See also</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="./root5.html">notes on existing ROOT5 packaging</a>
+</li>
+<li><a href="./root6.html">notes creating new ROOT6 packaging</a>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Links</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li><a href="http://christopherpoole.github.io/My-workflow-for-adding-packages-to-nixpkgs/">http://christopherpoole.github.io/My-workflow-for-adding-packages-to-nixpkgs/</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
+The term "relocatable" is used in some systems like UPS.  There, it takes a weak definition as the relocation is only possible through setting user environment variables.  Nix provides a PatchELF tool with which one can produce binary executable and library files which can be truly relocated.  It works by rewriting the path strings that are compiled into the binaries.  If rewritten to their relocated locations the environment setting that must otherwise be modified need not be.
+</p></div>
+
+<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">
+Someone has already packaged a recent ROOT 5 for Nix but its build happens to be failing at the time of writing.
+</p></div>
+
+
+</div>
+</div>
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2015-08-15 17:46:35<br>
+  Revised: 2015-08-23 15:27:14<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

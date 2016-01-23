@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Overview</a></li>
+<li class="">
+  <a href="#sec-2">2. Inkscape</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+Ripping Data From Plots
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-01-16 20:31:52<blockquote>This describes techniques to rip data from plots.  This is not digitizing, but extracting the data from the underlying vector format.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Sometimes there is data that is plotted in a paper or a presentation which one would like to have in machine readable form either to incorporate it into some calculation or to plot it in the same plot as some other data.  Modern, DOE funded experiments are required to have a <a href="http://science.energy.gov/funding-opportunities/digital-data-management/">Data Management Plan</a>.  Part of this plan is supposed to address "making all research data displayed in publications resulting from the proposed research open, machine-readable, and digitally accessible to the public at the time of publication".  For results not covered by such plans, one must do what one can.
+</p>
+
+<p>
+This describes a method to "rip" the data from published plots.  The use of the word "rip" is in the same sense as ripping a CD to a WAV file.  It is intended to be a lossless procedure.  This is not digitization where one plunks down points while zooming in to some rasterized images of the plot.  This only has a chance of working if the target plot is in a vector format such as PDF or PS.
+</p>
+
+<p>
+This method relies on the curve or other graphical data representation to be stored in the file in a way that its drawing coordinates can be faithfully (and easily!)  extracted.  It relies on their drawing coordinate system to be related to that of other graphical elements which can be used to provide a scale for the X and Y directions.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Inkscape</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+This method uses <a href="https://inkscape.org">Inkscape</a> to assist in ferreting out the needed data.  The example uses Fig. 5 from <a href="http://arxiv.org/pdf/1203.1669v2.pdf">this paper</a>.
+</p>
+
+<p>
+First, open the PDF in your favorite reader and save (or print to PDF) just the page with the plot.  Open the resulting PDF in inkscape.
+</p>
+
+<pre class="example">
+$ inkscape paper-page6.pdf
+</pre>
+
+<p>
+Click on the target plot and "ungroup" if necessary (Right-click context menu).  Keep doing this until you can select the bounding box of just the plot curve.
+</p>
+
+<p>
+Open the "XML Editor" (Edit-&gt;Xml Editor) and scroll down through the top-level elements it shows.  The one co responding to the plot's curve should be highlighted.  Open up the element to see the <code>svg:path</code> element.  It should have a "<code>d</code>" attribute with a value like:
+</p>
+
+<pre class="example">
+m 346.422,-188.102 11.773,0 0,7.993 4.969,0.....
+</pre>
+
+<p>
+The full paste is <a href="./paste.txt">here</a>.
+</p>
+
+<p>
+This is the path that draws the curve.  Ignoring the "<code>m</code>" it is a space-delimited list of pairs of numbers.  The first point is the start of the curve in drawing coordinates and each subsequent point represents a relative distance, dX/dY from the prior point.  Selecting the "<code>d</code>" attribute will show the value in the window.  Select the value and paste it into a text file.
+</p>
+
+<p>
+Next, repeat this procedure to grab the "<code>m</code>" values for major axis tick marks, making sure to record what they represent.  Eg:
+</p>
+
+<pre class="example">
+y1=200
+m 351.176,-159.043 -4.754,0
+y2=800
+m 351.176,-71.977 -4.754,0
+
+x1=1
+m 363.164,-264.801 0,-1.511
+x2=10
+m 513.859,-263.285 0,-3.027
+</pre>
+
+<p>
+This is now enough information to shift and scale from drawing coordinates to plotting coordinates and apply this transform to the plot and thus rip the data.  
+</p>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="index.org">Org (index.org)</a><br>
+<a href="index.pdf">PDF (index.pdf)</a><br>
+<p>
+  Created: 2015-01-16 20:31:52<br>
+  Revised: 2015-01-16 20:31:52<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

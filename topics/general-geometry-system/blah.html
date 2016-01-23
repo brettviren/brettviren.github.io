@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>They Call Me Brett</title>
+    
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/font-awesom/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/themes/yeti/css/base.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/highlight/styles/default.css">
+    
+    <link rel="stylesheet" href="http://localhost/~bv/static/octicons/octicons.css">
+    
+    
+
+    
+  </head>
+  
+  <body>
+    
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        
+        <div class="navbar-header">
+          
+          
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          
+          <a class="navbar-brand" href="..">They Call Me Brett</a>
+        </div><!-- navbar-header -->
+
+        
+        <div class="navbar-collapse collapse">
+          
+          
+          <ul class="nav navbar-nav">
+	    
+	    
+	    
+	    <li><a href="topics.html">Articles</a></li>
+	    
+	    
+	    <li><a href="blog.html">Blog</a></li>
+	    
+	    
+	    <li><a href="feed.html">Feeds</a></li>
+	    
+	    
+          </ul>
+          
+          
+          <ul class="nav navbar-nav navbar-right">
+	    
+            <li >
+              <a rel="up" href="..">
+                <i class="fa fa-arrow-up"></i> Up
+              </a>
+            </li>
+	    
+          </ul>
+        </div>
+
+      </div><!-- container -->
+    </div><!-- navbar -->
+
+    <div class="container">
+      
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print affix well" role="complementary">
+          <ul class="nav bs-sidenav">
+            <li class="main active"><a href="#">Top</a></li>
+	    
+<li class="">
+  <a href="#sec-1">1. Overview</a></li>
+<li class="">
+  <a href="#sec-2">2. Components</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-1">2.1. Conceptual schema</a></li>
+<li class="">
+  <a href="#sec-2-2">2.2. Representations</a></li>
+<li class="">
+  <a href="#sec-2-3">2.3. Survey of important, existing geometry systems</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-3-1">2.3.1. Persistent Representations</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-3-1-1">2.3.1.1. TGeo ROOT files</a></li>
+<li class="">
+  <a href="#sec-2-3-1-2">2.3.1.2. GDML XML</a></li>
+<li class="">
+  <a href="#sec-2-3-1-3">2.3.1.3. AGDD XML</a></li>
+<li class="">
+  <a href="#sec-2-3-1-4">2.3.1.4. DetDesc XML</a></li></ul></li>
+<li class="">
+  <a href="#sec-2-3-2">2.3.2. Transient Representations</a></li>
+<li class="">
+  <a href="#sec-2-3-3">2.3.3. Conversion Tools</a><ul class="nav">
+<li class="">
+  <a href="#sec-2-3-3-1">2.3.3.1. VGM</a></li>
+<li class="">
+  <a href="#sec-2-3-3-2">2.3.3.2. ROOT</a></li>
+<li class="">
+  <a href="#sec-2-3-3-3">2.3.3.3. Geant4 Geometry XML Converter</a></li>
+<li class="">
+  <a href="#sec-2-3-3-4">2.3.3.4. DetDescCnv</a></li>
+<li class="">
+  <a href="#sec-2-3-3-5">2.3.3.5. GiGaCnv</a></li></ul></li>
+<li class="">
+  <a href="#sec-2-3-4">2.3.4. Visualization</a></li></ul></li></ul></li>
+<li class="">
+  <a href="#sec-3">3. Links</a></li>
+
+	  </ul>
+	</div>
+      </div>
+      
+      <div class="col-md-9" role="main">
+
+	<h1 class="page-title">
+	  
+A General Geometry System
+
+	  <small>
+</small>
+	</h1>
+      
+	<p/>
+	
+	
+
+2015-01-16 20:31:09<blockquote>Contemplation on a general geometry system.</blockquote>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Here, "geometry" refers to the description of the material makeup of a region of space for the purpose of simulating or reconstructing the trajectory of particles through the space.  This document describes the components of a geometry system, presents a survey of existing (partial) systems and finally outlines one plan for a complete system.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Components</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+required for a system that can produce, manage, and consume representations of the geometry information and includes its validation and visualization and conversion between different representations.
+</p>
+
+<p>
+A geometry system can be broken down into the following components:
+</p>
+
+<dl class="org-dl">
+<dt> conceptual schema </dt><dd>the meta-description of the data types used to describe any particular geometry
+</dd>
+<dt> representations </dt><dd>a description may be represented in various forms: persistent files, transient, in-memory collection or visually as a 2D or 3D static or interactive rendering.
+</dd>
+<dt> converters </dt><dd>the processes by which one representation may be converted into another.
+</dd>
+<dt> producers </dt><dd>mechanisms and tools to create or alter a description, usually through visual or transient representations and resulting in persistent ones
+</dd>
+<dt> validation </dt><dd>mechanisms and tools which assure some level of correctness of a description, typically by operating on a transient representation or by human inspection through visualization.
+</dd>
+<dt> management </dt><dd>a mechanism by which a description may undergo controlled and recorded change.
+</dd>
+</dl>
+
+<p>
+All existing geometry systems have at least one of these components (by construction).  Few, if any, have all.  Inter-separability between existing systems allows some level of aggregation of components into a full system but this still leads to incomplete, inefficient or awkward results.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Conceptual schema</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+All existing schema considered here share a large overlap in schema at the conceptual level.  They all use a "solid model" as apposed to a "surface model" for their description.  This model contains these main data objects:
+</p>
+
+<dl class="org-dl">
+<dt> shape </dt><dd>a.k.a. "solid" is a region of space in a specific share and size with a conventionally chosen coordinate system.  
+</dd>
+<dt> material </dt><dd>the collection of bulk physical properties (density, isotopes, optical properties, sometimes visualization properties).
+</dd>
+<dt> boundary </dt><dd>a property related to the boundary of two materials, but not associated with either (for example, to model reflection in a non-Lorentz way)
+</dd>
+<dt> volume </dt><dd>the aggregation of a shape, material and possibly boundaries as well as other volumes.  A sub-volume is placed w.r.t. a volume by specifying a translation and rotation.  Typically any sub-volume shapes must be completely contained in the volume shape and no sub-volume shapes may overlap.  This sub-volume placements produce a volume hierarchy.
+</dd>
+<dt> touchable </dt><dd>a path through the volume hierarchy in order to indicate some semantic importance to a particular region of space.
+</dd>
+</dl>
+
+<p>
+With these few concepts a description may be made which is adequate for many purposes.  Additional important extensions are needed to provide optimization by exploiting symmetries that may exist in the geometry being described.  These include:
+</p>
+
+<dl class="org-dl">
+<dt> replication </dt><dd>repeated placing of identical sub-volumes.  Note, this is not necessarily the same as representation-level looping constructs.
+</dd>
+</dl>
+
+<p>
+FIXME: what other schema elements are missing?
+</p>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Representations</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+There are three forms of representation of conceptual schema that are important:
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Survey of important, existing geometry systems</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+There are a few existing geometry systems which are important to High Energy Physics (HEP) and other fields.  Some are deeply integrated with important tools and their support must be retained.  Others are used in ancillary or uncommon tools but provide useful features and functionality.  This section lists these systems or elements of them and calls out some beneficial features or perceived problems in their design or their common use.  The list is separated into three major categories of functionality.
+</p>
+</div>
+
+<div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Persistent Representations</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+This section lists common persistent representations (ie, file formats) for storing geometry information which exist in HEP.  
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-2-3-1-1" name="sec-2-3-1-1"></a>TGeo ROOT files<br  /><div class="outline-text-5" id="text-2-3-1-1">
+<p>
+The <code>TGeo</code> classes part of the ROOT data analysis framework may be saved into a compressed, binary and platform independent format ("ROOT file").  Instances of these classes must be created and aggregated through via specially written software.  See more information in the section on <a href="#sec-2-3-3">2.3.3</a> and <a href="#sec-2-3-2">2.3.2</a>.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-2" name="sec-2-3-1-2"></a>GDML XML<br  /><div class="outline-text-5" id="text-2-3-1-2">
+<p>
+The <a href="http://gdml.web.cern.ch/GDML/">Geometry Description Markup Language (GDML)</a> is a text based format conforming to an XML schema.  Besides allowing for exhaustive geometry description is has language structures for defining constant and variable parameters, general loops as well as explicitly replicated volumes.  The geometry information may be spread among various GDML XML files and then aggregated through the standard XML external entity feature.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-3" name="sec-2-3-1-3"></a>AGDD XML<br  /><div class="outline-text-5" id="text-2-3-1-3">
+<p>
+The <a href="http://hrivnac.web.cern.ch/hrivnac/Activities/Packages/AGDD/">ATLAS Generic Detector Description (AGDD)</a> is a text based format conforming to an <a href="http://hrivnac.web.cern.ch/hrivnac/Activities/Packages/AGDD/Examples/AGDD.xsd">XML schema</a>.  Like GDML it allows exhaustive geometry description as well as language structures for defining constant and variable parameters, loops, arrays.  Files can be aggregated via the standard XInclude mechanism.  Beyond a physical geometry description, AGDD has support for visualization by allowing colors to be defined on volumes.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-4" name="sec-2-3-1-4"></a>DetDesc XML<br  /><div class="outline-text-5" id="text-2-3-1-4">
+<p>
+The <a href="https://lhcb-comp.web.cern.ch/lhcb-comp/Frameworks/DetDesc/">Detector Description (DetDesc)</a> is a text based format conforming to an <a href="http://lhcb-comp.web.cern.ch/lhcb-comp/Frameworks/DetDesc/lhcbdtd.html">XML DTD</a>.  Like GDML and AGDD it allows exhaustive geometry description as well as language structures for defining constant and variable parameters, loops and vectors.  It allows aggregation through the standard XML external entity mechanism as well as a unique reference mechanism analogous to and named identically to HTML's <code>href</code>.  It has been extended to allow for injection of XML at run-time through <a href="https://wiki.bnl.gov/dayabay/index.php?title=Detector_Description#Environment_Variable_Extension">environment variables</a>.
+</p>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Transient Representations</h4>
+</div>
+
+<div id="outline-container-sec-2-3-3" class="outline-4">
+<h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> Conversion Tools</h4>
+<div class="outline-text-4" id="text-2-3-3">
+<p>
+This section lists tools that can convert from one form to another be they persistent or transient.
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-2-3-3-1" name="sec-2-3-3-1"></a>VGM<br  /></li>
+<li><a id="sec-2-3-3-2" name="sec-2-3-3-2"></a>ROOT<br  /></li>
+<li><a id="sec-2-3-3-3" name="sec-2-3-3-3"></a>Geant4 Geometry XML Converter<br  /><div class="outline-text-5" id="text-2-3-3-3">
+<p>
+<a href="http://root.cern.ch/root/vmc/XML.html">http://root.cern.ch/root/vmc/XML.html</a>
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-3-3-4" name="sec-2-3-3-4"></a>DetDescCnv<br  /></li>
+<li><a id="sec-2-3-3-5" name="sec-2-3-3-5"></a>GiGaCnv<br  /></li></ol>
+</div>
+
+<div id="outline-container-sec-2-3-4" class="outline-4">
+<h4 id="sec-2-3-4"><span class="section-number-4">2.3.4</span> Visualization</h4>
+<div class="outline-text-4" id="text-2-3-4">
+<p>
+There are many such systems in existence, such as those that are part of <a href="http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/ForApplicationDeveloper/html/ch02s02.html">Geant4</a> or <a href="http://root.cern.ch/root/html/TGeometry.html">ROOT</a>.  There are conversion formats such as <a href="http://gdml.web.cern.ch/GDML/">GDML</a> and <a href="http://hrivnac.web.cern.ch/hrivnac/Activities/Packages/AGDD/">AGDD</a> and parsers/converters that handle them such as
+</p>
+
+<p>
+as well as experiment-specific systems like <a href="https://lhcb-comp.web.cern.ch/lhcb-comp/Frameworks/DetDesc/">DetDesc</a> written by LHCb and used by others such as Daya Bay.  There are also application specific 
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Links</h2>
+<div class="outline-text-2" id="text-3">
+<dl class="org-dl">
+<dt> Maxim's agdd/gdml comparison </dt><dd><a href="http://www.star.bnl.gov/public/comp/simu/GDML/gdml_vs_agdd.html">http://www.star.bnl.gov/public/comp/simu/GDML/gdml_vs_agdd.html</a>
+</dd>
+<dt> Maxim's STAR simulation pages </dt><dd><a href="http://www.star.bnl.gov/public/comp/simu/newsite/">http://www.star.bnl.gov/public/comp/simu/newsite/</a>
+</dd>
+</dl>
+</div>
+</div>
+
+
+
+      <p/>
+      </div><!-- main -->
+      
+      
+    </div><!-- content container -->
+    
+
+
+    
+
+    <footer class="col-md-12">
+      
+<hr/>
+<a href="blah.org">Org (blah.org)</a><br>
+<a href="blah.pdf">PDF (blah.pdf)</a><br>
+<p>
+  Created: 2015-01-16 20:31:09<br>
+  Revised: 2015-01-16 20:31:09<br>
+
+    </footer>
+
+    
+    
+    
+    <script src="http://localhost/~bv/static/jquery-1.12.0.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="http://localhost/~bv/static/highlight/highlight.pack.js"></script>
+    
+    <script src="http://localhost/~bv/static/joy.js"></script>
+    
+    
+    
+    
+    
+    
+     
+  </body>
+
+</html>

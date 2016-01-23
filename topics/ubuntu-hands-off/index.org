@@ -1,0 +1,115 @@
+#+TITLE: Hands-off installation of Ubuntu
+#+DATE: [2015-03-28 Sat 18:19]
+#+DESCRIPTION: Install Ubuntu without touching the hardware.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Overview of installation
+
+1) Capture MAC address of computer
+2) Enter it into system
+3) Turn computer on, booting with netboot
+4) Computer loads pxelinux bootloader over the network
+5) PXELinux boots Ubuntu netboot with preseed file
+6) Enter BIOS to turn off netboot
+7) After installation, use ansible/puppet to polish off
+
+* Capture MAC addresses
+
+Boot to BIOS or run =tcpdump -qtel broadcast and port bootpc= while
+target machine boots.
+
+* Configure installation server
+
+** PXE/DHCP/TFTP
+
+Local network has untouchable DHCP server, use [[http://www.thekelleys.org.uk/dnsmasq/doc.html][dnsmasq]] to provide
+proxyDHCP and TFTP.
+
+#+BEGIN_EXAMPLE
+  $ sudo apt-get install dnsmasq
+#+END_EXAMPLE
+
+Add to =/etc/dnsmasq.conf=
+#+BEGIN_EXAMPLE
+  # Ubuntu sets up to use self for resolving and resolv.conf lists
+  # localhost so avoid self reference
+  no-resolv
+
+  # Router is real DNS server
+  server=192.168.1.1
+
+  # limit what interface to listen on
+  interface=eth0
+  # probably partly redudant
+  listen-address=127.0.0.1,192.168.1.123
+
+  # load aux config chunks
+  conf-dir=/etc/dnsmasq.d
+#+END_EXAMPLE
+
+=/etc/dnsmasq.d/proxydhcp.conf=
+#+BEGIN_EXAMPLE
+  # log traffic info
+  log-dhcp
+  # Turn on the included TFTP server
+  enable-tftp
+  # Root directory for TFTP files
+  tftp-root=/var/lib/tftpboot
+  # PXE boot loader
+  dhcp-boot=pxelinux.0
+  # Act as proxyDHCP on given network
+  dhcp-range=192.168.1.0,proxy
+  # Ignore anybody we don't know
+  dhcp-ignore=tag:!known
+  # last arg is pxe file bootloader sans ".0"
+  pxe-service=x86PC, "Boot PXELinux", pxelinux
+#+END_EXAMPLE
+
+=/etc/dnsmasq.d/known-hosts.conf=
+#+BEGIN_EXAMPLE
+dhcp-host=00:22:19:dc:2e:bb
+#+END_EXAMPLE
+
+Put all known hosts in this file.  Any not listed will simply be ignored by =dnsmasq=.  Any changes to the config files requires a restart
+
+#+BEGIN_EXAMPLE
+  # service dnsmasq restart
+#+END_EXAMPLE
+
+Monitor dnsmasq with 
+
+#+BEGIN_EXAMPLE
+  # tail -f /var/log/syslog
+#+END_EXAMPLE
+
+
+
+** Prepare TFTP file area
+
+Download netboot image:
+
+#+BEGIN_EXAMPLE
+  # cd /var/lib/tftpboot
+  # for n in trusty utopic vivid 
+  > do 
+  >   mkdir $n
+  >   wget -O- http://archive.ubuntu.com/ubuntu/dists/$n/main/installer-amd64/current/images/netboot/netboot.tar.gz | tar -C $n -xf -
+  > done
+  # rm -rf pxelib
+  # mkdir pxelib
+  # cd pxelib
+  # ln -s ../$n/ubuntu-installer/amd64/boot-screens/*.c32 .
+  # cd ..
+  # ln -sf $n/ldlinux.c32 .
+  # ln -sf $n/pxelinux.0 .
+#+END_EXAMPLE
+
+Configure.
+
+
+
+** Preseeding
+
+This takes crafting.
+
+

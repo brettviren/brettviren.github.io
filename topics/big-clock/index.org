@@ -1,0 +1,30 @@
+#+TITLE: Building a large digital clock.
+#+SUBTITLE: You have five more minutes.
+#+CATEGORY: hardware
+#+TAGS: arduino, arm, bnl
+#+DATE: [2015-08-09 Sun 13:25]
+#+DESCRIPTION: The large seminar room in the department could use an easy to read clock for speakers and session chairs to keep tabs of speakers times.  The goal is to provide something like this which is cheap, fun and above all else cool and unique.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* What is wanted
+
+The "thing" should have these technical features:
+
+ - Different time keeping modes: absolute time of day, count down, count up.
+ - Accurate and responsive to DST, leap seconds, etc.
+ - Visible alarm/warning.
+ - Mode settings.
+ - Settings accessible remotely with access control, inside the seminar room with some limitations.
+ - Brightness control and range from very visible in a fully lit room to full-off.  In low or no room lights it should be able to operate in a mode where it does not provide distraction.  
+ - Provide a mode that automatically adapts to ambient brightness as well as manual overrides.
+
+Rough a'priori design:
+
+ - control :: clock logic residing on arduino with a USB connection to a "real" computer for mode changes and other settings or all residing on a network-accessible ARM/Linux dev board (eg, beaglebone black).
+ - optical :: even, diffuse segment illumination, no hot spots.  Must be white or RGB (no plain red!).  For segments, use acrylic as light bars with LED(s) fed edge-on, or acrylic rods with LED(s) fed into the ends.  Or simply line cells cavities with white paper (maybe we have some Tyvek) and translucent paper covering.
+
+* Other projects
+
+- [[http://www.instructables.com/id/Build-a-huge-7-segments-8-digits-red-LED-display/][Construction and wiring of mono-color LED strip-based]] not much on parts and software
+- [[http://rubyist.github.io/blog/2014/01/20/led-strips-as-7-segment-display/][Addressable RGB LED strips]] 
+- [[http://hackaday.com/2011/08/25/large-7-segment-display-made-from-glue/][Hot glue sticks for segments]] driven by shift registers.  High attenuation in the glue sticks gives sort of a "bone" look to the segments. 

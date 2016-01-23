@@ -1,0 +1,60 @@
+#+TITLE: Running MySQL on a non-standard data directory
+#+DATE: [2014-06-13 Fri 09:11]
+#+DESCRIPTION: Take a MySQL database directory, copy it somewhere and run an instance of mysqld on it.
+#+SETUPFILE: ~/org-pub/topics/setup.org
+
+* Why do this
+
+A MySQL server had an issue where the backups did not capture recent database activity.  Luckily the DB directory on the server was still available.  However, a replacement running on backup was already put in place.  The hope is to use the old copy to dump the particular database tables and load them on the running system.
+
+To avoid setting up a full system with an OS-provided =mysqld=, let's try to set this up as a user.
+
+* Prepare
+
+Unpack the tar file for the old =/var/lib/mysql= somewhere as user
+
+* Run =mysqld= server
+
+The system =mysqld= command line on Debian looks like:
+
+#+BEGIN_EXAMPLE
+/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
+#+END_EXAMPLE
+
+Tweak that for this directory:
+
+#+BEGIN_EXAMPLE
+$ /usr/sbin/mysqld --basedir=`pwd` --datadir=`pwd`/mysql --plugin-dir=/usr/lib/mysql/plugin --log-error=error.log --pid-file=mysqld.pid --socket=mysqld.sock --port=3307
+140613  9:19:40 [Warning] Using unique option prefix key_buffer instead of key_buffer_size is deprecated and will be removed in a future release. Please use the full name instead.
+140613  9:19:40 [Warning] One can only use the --user switch if running as root
+#+END_EXAMPLE
+
+* Client
+
+#+BEGIN_EXAMPLE
+$ mysql --protocol=TCP -uroot -P3307 -hlocalhost -p
+#+END_EXAMPLE
+
+Use password from old server.   The protocol must be set explicitly or else the client defaults to the OS =mysqld=.
+
+* Dump
+
+Dump the databases of interest:
+
+#+BEGIN_EXAMPLE
+$ mysqldump --protocol=TCP -uroot --port=3307 -hlocalhost -p edg_smw > edg_smw.mysqldump
+$ mysqldump --protocol=TCP -uroot --port=3307 -hlocalhost -p edg_smw_priv > edg_smw_priv.mysqldump
+#+END_EXAMPLE
+
+* Load
+
+Copy these over to the server
+
+#+BEGIN_EXAMPLE
+$ mysql -uroot -hlocalhost -p edg_smw < edg_smw.mysqldump
+$ mysql -uroot -hlocalhost -p edg_smw_priv < edg_smw_priv.mysqldump
+#+END_EXAMPLE
+
+* Semantic MediaWiki
+
+If the tables are for MediaWiki, as these are, go to =Special:SMWAdmin= page and "Intialise or upgrade tables" and then "Data repair and upgrade".
