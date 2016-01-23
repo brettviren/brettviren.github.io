@@ -1,6 +1,0 @@
-def options(opt):
-    opt.add_option('-x','--example',action='store', 
-                   help='Add something extra from the command line')
-
-def chirp(ctx):
-    print ('The little bit of extra is: "%s"' % ctx.options.example)

@@ -1,9 +1,0 @@
-def options(opt):
-    opt.add_option('-x','--extra',action='store', 
-                   help='Add something extra from the command line')
-
-def configure(cfg):
-    cfg.env.EXTRA_MSG = 'The little bit of extra is: "%s"' % cfg.options.extra
-
-def build(bld):
-    print (bld.env.EXTRA_MSG)

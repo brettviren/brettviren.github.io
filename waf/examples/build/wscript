@@ -1,7 +1,0 @@
-def configure(cfg):
-    return
-
-def build(bld):
-    bld(rule="date > ${TGT}", target = "one.txt")
-    bld(rule="cp ${SRC} ${TGT} && date >> ${TGT}", source="one.txt", target="two.txt")
-    bld.install_files("${PREFIX}/examples", "one.txt two.txt")
