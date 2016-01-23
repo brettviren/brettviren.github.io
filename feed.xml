@@ -2,20 +2,20 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>tag:brett-viren,2016-01-01:/topics.xml</id>
   <title>Feed</title>
-  <updated>2016-01-23T22:33:41.242891+00:00</updated>
+  <updated>2016-01-23T23:29:59.825221+00:00</updated>
   <author>
     <name>Brett Viren</name>
     <email>bv@bnl.gov brett.viren@gmail.com</email>
   </author>
-  <link href="http://www.phy.bnl.gov/~bviren/" rel="alternate"/>
-  <link href="http://www.phy.bnl.gov/~bviren/topics.xml" rel="self"/>
+  <link href="http://brettviren.github.io/" rel="alternate"/>
+  <link href="http://brettviren.github.io/topics.xml" rel="self"/>
   <generator version="0.3.2">python-feedgen</generator>
   <entry>
     <id>tag:brett-viren,2016-01-01:/topics/LBNE-access-control</id>
     <title>LBNE access control.</title>
     <updated>2014-07-05T13:12:04+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/LBNE-access-control"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/LBNE-access-control" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/LBNE-access-control"/>
+    <link href="http://brettviren.github.io/topics/LBNE-access-control" rel="alternate"/>
     <summary>LBNE has various access control methods.  Some related to a particular site, some to the Grid and some which mix the two.  This topic collects information about these.</summary>
     <published>2014-07-01T12:46:00-04:56</published>
   </entry>
@@ -23,8 +23,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/SAM-on-RACF</id>
     <title>Use of SAM at BNL RACF</title>
     <updated>2014-07-05T12:29:18+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/SAM-on-RACF"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/SAM-on-RACF" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/SAM-on-RACF"/>
+    <link href="http://brettviren.github.io/topics/SAM-on-RACF" rel="alternate"/>
     <summary>SAM is a file catalog system developed at Fermilab and expected to be used by LBNE.  This topic collects information about its use at BNL's RACF.</summary>
     <published>2014-07-01T09:12:00-04:56</published>
   </entry>
@@ -32,8 +32,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/asus-tf300t</id>
     <title>Cyanogenmod on ASUS TF300T</title>
     <updated>2015-01-19T11:09:53+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/asus-tf300t"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/asus-tf300t" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/asus-tf300t"/>
+    <link href="http://brettviren.github.io/topics/asus-tf300t" rel="alternate"/>
     <summary>Rootin' tootin'.</summary>
     <published>2014-12-06T18:44:00-04:56</published>
   </entry>
@@ -41,8 +41,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/asus-transformer-tf701t</id>
     <title>Installing Cyanogenmod on ASUS Transformer TF701t</title>
     <updated>2015-01-19T11:09:53+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/asus-transformer-tf701t"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/asus-transformer-tf701t" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/asus-transformer-tf701t"/>
+    <link href="http://brettviren.github.io/topics/asus-transformer-tf701t" rel="alternate"/>
     <summary>How to.</summary>
     <published>2014-12-06T07:23:00-04:56</published>
   </entry>
@@ -50,8 +50,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/big-clock</id>
     <title>Building a large digital clock.</title>
     <updated>2015-08-15T17:46:35+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/big-clock"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/big-clock" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/big-clock"/>
+    <link href="http://brettviren.github.io/topics/big-clock" rel="alternate"/>
     <summary>The large seminar room in the department could use an easy to read clock for speakers and session chairs to keep tabs of speakers times.  The goal is to provide something like this which is cheap, fun and above all else cool and unique.</summary>
     <category term="hardware"/>
     <published>2015-08-09T13:25:00-04:56</published>
@@ -60,8 +60,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/build-larsoft-with-google-repo</id>
     <title>Managing a LArSoft Development Environment with Google Repo</title>
     <updated>2014-11-12T16:08:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/build-larsoft-with-google-repo"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/build-larsoft-with-google-repo" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/build-larsoft-with-google-repo"/>
+    <link href="http://brettviren.github.io/topics/build-larsoft-with-google-repo" rel="alternate"/>
     <summary>Google =repo= can be used to manage a development environment and to build the code.</summary>
     <published>2014-07-25T20:09:00-04:56</published>
   </entry>
@@ -69,8 +69,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/conda</id>
     <title>Using Conda To Package Stuff</title>
     <updated>2015-06-21T21:48:18+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/conda"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/conda" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/conda"/>
+    <link href="http://brettviren.github.io/topics/conda" rel="alternate"/>
     <summary>Oh dear, worch may just have been obsoleted.</summary>
     <category term="Build"/>
     <published>2014-11-21T19:28:00-04:56</published>
@@ -79,8 +79,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/desk</id>
     <title>I wanna new desk.</title>
     <updated>2014-11-22T18:08:13+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/desk"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/desk" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/desk"/>
+    <link href="http://brettviren.github.io/topics/desk" rel="alternate"/>
     <summary>The making of a computer desk.</summary>
     <published>2014-10-18T14:34:00-04:56</published>
   </entry>
@@ -88,8 +88,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/docker-for-lbne-builds</id>
     <title>Using Docker to do LBNE Builds</title>
     <updated>2015-08-15T17:46:35+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/docker-for-lbne-builds"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/docker-for-lbne-builds" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/docker-for-lbne-builds"/>
+    <link href="http://brettviren.github.io/topics/docker-for-lbne-builds" rel="alternate"/>
     <summary>Docker is a way to make Linux containers.  Let's see how we can use them to increase the sanity level in building LBNE software.</summary>
     <published>2014-12-20T12:21:00-04:56</published>
   </entry>
@@ -97,8 +97,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/dotfiles</id>
     <title>Managing dot-files</title>
     <updated>2015-09-21T11:10:13+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/dotfiles"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/dotfiles" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/dotfiles"/>
+    <link href="http://brettviren.github.io/topics/dotfiles" rel="alternate"/>
     <summary>This topic describes how application and user account configuration (dotfiles) is managed.</summary>
     <category term="software"/>
     <published>2015-09-20T11:14:00-04:56</published>
@@ -107,8 +107,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/elog</id>
     <title>ELog at BNL Physics Department</title>
     <updated>2014-11-12T16:08:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/elog"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/elog" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/elog"/>
+    <link href="http://brettviren.github.io/topics/elog" rel="alternate"/>
     <summary>The ELog online logbook was selected for use by a few groups in BNL's Physics department.  This topic describes that selection, its setup and other related matters.</summary>
     <published>2014-07-18T11:07:00-04:56</published>
   </entry>
@@ -116,8 +116,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/email</id>
     <title>Email With GNUS, Procmail, IMAP, SSH, Mairix</title>
     <updated>2016-01-02T23:38:55+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/email"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/email" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/email"/>
+    <link href="http://brettviren.github.io/topics/email" rel="alternate"/>
     <summary>A description of how I read mail.</summary>
     <published>2014-10-11T09:42:00-04:56</published>
   </entry>
@@ -125,8 +125,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/fai-pxe-proxydhcp</id>
     <title>Installing Debian/Ubuntu Over the Network</title>
     <updated>2015-12-30T01:09:04+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/fai-pxe-proxydhcp"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/fai-pxe-proxydhcp" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/fai-pxe-proxydhcp"/>
+    <link href="http://brettviren.github.io/topics/fai-pxe-proxydhcp" rel="alternate"/>
     <summary>Network-based installation via PXE, FAI, DHCP, TFPT and maybe more acronyms.  Challenge: I don't own the network.</summary>
     <published>2015-03-28T11:32:00-04:56</published>
   </entry>
@@ -134,8 +134,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/general-geometry-system</id>
     <title>A General Geometry System</title>
     <updated>2014-05-30T22:21:11+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/general-geometry-system"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/general-geometry-system" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/general-geometry-system"/>
+    <link href="http://brettviren.github.io/topics/general-geometry-system" rel="alternate"/>
     <summary>Contemplation on a general geometry system.</summary>
     <published>2014-05-29T17:21:00-04:56</published>
   </entry>
@@ -143,8 +143,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/git</id>
     <title>Git Tricks</title>
     <updated>2015-06-22T13:42:37+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/git"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/git" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/git"/>
+    <link href="http://brettviren.github.io/topics/git" rel="alternate"/>
     <summary>Various techniques for using git.</summary>
     <published>2014-09-05T10:16:00-04:56</published>
   </entry>
@@ -152,8 +152,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/gnupg</id>
     <title>Using PGP With GnuPG</title>
     <updated>2015-07-20T14:39:34+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/gnupg"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/gnupg" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/gnupg"/>
+    <link href="http://brettviren.github.io/topics/gnupg" rel="alternate"/>
     <summary>Using GnuPG can be tricky and details and this note keeps track.</summary>
     <category term="Security"/>
     <published>2015-07-07T20:23:00-04:56</published>
@@ -162,8 +162,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/haiku-i7-system</id>
     <title>Scope out my new i7 PC</title>
     <updated>2015-07-05T17:29:06+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/haiku-i7-system"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/haiku-i7-system" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/haiku-i7-system"/>
+    <link href="http://brettviren.github.io/topics/haiku-i7-system" rel="alternate"/>
     <summary>This holds various things about my i7 machine.</summary>
     <category term="hardware"/>
     <published>2014-06-28T19:40:00-04:56</published>
@@ -172,8 +172,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/home-audio</id>
     <title>Better Music With Free Software</title>
     <updated>2015-01-19T11:09:53+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/home-audio"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/home-audio" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/home-audio"/>
+    <link href="http://brettviren.github.io/topics/home-audio" rel="alternate"/>
     <summary>Setting up audio at home.</summary>
     <published>2014-12-31T13:57:00-04:56</published>
   </entry>
@@ -181,8 +181,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/htc-inspire-4g</id>
     <title>Stuff done to my HTC Inspire 4G</title>
     <updated>2015-07-05T14:44:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/htc-inspire-4g"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/htc-inspire-4g" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/htc-inspire-4g"/>
+    <link href="http://brettviren.github.io/topics/htc-inspire-4g" rel="alternate"/>
     <summary>Keep track of things done to my old HTC Inspire 4G</summary>
     <published>2014-06-21T09:30:00-04:56</published>
   </entry>
@@ -190,8 +190,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/lbne-dev-with-mrb</id>
     <title>Developing LBNE code with =mrb=</title>
     <updated>2014-05-30T22:21:11+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/lbne-dev-with-mrb"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/lbne-dev-with-mrb" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/lbne-dev-with-mrb"/>
+    <link href="http://brettviren.github.io/topics/lbne-dev-with-mrb" rel="alternate"/>
     <summary>Notes on how to use =mrb= to develop LBNE code.</summary>
     <published>2014-04-22T12:39:00-04:56</published>
   </entry>
@@ -199,8 +199,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/mysql-on-nonstandard-directory</id>
     <title>Running MySQL on a non-standard data directory</title>
     <updated>2014-07-05T12:29:18+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/mysql-on-nonstandard-directory"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/mysql-on-nonstandard-directory" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/mysql-on-nonstandard-directory"/>
+    <link href="http://brettviren.github.io/topics/mysql-on-nonstandard-directory" rel="alternate"/>
     <summary>Take a MySQL database directory, copy it somewhere and run an instance of mysqld on it.</summary>
     <published>2014-06-13T09:11:00-04:56</published>
   </entry>
@@ -208,8 +208,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/nas</id>
     <title>A NAS To Build</title>
     <updated>2015-08-15T17:46:35+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/nas"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/nas" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/nas"/>
+    <link href="http://brettviren.github.io/topics/nas" rel="alternate"/>
     <summary>Some notes for building a NAS.</summary>
     <category term="hardware"/>
     <published>2015-07-05T15:58:00-04:56</published>
@@ -218,8 +218,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/nix</id>
     <title>HEP/Nix Packages.</title>
     <updated>2015-08-23T15:27:14+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/nix"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/nix" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/nix"/>
+    <link href="http://brettviren.github.io/topics/nix" rel="alternate"/>
     <summary>A note investigating the use of the Nix package manager from NixOS for HEP.</summary>
     <category term="software"/>
     <published>2015-08-15T09:16:00-04:56</published>
@@ -228,8 +228,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/orange-pi</id>
     <title>Linux on the Orange Pi Plus Dev Board</title>
     <updated>2015-12-30T01:09:04+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/orange-pi"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/orange-pi" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/orange-pi"/>
+    <link href="http://brettviren.github.io/topics/orange-pi" rel="alternate"/>
     <summary>This holds notes on getting Linux running on the Orange Pi.</summary>
     <category term="Hardware"/>
     <published>2015-07-12T17:12:00-04:56</published>
@@ -238,8 +238,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/pass</id>
     <title>The zx2c4 =pass= password manager</title>
     <updated>2015-12-30T01:09:04+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/pass"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/pass" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/pass"/>
+    <link href="http://brettviren.github.io/topics/pass" rel="alternate"/>
     <summary>Notes on using the =pass= command line password manager.</summary>
     <category term="Security"/>
     <published>2015-07-08T19:57:00-04:56</published>
@@ -248,8 +248,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/password-management-system</id>
     <title>An idea for an integrated password management system.</title>
     <updated>2015-06-19T23:32:34+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/password-management-system"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/password-management-system" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/password-management-system"/>
+    <link href="http://brettviren.github.io/topics/password-management-system" rel="alternate"/>
     <summary>Passwords are a pain.  Password managers take some of the pain away but do not provide universal coverage.  Let's think of a way to fix this.</summary>
     <published>2015-01-24T17:53:00-04:56</published>
   </entry>
@@ -257,8 +257,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/puppet-and-fusion-inventory</id>
     <title>Setting up Puppet and Fusion Inventory</title>
     <updated>2015-12-29T00:29:56+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/puppet-and-fusion-inventory"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/puppet-and-fusion-inventory" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/puppet-and-fusion-inventory"/>
+    <link href="http://brettviren.github.io/topics/puppet-and-fusion-inventory" rel="alternate"/>
     <summary>How I learned what computers I have.</summary>
     <published>2014-05-23T08:51:00-04:56</published>
   </entry>
@@ -266,8 +266,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/python-pip-setuptools-pypi-oh-my</id>
     <title>Python, pip, setuptools, PyPI, oh my!</title>
     <updated>2014-11-12T16:08:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/python-pip-setuptools-pypi-oh-my"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/python-pip-setuptools-pypi-oh-my" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/python-pip-setuptools-pypi-oh-my"/>
+    <link href="http://brettviren.github.io/topics/python-pip-setuptools-pypi-oh-my" rel="alternate"/>
     <summary>How to manage releases of a suite of Python packages.</summary>
     <published>2014-09-03T13:11:00-04:56</published>
   </entry>
@@ -275,8 +275,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/ripping-plots</id>
     <title>Ripping Data From Plots</title>
     <updated>2015-01-16T20:31:52+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ripping-plots"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ripping-plots" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ripping-plots"/>
+    <link href="http://brettviren.github.io/topics/ripping-plots" rel="alternate"/>
     <summary>This describes techniques to rip data from plots.  This is not digitizing, but extracting the data from the underlying vector format.</summary>
     <published>2015-01-12T15:21:00-04:56</published>
   </entry>
@@ -284,8 +284,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/root-on-debian</id>
     <title>Debian packages of ROOT.</title>
     <updated>2014-11-12T16:08:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/root-on-debian"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/root-on-debian" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/root-on-debian"/>
+    <link href="http://brettviren.github.io/topics/root-on-debian" rel="alternate"/>
     <summary>Some guidance on how to use ROOT from Ubuntu/Debian packages.</summary>
     <published>2014-10-20T09:20:00-04:56</published>
   </entry>
@@ -293,8 +293,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/root-org-notebook</id>
     <title>ROOT Notebook with Org</title>
     <updated>2016-01-14T22:44:46+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/root-org-notebook"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/root-org-notebook" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/root-org-notebook"/>
+    <link href="http://brettviren.github.io/topics/root-org-notebook" rel="alternate"/>
     <summary>Emacs Org mode has long provided a "notebook" functionalty.  ROOT's recent announement that it may be used as a Jupyter backend kernel to provide "notebook" functionality is an excuse to show how Org can be used in a similar manner.</summary>
     <category term="software"/>
     <published>2015-12-28T16:31:00-04:56</published>
@@ -303,8 +303,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/samsung-chromebook-3</id>
     <title>Play with Samsung Chromebook 3</title>
     <updated>2015-06-19T23:32:34+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/samsung-chromebook-3"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/samsung-chromebook-3" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/samsung-chromebook-3"/>
+    <link href="http://brettviren.github.io/topics/samsung-chromebook-3" rel="alternate"/>
     <summary>Let's install Debian everywhere.</summary>
     <published>2015-01-26T18:17:00-04:56</published>
   </entry>
@@ -312,8 +312,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/sci-log-book-comp</id>
     <title>Comparison of Online Scientific Logbooks</title>
     <updated>2014-07-15T20:20:56+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/sci-log-book-comp"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/sci-log-book-comp" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/sci-log-book-comp"/>
+    <link href="http://brettviren.github.io/topics/sci-log-book-comp" rel="alternate"/>
     <summary>Some online note taking "logbooks" are compared for use in a scientific or lab setting.</summary>
     <published>2014-07-15T14:18:00-04:56</published>
   </entry>
@@ -321,8 +321,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/setting-version-strings</id>
     <title>Setting version strings for release and development builds</title>
     <updated>2014-11-12T16:08:02+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/setting-version-strings"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/setting-version-strings" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/setting-version-strings"/>
+    <link href="http://brettviren.github.io/topics/setting-version-strings" rel="alternate"/>
     <summary>There is a chicken-and-egg problem of setting a version string to mark a particular state of a repository's contents when that version string is itself stored in a file in the same repository.  This topic discusses the problem and gives some solutions.</summary>
     <published>2014-09-15T11:26:00-04:56</published>
   </entry>
@@ -330,24 +330,24 @@
     <id>tag:brett-viren,2016-01-01:/topics/software-development-system</id>
     <title>Ideas on a waf-based software development system</title>
     <updated>2014-05-30T22:21:11+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/software-development-system"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/software-development-system" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/software-development-system"/>
+    <link href="http://brettviren.github.io/topics/software-development-system" rel="alternate"/>
     <published>2014-03-25T20:18:00-04:56</published>
   </entry>
   <entry>
     <id>tag:brett-viren,2016-01-01:/topics/ssh-kerberos-fermilab</id>
     <title>How to SSH to Fermilab using Kerberos</title>
     <updated>2014-05-30T22:21:11+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ssh-kerberos-fermilab"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ssh-kerberos-fermilab" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ssh-kerberos-fermilab"/>
+    <link href="http://brettviren.github.io/topics/ssh-kerberos-fermilab" rel="alternate"/>
     <published>2014-04-22T13:04:00-04:56</published>
   </entry>
   <entry>
     <id>tag:brett-viren,2016-01-01:/topics/ssh-keys</id>
     <title>SSH Keys</title>
     <updated>2016-01-02T23:38:55+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ssh-keys"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ssh-keys" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ssh-keys"/>
+    <link href="http://brettviren.github.io/topics/ssh-keys" rel="alternate"/>
     <summary>When the number of SSH keys grows beyond a few, new tools are needed.</summary>
     <category term="Security"/>
     <published>2015-09-20T12:00:00-04:56</published>
@@ -356,8 +356,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/ssh-tricks</id>
     <title>SSH Tips and Tricks</title>
     <updated>2014-07-05T12:29:18+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ssh-tricks"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ssh-tricks" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ssh-tricks"/>
+    <link href="http://brettviren.github.io/topics/ssh-tricks" rel="alternate"/>
     <summary>Yet another list of ways to use and abuse SSH</summary>
     <published>2014-06-12T10:41:00-04:56</published>
   </entry>
@@ -365,8 +365,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/this</id>
     <title>This site.</title>
     <updated>2015-12-29T21:00:43+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/this"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/this" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/this"/>
+    <link href="http://brettviren.github.io/topics/this" rel="alternate"/>
     <summary>This site is generated from Emacs Org-mode sources.  Over the years, it has evolved to use various systems.  How it is published is described.</summary>
     <category term="Meta"/>
     <published>2014-03-02T15:02:00-04:56</published>
@@ -375,8 +375,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/ubuntu-cobbler</id>
     <title>Install Ubuntu with Cobbler</title>
     <updated>2015-03-28T22:19:10+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ubuntu-cobbler"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ubuntu-cobbler" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ubuntu-cobbler"/>
+    <link href="http://brettviren.github.io/topics/ubuntu-cobbler" rel="alternate"/>
     <summary>Let's see if this is easier than FAI.</summary>
     <published>2015-03-28T16:22:00-04:56</published>
   </entry>
@@ -384,8 +384,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/ubuntu-hands-off</id>
     <title>Hands-off installation of Ubuntu</title>
     <updated>2015-03-29T14:40:24+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/ubuntu-hands-off"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/ubuntu-hands-off" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/ubuntu-hands-off"/>
+    <link href="http://brettviren.github.io/topics/ubuntu-hands-off" rel="alternate"/>
     <summary>Install Ubuntu without touching the hardware.</summary>
     <published>2015-03-28T18:19:00-04:56</published>
   </entry>
@@ -393,8 +393,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/units-for-fun-and-profit</id>
     <title>Units, Python and Org</title>
     <updated>2016-01-02T23:38:55+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/units-for-fun-and-profit"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/units-for-fun-and-profit" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/units-for-fun-and-profit"/>
+    <link href="http://brettviren.github.io/topics/units-for-fun-and-profit" rel="alternate"/>
     <summary>Some messing around with units in Python and Org.</summary>
     <category term="software"/>
     <published>2014-09-03T08:54:00-04:56</published>
@@ -403,8 +403,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/waf</id>
     <title>Building with waf</title>
     <updated>2015-06-21T21:48:18+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/waf"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/waf" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/waf"/>
+    <link href="http://brettviren.github.io/topics/waf" rel="alternate"/>
     <summary>Making a better build system with waf.</summary>
     <category term="Build"/>
     <published>2014-03-01T09:56:00-04:56</published>
@@ -413,8 +413,8 @@
     <id>tag:brett-viren,2016-01-01:/topics/waf-latex-arxiv</id>
     <title>Using waf to produce a tarball for submission to the arXiv.</title>
     <updated>2014-03-09T17:07:43+00:00</updated>
-    <content src="http://www.phy.bnl.gov/~bviren/topics/waf-latex-arxiv"/>
-    <link href="http://www.phy.bnl.gov/~bviren/topics/waf-latex-arxiv" rel="alternate"/>
+    <content src="http://brettviren.github.io/topics/waf-latex-arxiv"/>
+    <link href="http://brettviren.github.io/topics/waf-latex-arxiv" rel="alternate"/>
     <published>2014-03-08T14:44:00-04:56</published>
   </entry>
 </feed>
