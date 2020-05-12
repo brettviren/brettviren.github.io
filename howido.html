@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-05-11 Mon 21:17 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How I Do</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Brett Viren" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="export/styles/darksun/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="export/styles/darksun/css/darksun.css"/>
+<link rel="stylesheet" type="text/css" href="export/styles/darksun/css/hideshow.css"/>
+<script type="text/javascript" src="export/styles/darksun/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/darksun.js"></script>
+<script type="text/javascript" src="export/styles/darksun/js/hideshow.js"></script>
+<script type="text/javascript" src="export/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">How I Do</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org252d910">General</a></li>
+<li><a href="#org47063ea">Runtime configuration</a>
+<ul>
+<li><a href="#orge8b8963">vcsh</a></li>
+</ul>
+</li>
+<li><a href="#org88df96a">Applications</a>
+<ul>
+<li><a href="#orgf6e0a49">Bash</a></li>
+<li><a href="#orgabb1dd3">Kitty</a></li>
+<li><a href="#org579a0cf">Emacs</a></li>
+<li><a href="#orgc3125b9">Sawfish</a></li>
+<li><a href="#org29c5631">Firefox</a></li>
+<li><a href="#orgfffea7a">arbtt</a></li>
+<li><a href="#orgacccba2">Syncthing</a></li>
+</ul>
+</li>
+<li><a href="#orgce6ab44">Local install</a>
+<ul>
+<li><a href="#org6a0e554">CMake</a></li>
+<li><a href="#orgb741213">autoconf</a></li>
+<li><a href="#orge50b54f">Python</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Sometimes people ask how I do things.  They can read this.
+</p>
+
+<div id="outline-container-org252d910" class="outline-2">
+<h2 id="org252d910">General</h2>
+<div class="outline-text-2" id="text-org252d910">
+<p>
+In this document, the prompts used in examples are as:
+</p>
+
+<pre class="example">
+# command run as root
+$ command run as user
+</pre>
+
+<p>
+I mainly use four computers <code>hometop</code>, <code>homestation</code>,
+<code>worktop</code>, <code>workstation</code>.  Any referene to <code>homeserver</code> means a home
+computer with a port forwarded to the Internet.  To reach <code>homeserver</code>
+I maintain a dynamic DNS subdomain from the great folks at <a href="https://freedns.afraid.org/">afraid</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org47063ea" class="outline-2">
+<h2 id="org47063ea">Runtime configuration</h2>
+<div class="outline-text-2" id="text-org47063ea">
+<p>
+Configuration is stored in a private <a href="https://gitea.io/">Gitea</a> and most clones are managed with <a href="https://github.com/RichiH/vcsh">vcsh</a> and <a href="https://myrepos.branchable.com/">myrepos</a> with <a href="https://www.passwordstore.org/">pass</a> managing its own.  
+</p>
+</div>
+
+<div id="outline-container-orge8b8963" class="outline-3">
+<h3 id="orge8b8963">vcsh</h3>
+<div class="outline-text-3" id="text-orge8b8963">
+<p>
+The vcsh git repo manager allows multiple git repos to supply files into <code>$HOME</code> without any actual <code>.git/</code> directory there.  It allows for the target filesystem space to be interleaved with files managed in separate git repos.  Seems crazy, works great.  
+</p>
+
+<p>
+My <code>vcsh</code> repos include config for: bash, bbdb, emacs, git, mr
+(myrepos), nixpkgs, sawfish, scripts, ssh, systemd, tmux, weechat.
+Some of these are described in the section <a href="#org88df96a">Applications</a> but first how <code>vcsh</code>
+is handled.
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org3359c2d"></a>Initialize<br />
+<div class="outline-text-4" id="text-org3359c2d">
+<p>
+Each repo needs a one time setup like:
+</p>
+
+<pre class="example">
+# apt install vcsh
+$ vcsh init bbdb
+$ vcsh bbdb add .bbdb
+$ vcsh bbdb commit -m "First commit"
+$ vcsh bbdb remote add origin gogs@homeserver:bv/dot-bbdb.git
+$ vcsh bbdb push -u origin master
+</pre>
+</div>
+</li>
+
+<li><a id="orgec96e17"></a>Multiple repositories<br />
+<div class="outline-text-4" id="text-orgec96e17">
+<p>
+There is built-in support for multiple repositories in <code>vcsh</code>, eg:
+</p>
+
+<pre class="example">
+$ vcsh status
+$ vcsh pull
+$ vcsh push
+</pre>
+</div>
+</li>
+
+<li><a id="org7c61d31"></a>Bootstrap new account<br />
+<div class="outline-text-4" id="text-org7c61d31">
+<p>
+A new account can clone individual repos:
+</p>
+
+<pre class="example">
+$ vcsh clone gogs@homeserver:bv/dot-bbdb.git bbdb
+</pre>
+
+<p>
+This gets tedious and it's where <code>myrepos</code> (<code>mr</code>) comes in.
+</p>
+
+<pre class="example">
+$ vcsh clone gogs@haiku:bv/dot-myrepos.git mr
+$ cd .config/mr/config.d/
+$ ln -sf ../available.d/* . 
+$ cd 
+$ mr up
+</pre>
+
+<p>
+An example <code>mr</code> config looks like:
+</p>
+
+<pre class="example">
+[$HOME/.config/vcsh/repo.d/emacs.git]
+checkout = vcsh clone gogs@bandyv.us.to:bv/dot-emacs.git emacs
+</pre>
+</div>
+</li>
+
+<li><a id="org357c848"></a>Ignoring<br />
+<div class="outline-text-4" id="text-org357c848">
+<p>
+Any git command run through <code>vcsh</code> uses <code>$HOME</code> as the Git working dir.
+</p>
+
+<pre class="example">
+$ vcsh bbdb status
+[... long list of untracked files ...]
+</pre>
+
+<p>
+You can have <code>vcsh</code> Git command ignore anything not explicitly committed to a <code>vcsh</code> Git repository:
+</p>
+
+<pre class="example">
+$ vcsh write-gitignore bbdb
+$ vcsh bbdb status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+</pre>
+
+<p>
+The <code>write-gitignore</code> command will create a file like:
+</p>
+
+<pre class="example">
+$ cat ~/.gitignore.d/bbdb 
+*
+!/.bbdb
+</pre>
+</div>
+</li>
+
+<li><a id="org09ed031"></a>Making updates<br />
+<div class="outline-text-4" id="text-org09ed031">
+<pre class="example">
+$ emacs .bash/completion/vcsh
+$ vcsh bash add -f .bash/completion/vcsh
+$ vcsh bash commit -a -m "Add vcsh completion for bash."
+$ vcsh bash push
+</pre>
+</div>
+</li>
+
+<li><a id="org29f558b"></a>Applying updates<br />
+<div class="outline-text-4" id="text-org29f558b">
+<p>
+From each account:
+</p>
+
+<pre class="example">
+$ mr up
+</pre>
+
+<p>
+or, more usually
+</p>
+
+<pre class="example">
+$ vcsh pull
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org88df96a" class="outline-2">
+<h2 id="org88df96a">Applications</h2>
+<div class="outline-text-2" id="text-org88df96a">
+<p>
+Life exists largely inside five applications
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.gnu.org/software/bash/">Bash</a> command shell</li>
+<li><a href="https://sw.kovidgoyal.net/kitty/">Kitty</a> terminal emulator</li>
+<li><a href="https://www.gnu.org/software/emacs/">Emacs</a> operating system</li>
+<li><a href="https://sawfish.tuxfamily.org/">Sawfish</a> window manager</li>
+<li>Firefox web browser</li>
+</ul>
+
+<p>
+After going through the big five I describe some others lesser but
+central applications I use.
+</p>
+</div>
+
+<div id="outline-container-orgf6e0a49" class="outline-3">
+<h3 id="orgf6e0a49">Bash</h3>
+<div class="outline-text-3" id="text-orgf6e0a49">
+<p>
+My <code>.bashrc</code> is run for login or subshells.  It delegates
+configuration to scripts under
+<code>/.bash/{functions,variables,apps}/*.sh</code> and "mounts" some git subtrees under <code>/.bash/subtrees</code>.  
+</p>
+
+<p>
+One subtree of note is <a href="https://github.com/brettviren/shist">shist</a> which is my Bash implementation of <a href="https://github.com/barabo/advanced-shell-history">advanced shell history</a>.  This integrates with Bash prompting to record history in an Sqlite3 database.
+</p>
+
+<p>
+I strongly avoid using <code>alias</code> (eg, no <code>ll</code> for <code>ls -l</code>) as I think inventing my own Unix command set is an anti-pattern.  I do capture some larger commands in Bash functions so that tab-completion can remind me of the (eg, a bunch of <code>emacs-server-*</code> functions to manage different Emacs servers).
+</p>
+
+<p>
+One setup will loop over <code>$HOME/opt/*/{bin,lib,man,lib/pkgconfig}</code> to set <code>PATH, LD_LIBRARY_PATH, MANPATH, PKG_CONFIG_PATH</code>.  See <a href="#orgce6ab44">Local install</a> for what may be found there. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgabb1dd3" class="outline-3">
+<h3 id="orgabb1dd3">Kitty</h3>
+<div class="outline-text-3" id="text-orgabb1dd3">
+<p>
+I've tried many terminals over the years and for about the last year I
+have been very happily using the <a href="https://sw.kovidgoyal.net/kitty/">Kitty</a> terminal.  I mean the one
+written in Python/OpenGL and not the on derived from Putty.  Some
+reasons why I like it:
+</p>
+
+<ul class="org-ul">
+<li>emoji support!</li>
+<li><code>C-S-h</code> to load scrollback into <code>less</code></li>
+<li>fast, boastful text, Free Software</li>
+</ul>
+
+<p>
+It also has sub-programs called "kittens" such as <code>kitten icat
+foo.png</code> to show a graphic in the terminal.  Or <code>kitten diff</code> to show
+a pretty side-by-side diff.  These are nice but I rarely use them.
+</p>
+
+<p>
+I build and rebuild it from source frequently especially as lately it
+announces when new tags are available.
+</p>
+
+<pre class="example">
+$ cd dev/kitty
+$ git pull
+$ git checkout vX.Y.Z
+$ make
+</pre>
+
+<p>
+I run the result directly from the source:
+</p>
+
+<pre class="example">
+$ cat bin/kitty 
+#!/usr/bin/env python3
+import runpy
+runpy.run_path('/home/bv/dev/kitty', run_name='__main__')
+</pre>
+
+<p>
+No particularly fancy config (lives in <code>.config/kitty/kitty.conf</code>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org579a0cf" class="outline-3">
+<h3 id="org579a0cf">Emacs</h3>
+<div class="outline-text-3" id="text-org579a0cf">
+<p>
+I use Emacs for Email (GNUS), Contacts (BBDB), software development,
+document and presentation production (orgmode and LaTeX), bookmark
+management (<code>org-protocol</code> and <code>org-capture</code>) and web form text entry
+(<code>atomic-chrome</code>).  Emacs 27 is soon to be released but I can't wait
+so I build it from source (see <a href="#orgce6ab44">Local install</a>).  It now allows
+<code>XDG_CONFIG_HOME</code> which I make use of by <b>conceptually</b> doing:
+</p>
+
+<pre class="example">
+$ rm -rf .emacs*
+$ mkdir .config/emacs
+</pre>
+
+<p>
+Typing <code>emacs</code> then uses <code>$XDG_CONFIG_HOME/emacs/init.el</code>.  There's
+lots of fashionable ways to configure <code>init.el</code>.  I don't follow then
+except to break up the config into many <code>init-*.el</code> and <code>(require)</code>
+them in a big list.  
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="org562d818"></a>Emacs packages<br />
+<div class="outline-text-4" id="text-org562d818">
+<p>
+I heavily use <a href="https://github.com/jwiegley/use-package">use-package</a> and in two modes.  I
+want the ability to blow away any <code>emacs.d/elpa/</code> area and rebuild it
+any time but normally don't want to spend the extra load time to query
+for package state.  This is in <code>init-package.el</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #b4fa70;">require</span> '<span style="color: #e9b2e3;">package</span>)
+(<span style="color: #b4fa70;">setq</span> package-archives
+      '((<span style="color: #e9b96e;">"org"</span>     .       <span style="color: #e9b96e;">"https://orgmode.org/elpa/"</span>)
+        (<span style="color: #e9b96e;">"gnu"</span>     .       <span style="color: #e9b96e;">"https://elpa.gnu.org/packages/"</span>)
+        (<span style="color: #e9b96e;">"melpa"</span>   .       <span style="color: #e9b96e;">"https://melpa.org/packages/"</span>)))
+(package-initialize)
+<span style="color: #73d216;">;; </span><span style="color: #73d216;">uncomment this block and restart emacs to get new packages</span>
+<span style="color: #73d216;">;;;;;</span>
+<span style="color: #73d216;">;; </span><span style="color: #73d216;">(setq use-package-always-ensure t)</span>
+<span style="color: #73d216;">;; </span><span style="color: #73d216;">(package-refresh-contents)</span>
+<span style="color: #73d216;">;; </span><span style="color: #73d216;">(unless (package-installed-p 'use-package)</span>
+<span style="color: #73d216;">;;   </span><span style="color: #73d216;">(package-install 'use-package))</span>
+<span style="color: #73d216;">;;;;;;</span>
+(<span style="color: #b4fa70;">require</span> '<span style="color: #e9b2e3;">use-package</span>)
+(<span style="color: #b4fa70;">provide</span> '<span style="color: #e9b2e3;">init-packages</span>)
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org4382440"></a>GNUS/BBDB<br /></li>
+
+<li><a id="org3c46e5e"></a>LSP<br /></li>
+
+<li><a id="org9eb04bf"></a>Emacs servers<br />
+<div class="outline-text-4" id="text-org9eb04bf">
+<p>
+To support bookmark capture (Firefox + org-protocol + a script) and text entry editing (GhostText + atomic-chrome) I have dedicated Emacs server configuration as well.  These servers are started via <code>supervisord</code> which itself starts from cron:
+</p>
+
+<pre class="example">
+$ crontab -l|grep supervisord
+@reboot supervisord -c /home/bv/scripts/supervisor.conf
+</pre>
+
+<p>
+That =~/scripts/~ directory is in <code>vcsh</code>.  The two Emacs servers are
+started like:
+</p>
+
+<pre class="example">
+[program:emacs-capture]
+command=%(ENV_HOME)s/scripts/emacs-start-server capture
+directory=%(ENV_HOME)s
+autorestart = false
+
+[program:emacs-atomic-chrome]
+command=%(ENV_HOME)s/scripts/emacs-start-server atomic-chrome
+directory=%(ENV_HOME)s
+autorestart = false
+</pre>
+
+<p>
+This <code>emacs-start-server</code> script is mostly to remind me how to start Emacs properly.  It boils down to running:
+</p>
+
+<pre class="example">
+exec emacs -q --fg-daemon=${name} -l ~/.config/emacs/init-${name}.el
+</pre>
+
+<p>
+As such the nominal <code>init.el</code> is not sourced.  Each server is self
+contained including its <code>custom.el</code> and its <code>elpa/</code> area.
+</p>
+
+<p>
+For bookmark capture I configure Firefox to call <code>~/scripts/emacs-capture</code> script for any <code>org-protocol://</code> links.  Effectively it calls:
+</p>
+<pre class="example">
+emacsclient -n -c -s capture \
+   -F "((name . \"emacs-capture\") (height . 20) (width . 80))" \
+   "org-protocol://capture://w/&lt;encoded-url&gt;/"
+</pre>
+
+<p>
+This runs on the "capture" server and since it uses <code>emacsclient</code> it starts very fast.
+</p>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-orgc3125b9" class="outline-3">
+<h3 id="orgc3125b9">Sawfish</h3>
+<div class="outline-text-3" id="text-orgc3125b9">
+<p>
+The Sawfish X11 window manager was at one time the official WM for
+Gnome.  That is the time when I first started using it, moving from
+TWM and then FVWM.  I've tried a few since but always come back.
+Sawfish is configured and largely written in its own flavor of lisp
+(<a href="https://sawfish.fandom.com/wiki/Librep">rep</a>) and so can reasonably be considered the Emacs of window
+managers.  For configuration, it does an even better job than Emacs of
+providing both a programmable and a GUI configuration method and the
+two work largely well together.  Some of the reasons I use Sawfish:
+</p>
+
+<ul class="org-ul">
+<li>hugely configurable but sane defaults</li>
+<li>my fingers have learned the key bindings I chose years (decades!) ago</li>
+<li>I bake the configuration into a git repo</li>
+<li>I can run an arbitrary program from a command line without opening a terminal</li>
+<li>tab-like navigation between virtual desktops</li>
+<li>window "filling" which I find a better compromise between stacking and tiling idioms</li>
+<li>window dressing with themes and per matched windows (eg, Firefox has no borders)</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org29c5631" class="outline-3">
+<h3 id="org29c5631">Firefox</h3>
+<div class="outline-text-3" id="text-org29c5631">
+<p>
+Firefox is the least worse web browser despite how Mozilla tries so
+hard to kill off its user base.  Not much to say except how I battle
+some of its worse behavior:
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="orge1ef095"></a>Load URL via remote without grabbing attention<br />
+<div class="outline-text-4" id="text-orge1ef095">
+<p>
+Set <code>browser.tabs.loadDivertedInBackground</code> to <code>true</code> in
+<code>about:config</code>.  Otherwise sending a URL via remote open will have
+Firefox grab focus, possibly switching to it on a different virtual
+desktop.  This is super annoying when doing important things like
+loading the morning's web comics from <code>liferea</code>.
+</p>
+</div>
+</li>
+
+<li><a id="orga3406a4"></a>Emacs-like keybindings in firefox<br />
+<div class="outline-text-4" id="text-orga3406a4">
+<p>
+This is one of the most frustrating things and most of the things
+found online are wrong.  What to do depends on the desktop environment
+<b>and</b> its version <b>and</b> maybe the distribution.
+</p>
+
+<p>
+Debian <code>buster</code> and MATE 1.20.
+</p>
+
+<pre class="example">
+gsettings set org.mate.interface gtk-key-theme 'Emacs'
+</pre>
+
+<p>
+Or, 
+</p>
+
+
+<pre class="example">
+~/.config/gtk-3.0/settings.ini:
+
+# Get firefox to use emacs keybindings
+[Settings]
+gtk-key-theme-name = Emacs
+</pre>
+
+<p>
+For <a href="https://developer.mozilla.org/en-US/docs/Tools/Settings#Editor_Preferences">editor</a> <code>about:config</code> and
+</p>
+
+<div class="org-center">
+<p>
+devtools.editor.keymap emacs
+</p>
+</div>
+</div>
+</li>
+
+
+<li><a id="org638b662"></a>Using Emacs to edit text<br />
+<div class="outline-text-4" id="text-org638b662">
+<p>
+There used to be <a href="../itsalltext/index.html">ItsAllText</a>.  Now there is <a href="https://addons.mozilla.org/en-US/firefox/addon/edit-with-emacs1/">Edit with Emacs</a> and
+<a href="https://addons.mozilla.org/en-US/firefox/addon/ghosttext/">GhostText</a>.  The former I could not make work and the latter seems
+fine.
+</p>
+
+<p>
+GhostText needs <code>atomic-chrome</code> to be running on Emacs.  It's
+available from the Emacs package sites.  In <a href="#org9eb04bf">Emacs servers</a> I describe
+how the Emacs server for atomic-chrome to talk to get started.  The
+main Emacs parts in <code>init-atomic-chrome.el</code> are:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #b4fa70;">setq</span> server-name <span style="color: #e9b96e;">"atomic-chrome"</span>)
+(<span style="color: #b4fa70;">use-package</span> <span style="color: #e9b2e3;">markdown-mode</span>
+  <span style="color: #e090d7;">:ensure</span> t
+  <span style="color: #e090d7;">:config</span>
+  (<span style="color: #b4fa70;">setq</span> markdown-command <span style="color: #e9b96e;">"/usr/bin/markdown"</span>))
+(<span style="color: #b4fa70;">use-package</span> <span style="color: #e9b2e3;">markdown-preview-mode</span>
+  <span style="color: #e090d7;">:ensure</span> t)
+(<span style="color: #b4fa70;">use-package</span> <span style="color: #e9b2e3;">atomic-chrome</span>
+  <span style="color: #e090d7;">:ensure</span> t
+  <span style="color: #e090d7;">:config</span>
+  (<span style="color: #b4fa70;">setq</span> atomic-chrome-default-major-mode 'markdown-mode)
+  (<span style="color: #b4fa70;">setq</span> atomic-chrome-url-major-mode-alist
+        '((<span style="color: #e9b96e;">"github\\.com"</span> . gfm-mode)
+          (<span style="color: #e9b96e;">"reddit\\.com"</span> . markdown-mode)
+          (<span style="color: #e9b96e;">"redmine"</span> . textile-mode)))
+  (<span style="color: #b4fa70;">setq</span> atomic-chrome-buffer-open-style 'frame)
+)
+(atomic-chrome-start-server)
+</pre>
+</div>
+
+<p>
+To use, I click the GhostText icon, sometimes it prompts me for which
+text area to edit, then an Emacs frame pops us.  As I type in Emacs
+the text entry updates.
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a id="orga0ab469"></a><span class="todo TODO">TODO</span> get nice rendered preview for GitHub and Reddit text entries<br /></li>
+</ul>
+</li>
+
+<li><a id="org1002fc9"></a>Bookmark capture<br />
+<div class="outline-text-4" id="text-org1002fc9">
+<p>
+The <code>emacs-capture</code> and Emacs server "capture" is described above.  On the Firefox end I need a bookmarklet:
+</p>
+
+<pre class="example">
+javascript:location.href='org-protocol://capture://w/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
+</pre>
+
+<p>
+The <code>/w/</code> corresponds to an org capture template
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #b4fa70;">setq</span> org-capture-templates
+      (<span style="color: #b4fa70;">quote</span>
+       ((<span style="color: #e9b96e;">"w"</span> <span style="color: #e9b96e;">"Web Bookmark"</span> entry
+         (file+headline <span style="color: #e9b96e;">"~/org/webcapture.org"</span> <span style="color: #e9b96e;">"Bookmarks"</span>)
+         <span style="color: #e9b96e;">"* %a :website:%^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n%i\n %?"</span>
+         <span style="color: #e090d7;">:empty-lines</span> 1 <span style="color: #e090d7;">:immediate-finish</span> nil)))
+      org-agenda-files (list <span style="color: #e9b96e;">"~/org/webcapture.org"</span>))
+</pre>
+</div>
+
+<p>
+Some frame management is done with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #b4fa70;">defadvice</span> <span style="color: #fce94f;">org-capture</span>
+    (after make-full-window-frame activate)
+  <span style="color: #e9b96e;">"Advise capture to be the only window when used as a popup"</span>
+ (<span style="color: #b4fa70;">if</span> (equal <span style="color: #e9b96e;">"emacs-capture"</span> (frame-parameter nil 'name))
+     (delete-other-windows)))
+
+(<span style="color: #b4fa70;">defadvice</span> <span style="color: #fce94f;">org-capture-finalize</span>
+    (after delete-capture-frame activate)
+  <span style="color: #e9b96e;">"Advise capture-finalize to close the frame"</span>
+  (<span style="color: #b4fa70;">if</span> (equal <span style="color: #e9b96e;">"emacs-capture"</span> (frame-parameter nil 'name))
+      (delete-frame)))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org355f104"></a>Kill Sticky<br />
+<div class="outline-text-4" id="text-org355f104">
+<p>
+The web is mostly festering garbage and getting worse over time.  Many web sites, even ones that should know batter (stack overflow) put up so much obscuring crap that it can be hard to see the content.  Enter <b>Kill Sticky</b> (not a Tarantino movie, but better).  It is <a href="https://alisdair.mcdiarmid.org/kill-sticky-headers/">this bookmarklet</a>:
+</p>
+
+<pre class="example">
+javascript:(function()%7B(function%20()%20%7Bvar%20i%2C%20elements%20%3D%20document.querySelectorAll('body%20*')%3Bfor%20(i%20%3D%200%3B%20i%20%3C%20elements.length%3B%20i%2B%2B)%20%7Bif%20(getComputedStyle(elements%5Bi%5D).position%20%3D%3D%3D%20'fixed')%20%7Belements%5Bi%5D.parentNode.removeChild(elements%5Bi%5D)%3B%7D%7D%7D)()%7D)()
+</pre>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-orgfffea7a" class="outline-3">
+<h3 id="orgfffea7a">arbtt</h3>
+<div class="outline-text-3" id="text-orgfffea7a">
+<p>
+At work we have to "track" our time even though we don't get payed hourly.  It feels to me a very annoying and demeaning thing.  I "protest" by keeping hugely, massively, stupidly pedantic track of my time.  I know, it's nonsensical and weird but it allows me to comply without raising my blood pressure.  Fight idiocy with lunacy, I always say.
+</p>
+
+<p>
+I do this by running <a href="https://arbtt.nomeata.de/#what">arbtt</a> on my work computers.    It starts with cron
+</p>
+
+<pre class="example">
+$ crontab -l |grep arbtt
+@reboot /home/bv/scripts/start-arbtt-capture
+</pre>
+
+<p>
+When my employer nags me to enter this very crucial data I run a script
+</p>
+
+<pre class="example">
+$ time-sheet
+...
+heather,Sat,2020-05-02,0.87,1.45
+heather,Sun,2020-05-03,1.68,1.68
+heather,Mon,2020-05-04,2.24,6.77
+heather,Tue,2020-05-05,2.80,7.89
+heather,Wed,2020-05-06,2.99,5.79
+heather,Thu,2020-05-07,8.47,9.47
+heather,Fri,2020-05-08,3.49,9.16
+heather,Sun,2020-05-10,2.30,3.24
+</pre>
+
+<p>
+Second to last column shows total hours my session was active, last column is time diff between last action and first in the day (MTW I was on "vacation" so less than nominal eight).  
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgacccba2" class="outline-3">
+<h3 id="orgacccba2">Syncthing</h3>
+<div class="outline-text-3" id="text-orgacccba2">
+<p>
+Syncthing is a jewel of a system.  It's your own personal peer-to-peer file transfer system.  Encryption, distribute hash table, UDP hole punching, simple beautiful web interface, cross platform.  What more can you ask for?
+</p>
+
+<p>
+I run it on my android phone and all Linux machines, home and at work.
+For the phone I sync photos and org files.  For Linux machines various
+things but in particular a <code>~/sync/</code> is shared between all and holds
+mostly my talks.  My <code>~/org/</code> holds my personal "wiki" where I hold
+proto-documents, notes, etc as well as bookmarks grabbed as described
+above.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgce6ab44" class="outline-2">
+<h2 id="orgce6ab44">Local install</h2>
+<div class="outline-text-2" id="text-orgce6ab44">
+<p>
+See <a href="#org47063ea">Runtime configuration</a>.  I install a few packages (my own and others) in a tree <code>$HOME/opt/&lt;pkg&gt;/</code>.  I maintain these manually and individually in a particular account.  I have tried <a href="https://spack.io/">spack</a> and <a href="https://nixos.org/nix/">nix</a> and they are great but in the end, this manual management works easily enough.
+</p>
+</div>
+
+<div id="outline-container-org6a0e554" class="outline-3">
+<h3 id="org6a0e554">CMake</h3>
+<div class="outline-text-3" id="text-org6a0e554">
+<pre class="example">
+$ mkdir ~/opt
+$ cd pkg
+$ mkdir build &amp;&amp; cd build
+$ cmake -G Ninja .. -DCMAKE_INSTALL_PREFIX=$HOME/opt/pkg [...]
+$ cmake --build . -- -j$(nproc)
+$ cmake --build . --target install
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb741213" class="outline-3">
+<h3 id="orgb741213">autoconf</h3>
+<div class="outline-text-3" id="text-orgb741213">
+<pre class="example">
+$ mkdir ~/opt
+$ cd pkg
+$ ./autogen
+$ ./configure --prefix=$HOME/opt/pkg
+$ make -j$(nproc)
+$ make install
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orge50b54f" class="outline-3">
+<h3 id="orge50b54f">Python</h3>
+<div class="outline-text-3" id="text-orge50b54f">
+<p>
+When I work on a Python package I do:
+</p>
+
+<pre class="example">
+# apt install direnv
+$ cd a-python-package/
+$ echo layout python3 &gt; .envrc
+$ direnv allow
+$ pip install -e .
+</pre>
+
+<p>
+A lesser way but which does not require <code>direnv</code>
+</p>
+
+<pre class="example">
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -e .
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Brett Viren</p>
+<p class="date">Created: 2020-05-11 Mon 21:17</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

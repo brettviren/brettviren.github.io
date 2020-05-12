@@ -1,0 +1,514 @@
+#+title: How I Do
+#+setupfile: setup.org
+
+Sometimes people ask how I do things.  They can read this.
+
+* General
+
+In this document, the prompts used in examples are as:
+
+#+begin_example
+  # command run as root
+  $ command run as user
+#+end_example
+
+I mainly use four computers ~hometop~, ~homestation~,
+~worktop~, ~workstation~.  Any referene to ~homeserver~ means a home
+computer with a port forwarded to the Internet.  To reach ~homeserver~
+I maintain a dynamic DNS subdomain from the great folks at [[https://freedns.afraid.org/][afraid]].
+
+* Runtime configuration
+
+Configuration is stored in a private [[https://gitea.io/][Gitea]] and most clones are managed with [[https://github.com/RichiH/vcsh][vcsh]] and [[https://myrepos.branchable.com/][myrepos]] with [[https://www.passwordstore.org/][pass]] managing its own.  
+
+** vcsh
+
+The vcsh git repo manager allows multiple git repos to supply files into ~$HOME~ without any actual ~.git/~ directory there.  It allows for the target filesystem space to be interleaved with files managed in separate git repos.  Seems crazy, works great.  
+
+My ~vcsh~ repos include config for: bash, bbdb, emacs, git, mr
+(myrepos), nixpkgs, sawfish, scripts, ssh, systemd, tmux, weechat.
+Some of these are described in the section [[Applications]] but first how ~vcsh~
+is handled.
+
+*** Initialize
+
+Each repo needs a one time setup like:
+
+#+begin_example
+  # apt install vcsh
+  $ vcsh init bbdb
+  $ vcsh bbdb add .bbdb
+  $ vcsh bbdb commit -m "First commit"
+  $ vcsh bbdb remote add origin gogs@homeserver:bv/dot-bbdb.git
+  $ vcsh bbdb push -u origin master
+#+end_example
+
+*** Multiple repositories
+
+There is built-in support for multiple repositories in ~vcsh~, eg:
+
+#+BEGIN_EXAMPLE
+  $ vcsh status
+  $ vcsh pull
+  $ vcsh push
+#+END_EXAMPLE 
+
+*** Bootstrap new account
+
+A new account can clone individual repos:
+
+#+begin_example
+  $ vcsh clone gogs@homeserver:bv/dot-bbdb.git bbdb
+#+end_example
+
+This gets tedious and it's where ~myrepos~ (~mr~) comes in.
+
+#+BEGIN_EXAMPLE
+  $ vcsh clone gogs@haiku:bv/dot-myrepos.git mr
+  $ cd .config/mr/config.d/
+  $ ln -sf ../available.d/* . 
+  $ cd 
+  $ mr up
+#+END_EXAMPLE
+
+An example ~mr~ config looks like:
+
+#+BEGIN_EXAMPLE
+  [$HOME/.config/vcsh/repo.d/emacs.git]
+  checkout = vcsh clone gogs@bandyv.us.to:bv/dot-emacs.git emacs
+#+END_EXAMPLE
+
+*** Ignoring
+
+Any git command run through =vcsh= uses =$HOME= as the Git working dir.
+
+#+BEGIN_EXAMPLE
+  $ vcsh bbdb status
+  [... long list of untracked files ...]
+#+END_EXAMPLE
+
+You can have =vcsh= Git command ignore anything not explicitly committed to a =vcsh= Git repository:
+
+#+BEGIN_EXAMPLE
+  $ vcsh write-gitignore bbdb
+  $ vcsh bbdb status
+  On branch master
+  Your branch is up-to-date with 'origin/master'.
+  nothing to commit, working directory clean
+#+END_EXAMPLE
+
+The =write-gitignore= command will create a file like:
+
+#+BEGIN_EXAMPLE
+  $ cat ~/.gitignore.d/bbdb 
+  ,*
+  !/.bbdb
+#+END_EXAMPLE
+
+*** Making updates
+
+#+BEGIN_EXAMPLE
+  $ emacs .bash/completion/vcsh
+  $ vcsh bash add -f .bash/completion/vcsh
+  $ vcsh bash commit -a -m "Add vcsh completion for bash."
+  $ vcsh bash push
+#+END_EXAMPLE
+
+*** Applying updates
+
+From each account:
+
+#+begin_example
+  $ mr up
+#+end_example
+
+or, more usually
+
+#+begin_example
+  $ vcsh pull
+#+end_example
+
+
+* Applications
+
+Life exists largely inside five applications
+
+- [[https://www.gnu.org/software/bash/][Bash]] command shell
+- [[https://sw.kovidgoyal.net/kitty/][Kitty]] terminal emulator
+- [[https://www.gnu.org/software/emacs/][Emacs]] operating system
+- [[https://sawfish.tuxfamily.org/][Sawfish]] window manager
+- Firefox web browser
+
+After going through the big five I describe some others lesser but
+central applications I use.
+
+** Bash
+
+My ~.bashrc~ is run for login or subshells.  It delegates
+configuration to scripts under
+~/.bash/{functions,variables,apps}/*.sh~ and "mounts" some git subtrees under ~/.bash/subtrees~.  
+
+One subtree of note is [[https://github.com/brettviren/shist][shist]] which is my Bash implementation of [[https://github.com/barabo/advanced-shell-history][advanced shell history]].  This integrates with Bash prompting to record history in an Sqlite3 database.
+
+I strongly avoid using ~alias~ (eg, no ~ll~ for ~ls -l~) as I think inventing my own Unix command set is an anti-pattern.  I do capture some larger commands in Bash functions so that tab-completion can remind me of the (eg, a bunch of ~emacs-server-*~ functions to manage different Emacs servers).
+
+One setup will loop over ~$HOME/opt/*/{bin,lib,man,lib/pkgconfig}~ to set ~PATH, LD_LIBRARY_PATH, MANPATH, PKG_CONFIG_PATH~.  See [[Local install]] for what may be found there. 
+
+** Kitty
+
+I've tried many terminals over the years and for about the last year I
+have been very happily using the [[https://sw.kovidgoyal.net/kitty/][Kitty]] terminal.  I mean the one
+written in Python/OpenGL and not the on derived from Putty.  Some
+reasons why I like it:
+
+- emoji support!
+- ~C-S-h~ to load scrollback into ~less~
+- fast, boastful text, Free Software 
+
+It also has sub-programs called "kittens" such as ~kitten icat
+foo.png~ to show a graphic in the terminal.  Or ~kitten diff~ to show
+a pretty side-by-side diff.  These are nice but I rarely use them.
+
+I build and rebuild it from source frequently especially as lately it
+announces when new tags are available.
+
+#+begin_example
+  $ cd dev/kitty
+  $ git pull
+  $ git checkout vX.Y.Z
+  $ make
+#+end_example
+
+I run the result directly from the source:
+
+#+begin_example
+  $ cat bin/kitty 
+  #!/usr/bin/env python3
+  import runpy
+  runpy.run_path('/home/bv/dev/kitty', run_name='__main__')
+#+end_example
+
+No particularly fancy config (lives in ~.config/kitty/kitty.conf~).
+
+** Emacs
+
+I use Emacs for Email (GNUS), Contacts (BBDB), software development,
+document and presentation production (orgmode and LaTeX), bookmark
+management (~org-protocol~ and ~org-capture~) and web form text entry
+(~atomic-chrome~).  Emacs 27 is soon to be released but I can't wait
+so I build it from source (see [[Local install]]).  It now allows
+~XDG_CONFIG_HOME~ which I make use of by *conceptually* doing:
+
+#+begin_example
+  $ rm -rf .emacs*
+  $ mkdir .config/emacs
+#+end_example
+
+Typing ~emacs~ then uses ~$XDG_CONFIG_HOME/emacs/init.el~.  There's
+lots of fashionable ways to configure ~init.el~.  I don't follow then
+except to break up the config into many ~init-*.el~ and ~(require)~
+them in a big list.  
+
+*** Emacs packages
+
+I heavily use [[https://github.com/jwiegley/use-package][use-package]] and in two modes.  I
+want the ability to blow away any ~emacs.d/elpa/~ area and rebuild it
+any time but normally don't want to spend the extra load time to query
+for package state.  This is in ~init-package.el~:
+
+#+begin_src elisp
+(require 'package)
+(setq package-archives
+      '(("org"     .       "https://orgmode.org/elpa/")
+        ("gnu"     .       "https://elpa.gnu.org/packages/")
+        ("melpa"   .       "https://melpa.org/packages/")))
+(package-initialize)
+;; uncomment this block and restart emacs to get new packages
+;;;;;
+;; (setq use-package-always-ensure t)
+;; (package-refresh-contents)
+;; (unless (package-installed-p 'use-package)
+;;   (package-install 'use-package))
+;;;;;;
+(require 'use-package)
+(provide 'init-packages)
+#+end_src
+
+*** GNUS/BBDB
+
+*** LSP
+
+*** Emacs servers
+
+To support bookmark capture (Firefox + org-protocol + a script) and text entry editing (GhostText + atomic-chrome) I have dedicated Emacs server configuration as well.  These servers are started via ~supervisord~ which itself starts from cron:
+
+#+begin_example
+  $ crontab -l|grep supervisord
+  @reboot supervisord -c /home/bv/scripts/supervisor.conf
+#+end_example
+
+That =~/scripts/~ directory is in ~vcsh~.  The two Emacs servers are
+started like:
+
+#+begin_example
+[program:emacs-capture]
+command=%(ENV_HOME)s/scripts/emacs-start-server capture
+directory=%(ENV_HOME)s
+autorestart = false
+
+[program:emacs-atomic-chrome]
+command=%(ENV_HOME)s/scripts/emacs-start-server atomic-chrome
+directory=%(ENV_HOME)s
+autorestart = false
+#+end_example
+
+This ~emacs-start-server~ script is mostly to remind me how to start Emacs properly.  It boils down to running:
+
+#+begin_example
+exec emacs -q --fg-daemon=${name} -l ~/.config/emacs/init-${name}.el
+#+end_example
+
+As such the nominal ~init.el~ is not sourced.  Each server is self
+contained including its ~custom.el~ and its ~elpa/~ area.
+
+For bookmark capture I configure Firefox to call =~/scripts/emacs-capture= script for any ~org-protocol://~ links.  Effectively it calls:
+#+begin_example
+emacsclient -n -c -s capture \
+   -F "((name . \"emacs-capture\") (height . 20) (width . 80))" \
+   "org-protocol://capture://w/<encoded-url>/"
+#+end_example
+
+This runs on the "capture" server and since it uses ~emacsclient~ it starts very fast.
+
+** Sawfish
+
+The Sawfish X11 window manager was at one time the official WM for
+Gnome.  That is the time when I first started using it, moving from
+TWM and then FVWM.  I've tried a few since but always come back.
+Sawfish is configured and largely written in its own flavor of lisp
+([[https://sawfish.fandom.com/wiki/Librep][rep]]) and so can reasonably be considered the Emacs of window
+managers.  For configuration, it does an even better job than Emacs of
+providing both a programmable and a GUI configuration method and the
+two work largely well together.  Some of the reasons I use Sawfish:
+
+- hugely configurable but sane defaults
+- my fingers have learned the key bindings I chose years (decades!) ago
+- I bake the configuration into a git repo
+- I can run an arbitrary program from a command line without opening a terminal
+- tab-like navigation between virtual desktops
+- window "filling" which I find a better compromise between stacking and tiling idioms 
+- window dressing with themes and per matched windows (eg, Firefox has no borders)
+
+
+** Firefox
+
+Firefox is the least worse web browser despite how Mozilla tries so
+hard to kill off its user base.  Not much to say except how I battle
+some of its worse behavior:
+
+*** Load URL via remote without grabbing attention
+
+Set ~browser.tabs.loadDivertedInBackground~ to ~true~ in
+~about:config~.  Otherwise sending a URL via remote open will have
+Firefox grab focus, possibly switching to it on a different virtual
+desktop.  This is super annoying when doing important things like
+loading the morning's web comics from ~liferea~.
+
+*** Emacs-like keybindings in firefox 
+
+This is one of the most frustrating things and most of the things
+found online are wrong.  What to do depends on the desktop environment
+*and* its version *and* maybe the distribution.
+
+Debian ~buster~ and MATE 1.20.
+
+#+BEGIN_EXAMPLE
+gsettings set org.mate.interface gtk-key-theme 'Emacs'
+#+END_EXAMPLE
+
+Or, 
+
+
+#+begin_example
+  ~/.config/gtk-3.0/settings.ini:
+
+  # Get firefox to use emacs keybindings
+  [Settings]
+  gtk-key-theme-name = Emacs
+#+end_example
+
+For [[https://developer.mozilla.org/en-US/docs/Tools/Settings#Editor_Preferences][editor]] ~about:config~ and
+
+#+begin_center
+devtools.editor.keymap emacs
+#+end_center
+
+
+*** Using Emacs to edit text
+
+There used to be [[../itsalltext/index.org][ItsAllText]].  Now there is [[https://addons.mozilla.org/en-US/firefox/addon/edit-with-emacs1/][Edit with Emacs]] and
+[[https://addons.mozilla.org/en-US/firefox/addon/ghosttext/][GhostText]].  The former I could not make work and the latter seems
+fine.
+
+GhostText needs ~atomic-chrome~ to be running on Emacs.  It's
+available from the Emacs package sites.  In [[Emacs servers]] I describe
+how the Emacs server for atomic-chrome to talk to get started.  The
+main Emacs parts in ~init-atomic-chrome.el~ are:
+
+#+begin_src elisp
+  (setq server-name "atomic-chrome")
+  (use-package markdown-mode
+    :ensure t
+    :config
+    (setq markdown-command "/usr/bin/markdown"))
+  (use-package markdown-preview-mode
+    :ensure t)
+  (use-package atomic-chrome
+    :ensure t
+    :config
+    (setq atomic-chrome-default-major-mode 'markdown-mode)
+    (setq atomic-chrome-url-major-mode-alist
+          '(("github\\.com" . gfm-mode)
+            ("reddit\\.com" . markdown-mode)
+            ("redmine" . textile-mode)))
+    (setq atomic-chrome-buffer-open-style 'frame)
+  )
+  (atomic-chrome-start-server)
+#+end_src
+
+To use, I click the GhostText icon, sometimes it prompts me for which
+text area to edit, then an Emacs frame pops us.  As I type in Emacs
+the text entry updates.
+
+**** TODO get nice rendered preview for GitHub and Reddit text entries
+
+*** Bookmark capture
+
+The ~emacs-capture~ and Emacs server "capture" is described above.  On the Firefox end I need a bookmarklet:
+
+#+begin_example
+javascript:location.href='org-protocol://capture://w/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
+#+end_example
+
+The ~/w/~ corresponds to an org capture template
+
+#+begin_src elisp
+  (setq org-capture-templates
+        (quote
+         (("w" "Web Bookmark" entry
+           (file+headline "~/org/webcapture.org" "Bookmarks")
+           "* %a :website:%^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n%i\n %?"
+           :empty-lines 1 :immediate-finish nil)))
+        org-agenda-files (list "~/org/webcapture.org"))
+#+end_src
+
+Some frame management is done with:
+
+#+begin_src elisp
+  (defadvice org-capture
+      (after make-full-window-frame activate)
+    "Advise capture to be the only window when used as a popup"
+   (if (equal "emacs-capture" (frame-parameter nil 'name))
+       (delete-other-windows)))
+
+  (defadvice org-capture-finalize
+      (after delete-capture-frame activate)
+    "Advise capture-finalize to close the frame"
+    (if (equal "emacs-capture" (frame-parameter nil 'name))
+        (delete-frame)))
+#+end_src
+
+*** Kill Sticky
+
+The web is mostly festering garbage and getting worse over time.  Many web sites, even ones that should know batter (stack overflow) put up so much obscuring crap that it can be hard to see the content.  Enter *Kill Sticky* (not a Tarantino movie, but better).  It is [[https://alisdair.mcdiarmid.org/kill-sticky-headers/][this bookmarklet]]:
+
+#+begin_example
+javascript:(function()%7B(function%20()%20%7Bvar%20i%2C%20elements%20%3D%20document.querySelectorAll('body%20*')%3Bfor%20(i%20%3D%200%3B%20i%20%3C%20elements.length%3B%20i%2B%2B)%20%7Bif%20(getComputedStyle(elements%5Bi%5D).position%20%3D%3D%3D%20'fixed')%20%7Belements%5Bi%5D.parentNode.removeChild(elements%5Bi%5D)%3B%7D%7D%7D)()%7D)()
+#+end_example
+
+** arbtt
+
+At work we have to "track" our time even though we don't get payed hourly.  It feels to me a very annoying and demeaning thing.  I "protest" by keeping hugely, massively, stupidly pedantic track of my time.  I know, it's nonsensical and weird but it allows me to comply without raising my blood pressure.  Fight idiocy with lunacy, I always say.
+
+I do this by running [[https://arbtt.nomeata.de/#what][arbtt]] on my work computers.    It starts with cron
+
+#+begin_example
+$ crontab -l |grep arbtt
+@reboot /home/bv/scripts/start-arbtt-capture
+#+end_example
+
+When my employer nags me to enter this very crucial data I run a script
+
+#+begin_example
+  $ time-sheet
+  ...
+  heather,Sat,2020-05-02,0.87,1.45
+  heather,Sun,2020-05-03,1.68,1.68
+  heather,Mon,2020-05-04,2.24,6.77
+  heather,Tue,2020-05-05,2.80,7.89
+  heather,Wed,2020-05-06,2.99,5.79
+  heather,Thu,2020-05-07,8.47,9.47
+  heather,Fri,2020-05-08,3.49,9.16
+  heather,Sun,2020-05-10,2.30,3.24
+#+end_example
+
+Second to last column shows total hours my session was active, last column is time diff between last action and first in the day (MTW I was on "vacation" so less than nominal eight).  
+
+** Syncthing
+
+Syncthing is a jewel of a system.  It's your own personal peer-to-peer file transfer system.  Encryption, distribute hash table, UDP hole punching, simple beautiful web interface, cross platform.  What more can you ask for?
+
+I run it on my android phone and all Linux machines, home and at work.
+For the phone I sync photos and org files.  For Linux machines various
+things but in particular a =~/sync/= is shared between all and holds
+mostly my talks.  My =~/org/= holds my personal "wiki" where I hold
+proto-documents, notes, etc as well as bookmarks grabbed as described
+above.
+
+
+* Local install
+
+See [[Runtime configuration]].  I install a few packages (my own and others) in a tree ~$HOME/opt/<pkg>/~.  I maintain these manually and individually in a particular account.  I have tried [[https://spack.io/][spack]] and [[https://nixos.org/nix/][nix]] and they are great but in the end, this manual management works easily enough.
+
+** CMake
+
+#+begin_example
+  $ mkdir ~/opt
+  $ cd pkg
+  $ mkdir build && cd build
+  $ cmake -G Ninja .. -DCMAKE_INSTALL_PREFIX=$HOME/opt/pkg [...]
+  $ cmake --build . -- -j$(nproc)
+  $ cmake --build . --target install
+#+end_example
+
+** autoconf
+
+#+begin_example
+  $ mkdir ~/opt
+  $ cd pkg
+  $ ./autogen
+  $ ./configure --prefix=$HOME/opt/pkg
+  $ make -j$(nproc)
+  $ make install
+#+end_example
+
+
+** Python
+
+When I work on a Python package I do:
+
+#+begin_example
+  # apt install direnv
+  $ cd a-python-package/
+  $ echo layout python3 > .envrc
+  $ direnv allow
+  $ pip install -e .
+#+end_example
+
+A lesser way but which does not require ~direnv~
+
+#+begin_example
+  $ python3 -m venv venv
+  $ source venv/bin/activate
+  $ pip install -e .
+#+end_example
