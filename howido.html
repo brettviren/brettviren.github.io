@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-11 Mon 21:17 -->
+<!-- 2020-05-17 Sun 19:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How I Do</title>
@@ -258,28 +258,53 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org252d910">General</a></li>
-<li><a href="#org47063ea">Runtime configuration</a>
+<li><a href="#orgc916012">General</a></li>
+<li><a href="#org5c1fdc8">Configuration</a>
 <ul>
-<li><a href="#orge8b8963">vcsh</a></li>
+<li><a href="#orgb361fe7">Initialize</a></li>
+<li><a href="#org1d866d9">Multiple repositories</a></li>
+<li><a href="#org8c9a611">Bootstrap new account</a></li>
+<li><a href="#orgc4b7f83">Ignoring</a></li>
+<li><a href="#orgc17bdcb">Making updates</a></li>
+<li><a href="#org5a7c6e2">Applying updates</a></li>
+<li><a href="#org8c3dabd">Checking for updates</a></li>
 </ul>
 </li>
-<li><a href="#org88df96a">Applications</a>
+<li><a href="#orgb39320b">Applications</a>
 <ul>
-<li><a href="#orgf6e0a49">Bash</a></li>
-<li><a href="#orgabb1dd3">Kitty</a></li>
-<li><a href="#org579a0cf">Emacs</a></li>
-<li><a href="#orgc3125b9">Sawfish</a></li>
-<li><a href="#org29c5631">Firefox</a></li>
-<li><a href="#orgfffea7a">arbtt</a></li>
-<li><a href="#orgacccba2">Syncthing</a></li>
+<li><a href="#org9489970">Bash</a></li>
+<li><a href="#org8b5d1d8">Kitty</a></li>
+<li><a href="#org951b179">Emacs</a>
+<ul>
+<li><a href="#org5a3d04c">Emacs packages</a></li>
+<li><a href="#org9ef4a58">GNUS/BBDB</a></li>
+<li><a href="#org70a7199">LSP</a></li>
+<li><a href="#org8b44c37">Emacs servers</a></li>
 </ul>
 </li>
-<li><a href="#orgce6ab44">Local install</a>
+<li><a href="#org34547a0">Sawfish</a></li>
+<li><a href="#org0cd22d8">Firefox</a>
 <ul>
-<li><a href="#org6a0e554">CMake</a></li>
-<li><a href="#orgb741213">autoconf</a></li>
-<li><a href="#orge50b54f">Python</a></li>
+<li><a href="#org986a187">Load URL via remote without grabbing attention</a></li>
+<li><a href="#orgab33eb3">Emacs-like keybindings in firefox</a></li>
+<li><a href="#org4a062e4">Using Emacs to edit text</a>
+<ul>
+<li><a href="#org517b974"><span class="todo TODO">TODO</span> get nice rendered preview for GitHub and Reddit text entries</a></li>
+</ul>
+</li>
+<li><a href="#org4f3ff98">Bookmark capture</a></li>
+<li><a href="#orgf348252">Kill Sticky</a></li>
+</ul>
+</li>
+<li><a href="#orga35c934">arbtt</a></li>
+<li><a href="#orgfddef23">Syncthing</a></li>
+</ul>
+</li>
+<li><a href="#orgc3fe83d">Local install</a>
+<ul>
+<li><a href="#org63ef5da">CMake</a></li>
+<li><a href="#org10f8ee5">autoconf</a></li>
+<li><a href="#org87353aa">Python</a></li>
 </ul>
 </li>
 </ul>
@@ -289,9 +314,9 @@ for the JavaScript code in this tag.
 Sometimes people ask how I do things.  They can read this.
 </p>
 
-<div id="outline-container-org252d910" class="outline-2">
-<h2 id="org252d910">General</h2>
-<div class="outline-text-2" id="text-org252d910">
+<div id="outline-container-orgc916012" class="outline-2">
+<h2 id="orgc916012">General</h2>
+<div class="outline-text-2" id="text-orgc916012">
 <p>
 In this document, the prompts used in examples are as:
 </p>
@@ -310,32 +335,32 @@ I maintain a dynamic DNS subdomain from the great folks at <a href="https://free
 </div>
 </div>
 
-<div id="outline-container-org47063ea" class="outline-2">
-<h2 id="org47063ea">Runtime configuration</h2>
-<div class="outline-text-2" id="text-org47063ea">
+<div id="outline-container-org5c1fdc8" class="outline-2">
+<h2 id="org5c1fdc8">Configuration</h2>
+<div class="outline-text-2" id="text-org5c1fdc8">
 <p>
-Configuration is stored in a private <a href="https://gitea.io/">Gitea</a> and most clones are managed with <a href="https://github.com/RichiH/vcsh">vcsh</a> and <a href="https://myrepos.branchable.com/">myrepos</a> with <a href="https://www.passwordstore.org/">pass</a> managing its own.  
+Configuration is stored in a private <a href="https://gitea.io/">Gitea</a> and most clones are managed
+with <a href="https://github.com/RichiH/vcsh">vcsh</a> and <a href="https://myrepos.branchable.com/">myrepos</a> with <a href="https://www.passwordstore.org/">pass</a> managing its own.
 </p>
-</div>
 
-<div id="outline-container-orge8b8963" class="outline-3">
-<h3 id="orge8b8963">vcsh</h3>
-<div class="outline-text-3" id="text-orge8b8963">
 <p>
-The vcsh git repo manager allows multiple git repos to supply files into <code>$HOME</code> without any actual <code>.git/</code> directory there.  It allows for the target filesystem space to be interleaved with files managed in separate git repos.  Seems crazy, works great.  
+The vcsh git repo manager allows multiple git repos to supply files
+into <code>$HOME</code> without any actual <code>.git/</code> directory there.  It allows for
+the target filesystem space to be interleaved with files managed in
+separate git repos.  Seems crazy, works great.
 </p>
 
 <p>
 My <code>vcsh</code> repos include config for: bash, bbdb, emacs, git, mr
 (myrepos), nixpkgs, sawfish, scripts, ssh, systemd, tmux, weechat.
-Some of these are described in the section <a href="#org88df96a">Applications</a> but first how <code>vcsh</code>
-is handled.
+Some of these are described in the section <a href="#orgb39320b">Applications</a> but first how
+<code>vcsh</code> is handled.
 </p>
 </div>
 
-<ul class="org-ul">
-<li><a id="org3359c2d"></a>Initialize<br />
-<div class="outline-text-4" id="text-org3359c2d">
+<div id="outline-container-orgb361fe7" class="outline-3">
+<h3 id="orgb361fe7">Initialize</h3>
+<div class="outline-text-3" id="text-orgb361fe7">
 <p>
 Each repo needs a one time setup like:
 </p>
@@ -349,10 +374,11 @@ $ vcsh bbdb remote add origin gogs@homeserver:bv/dot-bbdb.git
 $ vcsh bbdb push -u origin master
 </pre>
 </div>
-</li>
+</div>
 
-<li><a id="orgec96e17"></a>Multiple repositories<br />
-<div class="outline-text-4" id="text-orgec96e17">
+<div id="outline-container-org1d866d9" class="outline-3">
+<h3 id="org1d866d9">Multiple repositories</h3>
+<div class="outline-text-3" id="text-org1d866d9">
 <p>
 There is built-in support for multiple repositories in <code>vcsh</code>, eg:
 </p>
@@ -363,10 +389,11 @@ $ vcsh pull
 $ vcsh push
 </pre>
 </div>
-</li>
+</div>
 
-<li><a id="org7c61d31"></a>Bootstrap new account<br />
-<div class="outline-text-4" id="text-org7c61d31">
+<div id="outline-container-org8c9a611" class="outline-3">
+<h3 id="org8c9a611">Bootstrap new account</h3>
+<div class="outline-text-3" id="text-org8c9a611">
 <p>
 A new account can clone individual repos:
 </p>
@@ -396,10 +423,11 @@ An example <code>mr</code> config looks like:
 checkout = vcsh clone gogs@bandyv.us.to:bv/dot-emacs.git emacs
 </pre>
 </div>
-</li>
+</div>
 
-<li><a id="org357c848"></a>Ignoring<br />
-<div class="outline-text-4" id="text-org357c848">
+<div id="outline-container-orgc4b7f83" class="outline-3">
+<h3 id="orgc4b7f83">Ignoring</h3>
+<div class="outline-text-3" id="text-orgc4b7f83">
 <p>
 Any git command run through <code>vcsh</code> uses <code>$HOME</code> as the Git working dir.
 </p>
@@ -431,10 +459,11 @@ $ cat ~/.gitignore.d/bbdb
 !/.bbdb
 </pre>
 </div>
-</li>
+</div>
 
-<li><a id="org09ed031"></a>Making updates<br />
-<div class="outline-text-4" id="text-org09ed031">
+<div id="outline-container-orgc17bdcb" class="outline-3">
+<h3 id="orgc17bdcb">Making updates</h3>
+<div class="outline-text-3" id="text-orgc17bdcb">
 <pre class="example">
 $ emacs .bash/completion/vcsh
 $ vcsh bash add -f .bash/completion/vcsh
@@ -442,10 +471,11 @@ $ vcsh bash commit -a -m "Add vcsh completion for bash."
 $ vcsh bash push
 </pre>
 </div>
-</li>
+</div>
 
-<li><a id="org29f558b"></a>Applying updates<br />
-<div class="outline-text-4" id="text-org29f558b">
+<div id="outline-container-org5a7c6e2" class="outline-3">
+<h3 id="org5a7c6e2">Applying updates</h3>
+<div class="outline-text-3" id="text-org5a7c6e2">
 <p>
 From each account:
 </p>
@@ -462,15 +492,83 @@ or, more usually
 $ vcsh pull
 </pre>
 </div>
-</li>
-</ul>
+</div>
+
+
+<div id="outline-container-org8c3dabd" class="outline-3">
+<h3 id="org8c3dabd">Checking for updates</h3>
+<div class="outline-text-3" id="text-org8c3dabd">
+<p>
+I want my prompt to tell me when a local account has modified, is
+behind the remote vcsh or ahead of it (made a commit but not push).
+To check the remote takes time and also needs SSH credentials.  Here's
+how I get this bundle of functionality:
+</p>
+
+<dl class="org-dl">
+<dt><code>vcsh-extra</code></dt><dd>a script with command <code>hooks</code>, <code>probe</code> and <code>cron</code> which
+calls both.</dd>
+
+<dt>fetch</dt><dd>the <code>fetch</code> command simply does a:</dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-shell">vcsh foreach fetch
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>probe</dt><dd>the <code>probe</code> command will run <code>vcsh status --terse</code> and parse it
+for state to touch files <code>last-{ahead,behind,modified}</code> (removing any
+stale ones).</dd>
+
+<dt>hooks</dt><dd>the <code>hooks</code> command install vcsh hooks which will run the
+<code>probe</code> command named after an action.  Ie in:
+<code>post-{pull,push,commit,enter,run}</code> is:</dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-shell">$<span style="color: #fcaf3e;">HOME</span>/scripts/vcsh-extra probe
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>cron</dt><dd>the <code>cron</code> command bundles calls the three commands in sequence after</dd>
+</dl>
+
+<pre class="example">
+eval $(keychain --quiet --noask --eval id_rsa)
+</pre>
+
+<p>
+In summary, the cron job runs once per hour, fetching but not applying
+any changes and doing the <code>probe</code> to summarize what state that leaves
+the local <code>vcsh</code> repositories.
+</p>
+
+<p>
+When doing <code>vcsh</code> commands the hooks run to repeat the <code>probe</code> (which is
+fast enough).
+</p>
+
+<p>
+Finally, the Bash <code>PROMPT_COMMAND</code> will check for the existence
+<code>last-{ahead,behind,modified}</code> files and prepend a little marker to the
+prompt.  If all three types of "dirty" occur, the prompt looks like:
+</p>
+
+<pre class="example">
+{ABM}bv@hal:~
+$ 
+</pre>
+</div>
 </div>
 </div>
 
 
-<div id="outline-container-org88df96a" class="outline-2">
-<h2 id="org88df96a">Applications</h2>
-<div class="outline-text-2" id="text-org88df96a">
+<div id="outline-container-orgb39320b" class="outline-2">
+<h2 id="orgb39320b">Applications</h2>
+<div class="outline-text-2" id="text-orgb39320b">
 <p>
 Life exists largely inside five applications
 </p>
@@ -489,9 +587,9 @@ central applications I use.
 </p>
 </div>
 
-<div id="outline-container-orgf6e0a49" class="outline-3">
-<h3 id="orgf6e0a49">Bash</h3>
-<div class="outline-text-3" id="text-orgf6e0a49">
+<div id="outline-container-org9489970" class="outline-3">
+<h3 id="org9489970">Bash</h3>
+<div class="outline-text-3" id="text-org9489970">
 <p>
 My <code>.bashrc</code> is run for login or subshells.  It delegates
 configuration to scripts under
@@ -507,14 +605,14 @@ I strongly avoid using <code>alias</code> (eg, no <code>ll</code> for <code>ls -
 </p>
 
 <p>
-One setup will loop over <code>$HOME/opt/*/{bin,lib,man,lib/pkgconfig}</code> to set <code>PATH, LD_LIBRARY_PATH, MANPATH, PKG_CONFIG_PATH</code>.  See <a href="#orgce6ab44">Local install</a> for what may be found there. 
+One setup will loop over <code>$HOME/opt/*/{bin,lib,man,lib/pkgconfig}</code> to set <code>PATH, LD_LIBRARY_PATH, MANPATH, PKG_CONFIG_PATH</code>.  See <a href="#orgc3fe83d">Local install</a> for what may be found there. 
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgabb1dd3" class="outline-3">
-<h3 id="orgabb1dd3">Kitty</h3>
-<div class="outline-text-3" id="text-orgabb1dd3">
+<div id="outline-container-org8b5d1d8" class="outline-3">
+<h3 id="org8b5d1d8">Kitty</h3>
+<div class="outline-text-3" id="text-org8b5d1d8">
 <p>
 I've tried many terminals over the years and for about the last year I
 have been very happily using the <a href="https://sw.kovidgoyal.net/kitty/">Kitty</a> terminal.  I mean the one
@@ -563,15 +661,15 @@ No particularly fancy config (lives in <code>.config/kitty/kitty.conf</code>).
 </div>
 </div>
 
-<div id="outline-container-org579a0cf" class="outline-3">
-<h3 id="org579a0cf">Emacs</h3>
-<div class="outline-text-3" id="text-org579a0cf">
+<div id="outline-container-org951b179" class="outline-3">
+<h3 id="org951b179">Emacs</h3>
+<div class="outline-text-3" id="text-org951b179">
 <p>
 I use Emacs for Email (GNUS), Contacts (BBDB), software development,
 document and presentation production (orgmode and LaTeX), bookmark
 management (<code>org-protocol</code> and <code>org-capture</code>) and web form text entry
 (<code>atomic-chrome</code>).  Emacs 27 is soon to be released but I can't wait
-so I build it from source (see <a href="#orgce6ab44">Local install</a>).  It now allows
+so I build it from source (see <a href="#orgc3fe83d">Local install</a>).  It now allows
 <code>XDG_CONFIG_HOME</code> which I make use of by <b>conceptually</b> doing:
 </p>
 
@@ -588,9 +686,9 @@ them in a big list.
 </p>
 </div>
 
-<ul class="org-ul">
-<li><a id="org562d818"></a>Emacs packages<br />
-<div class="outline-text-4" id="text-org562d818">
+<div id="outline-container-org5a3d04c" class="outline-4">
+<h4 id="org5a3d04c">Emacs packages</h4>
+<div class="outline-text-4" id="text-org5a3d04c">
 <p>
 I heavily use <a href="https://github.com/jwiegley/use-package">use-package</a> and in two modes.  I
 want the ability to blow away any <code>emacs.d/elpa/</code> area and rebuild it
@@ -617,14 +715,19 @@ for package state.  This is in <code>init-package.el</code>:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="org4382440"></a>GNUS/BBDB<br /></li>
+<div id="outline-container-org9ef4a58" class="outline-4">
+<h4 id="org9ef4a58">GNUS/BBDB</h4>
+</div>
 
-<li><a id="org3c46e5e"></a>LSP<br /></li>
+<div id="outline-container-org70a7199" class="outline-4">
+<h4 id="org70a7199">LSP</h4>
+</div>
 
-<li><a id="org9eb04bf"></a>Emacs servers<br />
-<div class="outline-text-4" id="text-org9eb04bf">
+<div id="outline-container-org8b44c37" class="outline-4">
+<h4 id="org8b44c37">Emacs servers</h4>
+<div class="outline-text-4" id="text-org8b44c37">
 <p>
 To support bookmark capture (Firefox + org-protocol + a script) and text entry editing (GhostText + atomic-chrome) I have dedicated Emacs server configuration as well.  These servers are started via <code>supervisord</code> which itself starts from cron:
 </p>
@@ -677,13 +780,12 @@ emacsclient -n -c -s capture \
 This runs on the "capture" server and since it uses <code>emacsclient</code> it starts very fast.
 </p>
 </div>
-</li>
-</ul>
+</div>
 </div>
 
-<div id="outline-container-orgc3125b9" class="outline-3">
-<h3 id="orgc3125b9">Sawfish</h3>
-<div class="outline-text-3" id="text-orgc3125b9">
+<div id="outline-container-org34547a0" class="outline-3">
+<h3 id="org34547a0">Sawfish</h3>
+<div class="outline-text-3" id="text-org34547a0">
 <p>
 The Sawfish X11 window manager was at one time the official WM for
 Gnome.  That is the time when I first started using it, moving from
@@ -708,9 +810,9 @@ two work largely well together.  Some of the reasons I use Sawfish:
 </div>
 
 
-<div id="outline-container-org29c5631" class="outline-3">
-<h3 id="org29c5631">Firefox</h3>
-<div class="outline-text-3" id="text-org29c5631">
+<div id="outline-container-org0cd22d8" class="outline-3">
+<h3 id="org0cd22d8">Firefox</h3>
+<div class="outline-text-3" id="text-org0cd22d8">
 <p>
 Firefox is the least worse web browser despite how Mozilla tries so
 hard to kill off its user base.  Not much to say except how I battle
@@ -718,9 +820,9 @@ some of its worse behavior:
 </p>
 </div>
 
-<ul class="org-ul">
-<li><a id="orge1ef095"></a>Load URL via remote without grabbing attention<br />
-<div class="outline-text-4" id="text-orge1ef095">
+<div id="outline-container-org986a187" class="outline-4">
+<h4 id="org986a187">Load URL via remote without grabbing attention</h4>
+<div class="outline-text-4" id="text-org986a187">
 <p>
 Set <code>browser.tabs.loadDivertedInBackground</code> to <code>true</code> in
 <code>about:config</code>.  Otherwise sending a URL via remote open will have
@@ -729,10 +831,11 @@ desktop.  This is super annoying when doing important things like
 loading the morning's web comics from <code>liferea</code>.
 </p>
 </div>
-</li>
+</div>
 
-<li><a id="orga3406a4"></a>Emacs-like keybindings in firefox<br />
-<div class="outline-text-4" id="text-orga3406a4">
+<div id="outline-container-orgab33eb3" class="outline-4">
+<h4 id="orgab33eb3">Emacs-like keybindings in firefox</h4>
+<div class="outline-text-4" id="text-orgab33eb3">
 <p>
 This is one of the most frustrating things and most of the things
 found online are wrong.  What to do depends on the desktop environment
@@ -770,11 +873,12 @@ devtools.editor.keymap emacs
 </p>
 </div>
 </div>
-</li>
+</div>
 
 
-<li><a id="org638b662"></a>Using Emacs to edit text<br />
-<div class="outline-text-4" id="text-org638b662">
+<div id="outline-container-org4a062e4" class="outline-4">
+<h4 id="org4a062e4">Using Emacs to edit text</h4>
+<div class="outline-text-4" id="text-org4a062e4">
 <p>
 There used to be <a href="../itsalltext/index.html">ItsAllText</a>.  Now there is <a href="https://addons.mozilla.org/en-US/firefox/addon/edit-with-emacs1/">Edit with Emacs</a> and
 <a href="https://addons.mozilla.org/en-US/firefox/addon/ghosttext/">GhostText</a>.  The former I could not make work and the latter seems
@@ -783,7 +887,7 @@ fine.
 
 <p>
 GhostText needs <code>atomic-chrome</code> to be running on Emacs.  It's
-available from the Emacs package sites.  In <a href="#org9eb04bf">Emacs servers</a> I describe
+available from the Emacs package sites.  In <a href="#org8b44c37">Emacs servers</a> I describe
 how the Emacs server for atomic-chrome to talk to get started.  The
 main Emacs parts in <code>init-atomic-chrome.el</code> are:
 </p>
@@ -817,13 +921,14 @@ the text entry updates.
 </p>
 </div>
 
-<ul class="org-ul">
-<li><a id="orga0ab469"></a><span class="todo TODO">TODO</span> get nice rendered preview for GitHub and Reddit text entries<br /></li>
-</ul>
-</li>
+<div id="outline-container-org517b974" class="outline-5">
+<h5 id="org517b974"><span class="todo TODO">TODO</span> get nice rendered preview for GitHub and Reddit text entries</h5>
+</div>
+</div>
 
-<li><a id="org1002fc9"></a>Bookmark capture<br />
-<div class="outline-text-4" id="text-org1002fc9">
+<div id="outline-container-org4f3ff98" class="outline-4">
+<h4 id="org4f3ff98">Bookmark capture</h4>
+<div class="outline-text-4" id="text-org4f3ff98">
 <p>
 The <code>emacs-capture</code> and Emacs server "capture" is described above.  On the Firefox end I need a bookmarklet:
 </p>
@@ -866,10 +971,11 @@ Some frame management is done with:
 </pre>
 </div>
 </div>
-</li>
+</div>
 
-<li><a id="org355f104"></a>Kill Sticky<br />
-<div class="outline-text-4" id="text-org355f104">
+<div id="outline-container-orgf348252" class="outline-4">
+<h4 id="orgf348252">Kill Sticky</h4>
+<div class="outline-text-4" id="text-orgf348252">
 <p>
 The web is mostly festering garbage and getting worse over time.  Many web sites, even ones that should know batter (stack overflow) put up so much obscuring crap that it can be hard to see the content.  Enter <b>Kill Sticky</b> (not a Tarantino movie, but better).  It is <a href="https://alisdair.mcdiarmid.org/kill-sticky-headers/">this bookmarklet</a>:
 </p>
@@ -878,13 +984,12 @@ The web is mostly festering garbage and getting worse over time.  Many web sites
 javascript:(function()%7B(function%20()%20%7Bvar%20i%2C%20elements%20%3D%20document.querySelectorAll('body%20*')%3Bfor%20(i%20%3D%200%3B%20i%20%3C%20elements.length%3B%20i%2B%2B)%20%7Bif%20(getComputedStyle(elements%5Bi%5D).position%20%3D%3D%3D%20'fixed')%20%7Belements%5Bi%5D.parentNode.removeChild(elements%5Bi%5D)%3B%7D%7D%7D)()%7D)()
 </pre>
 </div>
-</li>
-</ul>
+</div>
 </div>
 
-<div id="outline-container-orgfffea7a" class="outline-3">
-<h3 id="orgfffea7a">arbtt</h3>
-<div class="outline-text-3" id="text-orgfffea7a">
+<div id="outline-container-orga35c934" class="outline-3">
+<h3 id="orga35c934">arbtt</h3>
+<div class="outline-text-3" id="text-orga35c934">
 <p>
 At work we have to "track" our time even though we don't get payed hourly.  It feels to me a very annoying and demeaning thing.  I "protest" by keeping hugely, massively, stupidly pedantic track of my time.  I know, it's nonsensical and weird but it allows me to comply without raising my blood pressure.  Fight idiocy with lunacy, I always say.
 </p>
@@ -921,9 +1026,9 @@ Second to last column shows total hours my session was active, last column is ti
 </div>
 </div>
 
-<div id="outline-container-orgacccba2" class="outline-3">
-<h3 id="orgacccba2">Syncthing</h3>
-<div class="outline-text-3" id="text-orgacccba2">
+<div id="outline-container-orgfddef23" class="outline-3">
+<h3 id="orgfddef23">Syncthing</h3>
+<div class="outline-text-3" id="text-orgfddef23">
 <p>
 Syncthing is a jewel of a system.  It's your own personal peer-to-peer file transfer system.  Encryption, distribute hash table, UDP hole punching, simple beautiful web interface, cross platform.  What more can you ask for?
 </p>
@@ -941,17 +1046,20 @@ above.
 </div>
 
 
-<div id="outline-container-orgce6ab44" class="outline-2">
-<h2 id="orgce6ab44">Local install</h2>
-<div class="outline-text-2" id="text-orgce6ab44">
+<div id="outline-container-orgc3fe83d" class="outline-2">
+<h2 id="orgc3fe83d">Local install</h2>
+<div class="outline-text-2" id="text-orgc3fe83d">
 <p>
-See <a href="#org47063ea">Runtime configuration</a>.  I install a few packages (my own and others) in a tree <code>$HOME/opt/&lt;pkg&gt;/</code>.  I maintain these manually and individually in a particular account.  I have tried <a href="https://spack.io/">spack</a> and <a href="https://nixos.org/nix/">nix</a> and they are great but in the end, this manual management works easily enough.
+See <a href="#org5c1fdc8">Configuration</a>.  I install a few packages (my own and others) in a
+tree <code>$HOME/opt/&lt;pkg&gt;/</code>.  I maintain these manually and individually in
+a particular account.  I have tried <a href="https://spack.io/">spack</a> and <a href="https://nixos.org/nix/">nix</a> and they are great
+but in the end, this manual management works easily enough.
 </p>
 </div>
 
-<div id="outline-container-org6a0e554" class="outline-3">
-<h3 id="org6a0e554">CMake</h3>
-<div class="outline-text-3" id="text-org6a0e554">
+<div id="outline-container-org63ef5da" class="outline-3">
+<h3 id="org63ef5da">CMake</h3>
+<div class="outline-text-3" id="text-org63ef5da">
 <pre class="example">
 $ mkdir ~/opt
 $ cd pkg
@@ -963,9 +1071,9 @@ $ cmake --build . --target install
 </div>
 </div>
 
-<div id="outline-container-orgb741213" class="outline-3">
-<h3 id="orgb741213">autoconf</h3>
-<div class="outline-text-3" id="text-orgb741213">
+<div id="outline-container-org10f8ee5" class="outline-3">
+<h3 id="org10f8ee5">autoconf</h3>
+<div class="outline-text-3" id="text-org10f8ee5">
 <pre class="example">
 $ mkdir ~/opt
 $ cd pkg
@@ -978,9 +1086,9 @@ $ make install
 </div>
 
 
-<div id="outline-container-orge50b54f" class="outline-3">
-<h3 id="orge50b54f">Python</h3>
-<div class="outline-text-3" id="text-orge50b54f">
+<div id="outline-container-org87353aa" class="outline-3">
+<h3 id="org87353aa">Python</h3>
+<div class="outline-text-3" id="text-org87353aa">
 <p>
 When I work on a Python package I do:
 </p>
@@ -1008,7 +1116,7 @@ $ pip install -e .
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Brett Viren</p>
-<p class="date">Created: 2020-05-11 Mon 21:17</p>
+<p class="date">Created: 2020-05-17 Sun 19:16</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

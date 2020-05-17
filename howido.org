@@ -17,20 +17,22 @@ I mainly use four computers ~hometop~, ~homestation~,
 computer with a port forwarded to the Internet.  To reach ~homeserver~
 I maintain a dynamic DNS subdomain from the great folks at [[https://freedns.afraid.org/][afraid]].
 
-* Runtime configuration
+* Configuration
 
-Configuration is stored in a private [[https://gitea.io/][Gitea]] and most clones are managed with [[https://github.com/RichiH/vcsh][vcsh]] and [[https://myrepos.branchable.com/][myrepos]] with [[https://www.passwordstore.org/][pass]] managing its own.  
+Configuration is stored in a private [[https://gitea.io/][Gitea]] and most clones are managed
+with [[https://github.com/RichiH/vcsh][vcsh]] and [[https://myrepos.branchable.com/][myrepos]] with [[https://www.passwordstore.org/][pass]] managing its own.
 
-** vcsh
-
-The vcsh git repo manager allows multiple git repos to supply files into ~$HOME~ without any actual ~.git/~ directory there.  It allows for the target filesystem space to be interleaved with files managed in separate git repos.  Seems crazy, works great.  
+The vcsh git repo manager allows multiple git repos to supply files
+into ~$HOME~ without any actual ~.git/~ directory there.  It allows for
+the target filesystem space to be interleaved with files managed in
+separate git repos.  Seems crazy, works great.
 
 My ~vcsh~ repos include config for: bash, bbdb, emacs, git, mr
 (myrepos), nixpkgs, sawfish, scripts, ssh, systemd, tmux, weechat.
-Some of these are described in the section [[Applications]] but first how ~vcsh~
-is handled.
+Some of these are described in the section [[Applications]] but first how
+~vcsh~ is handled.
 
-*** Initialize
+** Initialize
 
 Each repo needs a one time setup like:
 
@@ -43,7 +45,7 @@ Each repo needs a one time setup like:
   $ vcsh bbdb push -u origin master
 #+end_example
 
-*** Multiple repositories
+** Multiple repositories
 
 There is built-in support for multiple repositories in ~vcsh~, eg:
 
@@ -53,7 +55,7 @@ There is built-in support for multiple repositories in ~vcsh~, eg:
   $ vcsh push
 #+END_EXAMPLE 
 
-*** Bootstrap new account
+** Bootstrap new account
 
 A new account can clone individual repos:
 
@@ -78,7 +80,7 @@ An example ~mr~ config looks like:
   checkout = vcsh clone gogs@bandyv.us.to:bv/dot-emacs.git emacs
 #+END_EXAMPLE
 
-*** Ignoring
+** Ignoring
 
 Any git command run through =vcsh= uses =$HOME= as the Git working dir.
 
@@ -105,7 +107,7 @@ The =write-gitignore= command will create a file like:
   !/.bbdb
 #+END_EXAMPLE
 
-*** Making updates
+** Making updates
 
 #+BEGIN_EXAMPLE
   $ emacs .bash/completion/vcsh
@@ -114,7 +116,7 @@ The =write-gitignore= command will create a file like:
   $ vcsh bash push
 #+END_EXAMPLE
 
-*** Applying updates
+** Applying updates
 
 From each account:
 
@@ -126,6 +128,57 @@ or, more usually
 
 #+begin_example
   $ vcsh pull
+#+end_example
+
+
+** Checking for updates
+
+I want my prompt to tell me when a local account has modified, is
+behind the remote vcsh or ahead of it (made a commit but not push).
+To check the remote takes time and also needs SSH credentials.  Here's
+how I get this bundle of functionality:
+
+- ~vcsh-extra~ :: a script with command ~hooks~, ~probe~ and ~cron~ which
+  calls both.  
+
+- fetch :: the ~fetch~ command simply does a:
+
+#+begin_src shell
+vcsh foreach fetch
+#+end_src
+
+- probe :: the ~probe~ command will run ~vcsh status --terse~ and parse it
+  for state to touch files ~last-{ahead,behind,modified}~ (removing any
+  stale ones).
+
+- hooks :: the ~hooks~ command install vcsh hooks which will run the
+  ~probe~ command named after an action.  Ie in:
+  ~post-{pull,push,commit,enter,run}~ is:
+
+#+begin_src shell
+$HOME/scripts/vcsh-extra probe
+#+end_src
+
+- cron :: the ~cron~ command bundles calls the three commands in sequence after 
+
+#+begin_src 
+eval $(keychain --quiet --noask --eval id_rsa)
+#+end_src
+
+In summary, the cron job runs once per hour, fetching but not applying
+any changes and doing the ~probe~ to summarize what state that leaves
+the local ~vcsh~ repositories.
+
+When doing ~vcsh~ commands the hooks run to repeat the ~probe~ (which is
+fast enough).
+
+Finally, the Bash ~PROMPT_COMMAND~ will check for the existence
+~last-{ahead,behind,modified}~ files and prepend a little marker to the
+prompt.  If all three types of "dirty" occur, the prompt looks like:
+
+#+begin_example
+{ABM}bv@hal:~
+$ 
 #+end_example
 
 
@@ -468,7 +521,10 @@ above.
 
 * Local install
 
-See [[Runtime configuration]].  I install a few packages (my own and others) in a tree ~$HOME/opt/<pkg>/~.  I maintain these manually and individually in a particular account.  I have tried [[https://spack.io/][spack]] and [[https://nixos.org/nix/][nix]] and they are great but in the end, this manual management works easily enough.
+See [[Configuration]].  I install a few packages (my own and others) in a
+tree ~$HOME/opt/<pkg>/~.  I maintain these manually and individually in
+a particular account.  I have tried [[https://spack.io/][spack]] and [[https://nixos.org/nix/][nix]] and they are great
+but in the end, this manual management works easily enough.
 
 ** CMake
 
