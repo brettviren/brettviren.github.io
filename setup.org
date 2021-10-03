@@ -1,5 +1,0 @@
-#+author: Brett Viren
-#+email: brett.viren@gmail.com
-#+OPTIONS:   H:5 num:nil toc:5
-#+SETUPFILE: export/setup/theme-darksun-local.setup
-
