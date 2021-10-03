@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <link rel="stylesheet" href="http://brettviren.github.io/css/katex.min.css">
+<script defer src="http://brettviren.github.io/js/katex.min.js"></script>
+<script defer src="http://brettviren.github.io/js/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+          delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+          ]
+      });
+  });
+</script>
+
+  
+
+  
+  <style type=text/css>body{font-family:monospace;}</style>
+  <title>First post</title>
+  
+  <meta name="author" content="Brett Viren">
+  <link rel="stylesheet" href="http://brettviren.github.io/css/style.css">
+  
+  
+</head>
+
+
+
+  <body>
+    <header>
+    <div style="text-align: center;">
+    <a href="https://github.com/brettviren"><img src="http://brettviren.github.io/icons/github.svg"></a>
+    <a href="mailto:bv@bnl.gov"><img src="http://brettviren.github.io/icons/email.svg"></a>
+    <a href="mailto:brett.viren@gmail.com"><img src="http://brettviren.github.io/icons/email.svg"></a>
+    <a href="https://keybase.io/BrettViren"><img src="http://brettviren.github.io/icons/keybase.svg"></a>
+    <a href="https://twitter.com/brett_viren"><img src="http://brettviren.github.io/icons/twitter.svg"></a>
+    <a href="https://fosstodon.org/@bv"><img src="http://brettviren.github.io/icons/matrix.svg"></a>
+
+  
+  </div>
+  <div class="banner-left" style="float: left;">  
+    <a href="http://brettviren.github.io/">They call me Brett</a> <br>
+  </div>
+  <div class="banner-right" style="float: right;">
+    turning neutrinos in to bytes <br>
+  </div>
+  <br/>
+  <hr>
+
+  <p>
+
+  <nav>
+    <div style="text-align: center;">
+    
+    
+    [<a href="http://brettviren.github.io/about/"><b>About</b></a>]
+    
+    [<a href="http://brettviren.github.io/posts/"><b>Posts</b></a>]
+    
+    [<a href="http://brettviren.github.io/articles/"><b>Articles</b></a>]
+    
+    [<a href="http://brettviren.github.io/categories/"><b>Categories</b></a>]
+    
+    [<a href="http://brettviren.github.io/tags/"><b>Tags</b></a>]
+    
+    </div>
+  </nav>
+
+</header>
+
+    
+<main>
+  <article>
+    <h1>First post</h1>
+    <b><time>Sat 2 Oct 2021</time></b>
+    
+    <a href="http://brettviren.github.io/tags/test">test</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="http://brettviren.github.io/tags/math">math</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="http://brettviren.github.io/tags/hugo">hugo</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="http://brettviren.github.io/tags/org">org</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <div>
+      <p>A meaningless post to test ox-hugo and Hugo.</p>
+<p>In this test post I cover the following topics shows as a ToC.</p>
+<div class="ox-hugo-toc toc">
+<div></div>
+<div class="heading">Table of Contents</div>
+<ul>
+<li><a href="#math">Math</a></li>
+<li><a href="#section">Section</a></li>
+<li><a href="#plantuml">Plantuml</a></li>
+<li><a href="#jsonnet">Jsonnet</a></li>
+<li><a href="#c-plus-plus">C++</a></li>
+</ul>
+</div>
+<!--endtoc-->
+<h2 id="math">Math&nbsp;<a class="headline-hash" href="#math">#</a> </h2>
+<p>\[\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }\]</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">\[ \alpha\beta\gamma \]
+</code></pre></div><p>gives:</p>
+<p>\[ \alpha\beta\gamma \]</p>
+<h2 id="section">Section&nbsp;<a class="headline-hash" href="#section">#</a> </h2>
+<p>text text</p>
+<h3 id="subsection">Subsection&nbsp;<a class="headline-hash" href="#subsection">#</a> </h3>
+<p>more text</p>
+<h2 id="plantuml">Plantuml&nbsp;<a class="headline-hash" href="#plantuml">#</a> </h2>
+<pre><code class="language-plantuml" data-lang="plantuml">@startuml
+class &quot;Node&quot; as n &lt;&lt; type &gt;&gt; {
+        typeID
+        instanceID
+        schema
+        roles
+}
+class Role {
+        roleID
+        schema
+}
+&quot;n&quot; *- Role
+@enduml
+</code></pre><figure>
+    <img src="http://brettviren.github.io/ox-hugo/testnode.svg"/> 
+</figure>
+
+<h2 id="jsonnet">Jsonnet&nbsp;<a class="headline-hash" href="#jsonnet">#</a> </h2>
+<pre><code class="language-jsonnet" data-lang="jsonnet">{ a:42, b:&quot;string&quot;, c:[&quot;array&quot;] }
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+   <span style="color:#f92672">&#34;a&#34;</span>: <span style="color:#ae81ff">42</span>,
+   <span style="color:#f92672">&#34;b&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>,
+   <span style="color:#f92672">&#34;c&#34;</span>: [
+      <span style="color:#e6db74">&#34;array&#34;</span>
+   ]
+}
+</code></pre></div><h2 id="c-plus-plus">C++&nbsp;<a class="headline-hash" href="#c-plus-plus">#</a> </h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// Convert to C++ type
+</span><span style="color:#75715e"></span>T convert<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">const</span> Configuration<span style="color:#f92672">&amp;</span> cfg);
+<span style="color:#75715e">// Get object attribute as C++ type
+</span><span style="color:#75715e"></span>T get<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">const</span> Configuration<span style="color:#f92672">&amp;</span> cfg, <span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>string<span style="color:#f92672">&amp;</span> name);
+x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+</code></pre></div>
+                           
+
+    </div>
+  </article>
+</main>
+
+    <footer>
+  <hr>
+
+  <p>
+
+  &copy; 2021 <a href="http://brettviren.github.io/"><b>They call me Brett</b></a>.
+  </p>
+
+
+
+</footer>
+
+  </body>
+</html>

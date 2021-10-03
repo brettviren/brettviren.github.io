@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+
+  
+  <style type=text/css>body{font-family:monospace;}</style>
+  <title>How I Do</title>
+  
+  <meta name="author" content="Brett Viren">
+  <link rel="stylesheet" href="http://brettviren.github.io/css/style.css">
+  
+  
+</head>
+
+
+
+  <body>
+    <header>
+    <div style="text-align: center;">
+    <a href="https://github.com/brettviren"><img src="http://brettviren.github.io/icons/github.svg"></a>
+    <a href="mailto:bv@bnl.gov"><img src="http://brettviren.github.io/icons/email.svg"></a>
+    <a href="mailto:brett.viren@gmail.com"><img src="http://brettviren.github.io/icons/email.svg"></a>
+    <a href="https://keybase.io/BrettViren"><img src="http://brettviren.github.io/icons/keybase.svg"></a>
+    <a href="https://twitter.com/brett_viren"><img src="http://brettviren.github.io/icons/twitter.svg"></a>
+    <a href="https://fosstodon.org/@bv"><img src="http://brettviren.github.io/icons/matrix.svg"></a>
+
+  
+  </div>
+  <div class="banner-left" style="float: left;">  
+    <a href="http://brettviren.github.io/">They call me Brett</a> <br>
+  </div>
+  <div class="banner-right" style="float: right;">
+    turning neutrinos in to bytes <br>
+  </div>
+  <br/>
+  <hr>
+
+  <p>
+
+  <nav>
+    <div style="text-align: center;">
+    
+    
+    [<a href="http://brettviren.github.io/about/"><b>About</b></a>]
+    
+    [<a href="http://brettviren.github.io/posts/"><b>Posts</b></a>]
+    
+    [<a href="http://brettviren.github.io/articles/"><b>Articles</b></a>]
+    
+    [<a href="http://brettviren.github.io/categories/"><b>Categories</b></a>]
+    
+    [<a href="http://brettviren.github.io/tags/"><b>Tags</b></a>]
+    
+    </div>
+  </nav>
+
+</header>
+
+    
+<main>
+  <article>
+    <h1>How I Do</h1>
+    <b><time>Tue 9 Feb 2021</time></b>
+    
+    <a href="http://brettviren.github.io/tags/environment">environment</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="http://brettviren.github.io/tags/software">software</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="http://brettviren.github.io/tags/practices">practices</a>
+    <img src="http://brettviren.github.io/icons/tag-12.svg">
+    
+    <div>
+      <p>Sometimes people ask how I do things digitally.  They can read this.</p>
+<div class="ox-hugo-toc toc">
+<div></div>
+<div class="heading">Table of Contents</div>
+<ul>
+<li><a href="#2021-02-09-Introduction">Introduction</a></li>
+<li><a href="#2021-02-09-Configuration">Configuration</a></li>
+<li><a href="#2021-02-09-Editor">Editor</a></li>
+<li><a href="#2021-02-09-Terminal">Terminal</a></li>
+<li><a href="#2021-02-09-Command-shell">Shells</a></li>
+<li><a href="#2021-02-09-Desktop">Desktop</a></li>
+<li><a href="#2021-02-09-Web">Web</a></li>
+<li><a href="#2021-02-09-Source">Source</a></li>
+<li><a href="#2021-02-09-Photo-management">Photos</a></li>
+<li><a href="#2021-02-09-Sync">Sync</a></li>
+<li><a href="#passwords">Passwords</a></li>
+<li><a href="#2021-02-09-Time">Time</a></li>
+<li><a href="#todo">Todo</a></li>
+</ul>
+</div>
+<!--endtoc-->
+<h2 id="2021-02-09-Introduction">Introduction&nbsp;<a class="headline-hash" href="#2021-02-09-Introduction">#</a> </h2>
+<p>This document provides a view into how I use computers with a focus on software.  It is organized into major software categories with subsections for each important package.</p>
+<p>It also serves as notebook of documentation to remind me of some details.  Expect some incomplete sections and to see changes over time.</p>
+<h3 id="2021-02-09-Typography">Typography&nbsp;<a class="headline-hash" href="#2021-02-09-Typography">#</a> </h3>
+<p>In this document, the prompts used in examples are as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># command run as root
+$ command run as user
+</code></pre></div><h3 id="2021-02-09-Hardware">Hardware&nbsp;<a class="headline-hash" href="#2021-02-09-Hardware">#</a> </h3>
+<p>Hardware interests me less than software so I do not go into detail other than to give hostnames to four hardware roles:</p>
+<dl>
+<dt><code>hometop</code></dt>
+<dd>personal laptop (thinkpad x1e gen2)</dd>
+<dt><code>worktop</code></dt>
+<dd>work laptop (thinkpad x1c gen5)</dd>
+<dt><code>homestation</code></dt>
+<dd>personal workstation (custom build)</dd>
+<dt><code>workstation</code></dt>
+<dd>work workstation (ASLab Marquis)</dd>
+<dt><code>homeserver</code></dt>
+<dd>personal server with ports exposed to the Internet</dd>
+</dl>
+<p>For the last one, I maintain a dynamic DNS subdomain from the great folks at <a href="https://freedns.afraid.org/">afraid</a>.</p>
+<h2 id="2021-02-09-Configuration">Configuration&nbsp;<a class="headline-hash" href="#2021-02-09-Configuration">#</a> </h2>
+<p>Configuration is stored in a private <a href="https://gitea.io/">Gitea</a> and most clones are managed with <a href="https://github.com/RichiH/vcsh">vcsh</a> and <a href="https://myrepos.branchable.com/">myrepos</a> with <a href="https://www.passwordstore.org/">pass</a> managing its own.</p>
+<p>The vcsh git repo manager allows multiple git repos to supply files into <code>$HOME</code> without any actual <code>.git/</code> directory there.  It allows for the target filesystem space to be interleaved with files managed in separate git repos.  Seems crazy, works great.</p>
+<p>My <code>vcsh</code> repos include config for: bash, bbdb, emacs, git, mr (myrepos), nixpkgs, sawfish, scripts, ssh, systemd, tmux, weechat.  Some of these are described in other sections but first how <code>vcsh</code> is handled.</p>
+<h3 id="2021-02-09-Configuration-Initialize">Initialize&nbsp;<a class="headline-hash" href="#2021-02-09-Configuration-Initialize">#</a> </h3>
+<p>Each repo needs a one time setup like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># apt install vcsh
+$ vcsh init bbdb
+$ vcsh bbdb add .bbdb
+$ vcsh bbdb commit -m &#34;First commit&#34;
+$ vcsh bbdb remote add origin gogs@homeserver:bv/dot-bbdb.git
+$ vcsh bbdb push -u origin master
+</code></pre></div><h3 id="2021-02-09-Multiple-repositories">Multiple repositories&nbsp;<a class="headline-hash" href="#2021-02-09-Multiple-repositories">#</a> </h3>
+<p>There is built-in support for multiple repositories in <code>vcsh</code>, eg:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh status
+$ vcsh pull
+$ vcsh push
+</code></pre></div><h3 id="2021-02-09-Bootstrap-new-account">Bootstrap new account&nbsp;<a class="headline-hash" href="#2021-02-09-Bootstrap-new-account">#</a> </h3>
+<p>A new account can clone individual repos:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh clone gogs@homeserver:bv/dot-bbdb.git bbdb
+</code></pre></div><p>This gets tedious and it&rsquo;s where <code>myrepos</code> (<code>mr</code>) comes in.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh clone gogs@haiku:bv/dot-myrepos.git mr
+$ cd .config/mr/config.d/
+$ ln -sf ../available.d/* .
+$ cd
+$ mr up
+</code></pre></div><p>An example <code>mr</code> config looks like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">[$HOME/.config/vcsh/repo.d/emacs.git]
+checkout = vcsh clone gogs@bandyv.us.to:bv/dot-emacs.git emacs
+</code></pre></div><h3 id="2021-02-09-Ignoring">Ignoring&nbsp;<a class="headline-hash" href="#2021-02-09-Ignoring">#</a> </h3>
+<p>Any git command run through <code>vcsh</code> uses <code>$HOME</code> as the Git working dir.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh bbdb status
+[... long list of untracked files ...]
+</code></pre></div><p>You can have <code>vcsh</code> Git command ignore anything not explicitly committed to a <code>vcsh</code> Git repository:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh write-gitignore bbdb
+$ vcsh bbdb status
+On branch master
+Your branch is up-to-date with &#39;origin/master&#39;.
+nothing to commit, working directory clean
+</code></pre></div><p>The <code>write-gitignore</code> command will create a file like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cat ~/.gitignore.d/bbdb
+*
+!/.bbdb
+</code></pre></div><h3 id="2021-02-09-Making-updates">Making updates&nbsp;<a class="headline-hash" href="#2021-02-09-Making-updates">#</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ emacs .bash/completion/vcsh
+$ vcsh bash add -f .bash/completion/vcsh
+$ vcsh bash commit -a -m &#34;Add vcsh completion for bash.&#34;
+$ vcsh bash push
+</code></pre></div><h3 id="2021-02-09-Applying-updates">Applying updates&nbsp;<a class="headline-hash" href="#2021-02-09-Applying-updates">#</a> </h3>
+<p>From each account:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ mr up
+</code></pre></div><p>or, more usually</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ vcsh pull
+</code></pre></div><h3 id="2021-02-09-Checking-for-updates">Checking for updates&nbsp;<a class="headline-hash" href="#2021-02-09-Checking-for-updates">#</a> </h3>
+<p>I want my prompt to tell me when a local account has modified, is
+behind the remote vcsh or ahead of it (made a commit but not push).
+To check the remote takes time and also needs SSH credentials.  Here&rsquo;s
+how I get this bundle of functionality:</p>
+<dl>
+<dt><code>vcsh-extra</code></dt>
+<dd>a script with command <code>hooks</code>, <code>probe</code> and <code>cron</code> which
+calls both.</dd>
+<dt>fetch</dt>
+<dd>the <code>fetch</code> command simply does a:</dd>
+</dl>
+<!--listend-->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vcsh foreach fetch
+</code></pre></div><dl>
+<dt>probe</dt>
+<dd>the <code>probe</code> command will run <code>vcsh status --terse</code> and parse it
+for state to touch files <code>last-{ahead,behind,modified}</code> (removing any
+stale ones).</dd>
+<dt>hooks</dt>
+<dd>the <code>hooks</code> command install vcsh hooks which will run the
+<code>probe</code> command named after an action.  Ie in:
+<code>post-{pull,push,commit,enter,run}</code> is:</dd>
+</dl>
+<!--listend-->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$HOME/scripts/vcsh-extra probe
+</code></pre></div><dl>
+<dt>cron</dt>
+<dd>the <code>cron</code> command bundles calls the three commands in sequence after</dd>
+</dl>
+<!--listend-->
+<pre><code class="language-nil" data-lang="nil">eval $(keychain --quiet --noask --eval id_rsa)
+</code></pre><p>In summary, the cron job runs once per hour, fetching but not applying
+any changes and doing the <code>probe</code> to summarize what state that leaves
+the local <code>vcsh</code> repositories.</p>
+<p>When doing <code>vcsh</code> commands the hooks run to repeat the <code>probe</code> (which is
+fast enough).</p>
+<p>Finally, the Bash <code>PROMPT_COMMAND</code> will check for the existence
+<code>last-{ahead,behind,modified}</code> files and prepend a little marker to the
+prompt.  If all three types of &ldquo;dirty&rdquo; occur, the prompt looks like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">{ABM}bv@hal:~
+$
+</code></pre></div><h2 id="2021-02-09-Editor">Editor&nbsp;<a class="headline-hash" href="#2021-02-09-Editor">#</a> </h2>
+<h3 id="2021-02-09-Emacs">Emacs&nbsp;<a class="headline-hash" href="#2021-02-09-Emacs">#</a> </h3>
+<p>I use Emacs for Email (GNUS), Contacts (BBDB), software development,
+document and presentation production (orgmode and LaTeX), bookmark
+management (<code>org-protocol</code> and <code>org-capture</code>) and web form text entry
+(<code>atomic-chrome</code>).  Emacs 27 is soon to be released but I can&rsquo;t wait
+so I build it from source (see <a href="#2021-02-09-Source">Source</a>).  It now allows
+<code>XDG_CONFIG_HOME</code> which I make use of by <strong>conceptually</strong> doing:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ rm -rf .emacs*
+$ mkdir .config/emacs
+</code></pre></div><p>Typing <code>emacs</code> then uses <code>$XDG_CONFIG_HOME/emacs/init.el</code>.  There&rsquo;s
+lots of fashionable ways to configure <code>init.el</code>.  I don&rsquo;t follow then
+except to break up the config into many <code>init-*.el</code> and <code>(require)</code>
+them in a big list.</p>
+<h4 id="emacs-packages">Emacs packages&nbsp;<a class="headline-hash" href="#emacs-packages">#</a> </h4>
+<p>I heavily use <a href="https://github.com/jwiegley/use-package">use-package</a> and in two modes.  I
+want the ability to blow away any <code>emacs.d/elpa/</code> area and rebuild it
+any time but normally don&rsquo;t want to spend the extra load time to query
+for package state.  This is in <code>init-package.el</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elisp" data-lang="elisp">(require <span style="color:#e6db74">&#39;package</span>)
+(setq package-archives
+      <span style="color:#f92672">&#39;</span>((<span style="color:#e6db74">&#34;org&#34;</span>     <span style="color:#f92672">.</span>       <span style="color:#e6db74">&#34;https://orgmode.org/elpa/&#34;</span>)
+        (<span style="color:#e6db74">&#34;gnu&#34;</span>     <span style="color:#f92672">.</span>       <span style="color:#e6db74">&#34;https://elpa.gnu.org/packages/&#34;</span>)
+        (<span style="color:#e6db74">&#34;melpa&#34;</span>   <span style="color:#f92672">.</span>       <span style="color:#e6db74">&#34;https://melpa.org/packages/&#34;</span>)))
+(package-initialize)
+<span style="color:#75715e">;; uncomment this block and restart emacs to get new packages</span>
+<span style="color:#75715e">;;;;;</span>
+<span style="color:#75715e">;; (setq use-package-always-ensure t)</span>
+<span style="color:#75715e">;; (package-refresh-contents)</span>
+<span style="color:#75715e">;; (unless (package-installed-p &#39;use-package)</span>
+<span style="color:#75715e">;;   (package-install &#39;use-package))</span>
+<span style="color:#75715e">;;;;;;</span>
+(require <span style="color:#e6db74">&#39;use-package</span>)
+(provide <span style="color:#e6db74">&#39;init-packages</span>)
+</code></pre></div><h4 id="modular-config">Modular config&nbsp;<a class="headline-hash" href="#modular-config">#</a> </h4>
+<p>I factor my Emacs configuration as par <code>modular-config</code> with &ldquo;modules&rdquo; in <code>~/.config/emacs/init/*.el</code> and some top level configs listed like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elisp" data-lang="elisp">(use-package modular-config
+  :custom
+  (modular-config-list
+   <span style="color:#f92672">&#39;</span>(
+     (full (base gui orgmode dired smex spelling markdown lisp cpp python jsonnet tail))
+     (email (base gui orgmode email))
+     (empty ())
+     (plain (base))
+     (main (base gui orgmode))
+     <span style="color:#75715e">;; Used from EDITOR</span>
+     (cmdline (base cli))
+     <span style="color:#75715e">;; Used from $VISUAL</span>
+     (visual (base gui))
+     (blog (base gui orgpub dired smex spelling markdown cpp python))
+     (prog (base gui orgmode dired smex spelling markdown cpp python))
+     <span style="color:#75715e">;; for calling from GhostText, except we still do it</span>
+     <span style="color:#75715e">;; through init-atomic-chrome.el</span>
+     (ghost (base gui dired ivy smex spelling markdown))
+     <span style="color:#75715e">;; for calling from $EDITOR</span>
+     (shell (base gui dired ivy smex spelling))
+     ))
+  (modular-config-default <span style="color:#e6db74">&#39;full</span>)
+  (modular-config-path <span style="color:#e6db74">&#34;~/.config/emacs/init&#34;</span>)
+  :config
+  (modular-config-command-line-args-process))
+</code></pre></div><p>I then may select a configuration on the command line like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ emacs --config plain [...]
+</code></pre></div><h4 id="gnus-bbdb">GNUS/BBDB&nbsp;<a class="headline-hash" href="#gnus-bbdb">#</a> </h4>
+<h4 id="lsp">LSP&nbsp;<a class="headline-hash" href="#lsp">#</a> </h4>
+<h4 id="emacs-servers">Emacs servers&nbsp;<a class="headline-hash" href="#emacs-servers">#</a> </h4>
+<p>To support bookmark capture (Firefox + org-protocol + a script) and text entry editing (GhostText + atomic-chrome) I have dedicated Emacs server configuration as well.  These servers are started via <code>supervisord</code> which itself starts from cron:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ crontab -l|grep supervisord
+@reboot supervisord -c /home/bv/scripts/supervisor.conf
+</code></pre></div><p>That =~/scripts/~ directory is in <code>vcsh</code>.  The two Emacs servers are
+started like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">[program:emacs-capture]
+command=%(ENV_HOME)s/scripts/emacs-start-server capture
+directory=%(ENV_HOME)s
+autorestart = false
+
+[program:emacs-atomic-chrome]
+command=%(ENV_HOME)s/scripts/emacs-start-server atomic-chrome
+directory=%(ENV_HOME)s
+autorestart = false
+</code></pre></div><p>This <code>emacs-start-server</code> script is mostly to remind me how to start Emacs properly.  It boils down to running:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">exec emacs -q --fg-daemon=${name} -l ~/.config/emacs/init-${name}.el
+</code></pre></div><p>As such the nominal <code>init.el</code> is not sourced.  Each server is self
+contained including its <code>custom.el</code> and its <code>elpa/</code> area.</p>
+<p>For bookmark capture I configure Firefox to call <code>~/scripts/emacs-capture</code> script for any <code>org-protocol://</code> links.  Effectively it calls:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">emacsclient -n -c -s capture \
+   -F &#34;((name . \&#34;emacs-capture\&#34;) (height . 20) (width . 80))&#34; \
+   &#34;org-protocol://capture://w/&lt;encoded-url&gt;/&#34;
+</code></pre></div><p>This runs on the &ldquo;capture&rdquo; server and since it uses <code>emacsclient</code> it starts very fast.</p>
+<h2 id="2021-02-09-Terminal">Terminal&nbsp;<a class="headline-hash" href="#2021-02-09-Terminal">#</a> </h2>
+<h3 id="2021-02-09-Kitty">Kitty&nbsp;<a class="headline-hash" href="#2021-02-09-Kitty">#</a> </h3>
+<p>I&rsquo;ve tried many terminals over the years and for about the last year I have been very happily using the <a href="https://sw.kovidgoyal.net/kitty/">Kitty</a> terminal.  I mean the one written in Python/OpenGL and not the on derived from Putty.  Some reasons why I like it:</p>
+<ul>
+<li>emoji support!</li>
+<li><code>C-S-h</code> to load scrollback into <code>less</code></li>
+<li>fast, beautiful text, Free Software</li>
+</ul>
+<p>It also has sub-programs called &ldquo;kittens&rdquo; such as <code>kitten icat foo.png</code> to show a graphic in the terminal.  Or <code>kitten diff</code> to show
+a pretty side-by-side diff.  These are nice but I rarely use them.</p>
+<p>Here is install:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">python3 setup.py --prefix=/usr/local/stow/kitty-0.19.3 linux-package
+
+</code></pre></div><p>See <a href="https://sw.kovidgoyal.net/kitty/build.html">kitty build instructions</a> and <a href="#2021-02-09-Stow">Stow</a> for more info.</p>
+<p>No longer but in the past, I built and ran Kitty directly from source:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cd dev/kitty
+$ git pull
+$ git checkout vX.Y.Z
+$ make
+</code></pre></div><p>Then, run the result directly from the source:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cat bin/kitty
+#!/usr/bin/env python3
+import runpy
+runpy.run_path(&#39;/home/bv/dev/kitty&#39;, run_name=&#39;__main__&#39;)
+</code></pre></div><p>No particularly fancy config (lives in <code>.config/kitty/kitty.conf</code>).</p>
+<h2 id="2021-02-09-Command-shell">Shells&nbsp;<a class="headline-hash" href="#2021-02-09-Command-shell">#</a> </h2>
+<p>I have moved my main account on <code>hometop</code> and <code>homestation</code> to the Fish shell but have long and still use Bash on other accounts.  In Fish accounts I will sometimes still start Bash to do some complex command which I&rsquo;ve yet to master in Fish.  In this mixed environment it is sometimes necessary to explicitly set <code>SHELL</code> to either <code>fish</code> or <code>bash</code>.</p>
+<h3 id="2021-02-09-Fish">Fish&nbsp;<a class="headline-hash" href="#2021-02-09-Fish">#</a> </h3>
+<p>Fish is a really amazing shell which requires very little configuration to make it &ldquo;feel right&rdquo;.  Here are a few things I do with fish.</p>
+<p>I use the <a href="https://github.com/IlanCosman/tide">tide</a> prompt which is very nice, easy and popular.  Amazingly, it is as I like it out of the box and I do very little customization.</p>
+<p>I use this <code>fzf</code> / Fish integration:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ fisher add PatricF1/fzf.fish
+</code></pre></div><p>Only customization is to override the <code>C-f</code> keybinding as it&rsquo;s needed for my Emacs-trained fingers for character-forward.  In <code>config.fish</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fish" data-lang="fish"><span style="color:#75715e"># override fzf bindings
+</span><span style="color:#75715e"></span>bind --erase <span style="color:#ae81ff">\c</span>f
+bind <span style="color:#ae81ff">\c</span>o <span style="color:#e6db74">&#39;__fzf_search_current_dir&#39;</span>
+</code></pre></div><p>To use <code>direnv</code> I add per docs, <code>conf.d/direnv.fish</code> with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fish" data-lang="fish">eval <span style="color:#f92672">(</span>direnv hook fish<span style="color:#f92672">)</span>
+</code></pre></div><p>When I started learning Fish, I ported my shell implemenation <a href="https://github.com/brettviren/shist">shist</a> of <a href="https://github.com/barabo/advanced-shell-history">ash</a> to  <a href="https://github.com/brettviren/fishql">fishql</a>.  This gave a nice vehicle to dive into Fish programming.  However, I&rsquo;ve stopped using it due to some quoting problem and because I find I almost never actually use the SQL query functionality.</p>
+<h3 id="2021-02-09-Bash">Bash&nbsp;<a class="headline-hash" href="#2021-02-09-Bash">#</a> </h3>
+<p>Though I am moving to Fish, I keep my Bash setup alive as I sometimes will start Bash in my Fish accounts and still have some accounts not yet moved to Fish.</p>
+<p>My <code>.bashrc</code> is run for login or subshells.  It delegates
+configuration to scripts under
+<code>/.bash/{functions,variables,apps}/*.sh</code> and &ldquo;mounts&rdquo; some git subtrees under <code>/.bash/subtrees</code>.</p>
+<p>One subtree of note is <a href="https://github.com/brettviren/shist">shist</a> which is my Bash implementation of <a href="https://github.com/barabo/advanced-shell-history">advanced shell history</a>.  This integrates with Bash prompting to record history in an Sqlite3 database.</p>
+<p>I strongly avoid using <code>alias</code> (eg, no <code>ll</code> for <code>ls -l</code>) as I think inventing my own Unix command set is an anti-pattern.  I do capture some larger commands in Bash functions so that tab-completion can remind me of the (eg, a bunch of <code>emacs-server-*</code> functions to manage different Emacs servers).</p>
+<p>I used to loop over <code>$HOME/opt/*/{bin,lib,man,lib/pkgconfig}</code> to set <code>PATH, LD_LIBRARY_PATH, MANPATH, PKG_CONFIG_PATH</code>.  This I now deprecate in favor of a Stow-based install for common software and a per-development area governed by <code>direnv</code>.
+See <a href="#2021-02-09-Source">Source</a> for more info on this aspect.</p>
+<h2 id="2021-02-09-Desktop">Desktop&nbsp;<a class="headline-hash" href="#2021-02-09-Desktop">#</a> </h2>
+<p>By which I mean what the X11 (and not wayland) server manages.</p>
+<p>I&rsquo;m in the process of migrating from Sawfish to Herbsluftwm.  I&rsquo;ve used Sawfish since it was the official Gnome WM back in the 90&rsquo;s (back before Gnome put sugar before protein).  Sawfish is really a terrific stacking/floating WM but I wanted to move to a tiling paradigm.  Sawfish has some rudimentary support for tiling and I initially toyed with adding more but figured I should first try some &ldquo;real&rdquo; tiling WMs.  Along came Herbsluftwm which I chose over the others because it had nice graph diagrams right in the man page.  I&rsquo;ve since looked at others (awesome, i3, dwm) and they are nice but I got lucky on the first draw and have fallen deeply for it.  So, I bid Sawfish a fond farewell and wish the community all the best (there are tens of us!).</p>
+<h3 id="2021-02-09-Herbsluftwm">Herbsluftwm&nbsp;<a class="headline-hash" href="#2021-02-09-Herbsluftwm">#</a> </h3>
+<p>Herbsluftwm [German for autumn wind(ow manager)] is configured by issuing commands from the client application <code>herbstclient</code> (<code>hc</code>).  These commands are typically captured in two files:</p>
+<dl>
+<dt><code>autostart</code></dt>
+<dd>main configuration holding keybindings, theme settings and starting any &ldquo;panels&rdquo;</dd>
+<dt><code>panel.sh</code></dt>
+<dd>a long running process transforming WM events (via <code>hc --idel</code>) and others into input piped to a &ldquo;bar&rdquo; program (<code>dzen2</code> is common)</dd>
+</dl>
+<p>Both of these are typically found at <code>~/.config/herbstluftwm/</code>.</p>
+<p>A lot of great shell hackery exists in this space including the default event-driven <code>panel.sh</code> which taught me a thing or three.   But, I wanted to rely on something more &ldquo;formal&rdquo; so created <a href="https://brettviren.github.io/herbie">herbie</a>.  It contains Python reimplementations of a lot of Herbsluftwm community shell hackery as well as a few new things.  It&rsquo;s documentation describes how to configure and integrate into <code>autostart</code>.</p>
+<h3 id="rofi">Rofi&nbsp;<a class="headline-hash" href="#rofi">#</a> </h3>
+<p>My <code>herbie</code> speaks through <code>rofi</code>  in many cases and <code>rofi</code> is used directly for some.</p>
+<ul>
+<li><code>rofi-screenshot</code> custom script to take screen shots and optionally upload them to a popular image host with help of <code>maim</code> and <code>rephile</code>.  See <a href="#2021-02-09-Photo-management">Photos</a>.</li>
+<li><a href="https://github.com/carnager/rofi-pass"><code>rofi-pass</code></a> for accessing my password store (see <a href="#passwords">Passwords</a>)</li>
+</ul>
+<h3 id="2021-02-09-Sawfish">Sawfish&nbsp;<a class="headline-hash" href="#2021-02-09-Sawfish">#</a> </h3>
+<p>The Sawfish X11 window manager was at one time the official WM for
+Gnome.  That is the time when I first started using it, moving from
+TWM and then FVWM.  I&rsquo;ve tried a few since but always come back.
+Sawfish is configured and largely written in its own flavor of lisp
+(<a href="https://sawfish.fandom.com/wiki/Librep">rep</a>) and so can reasonably be considered the Emacs of window
+managers.  For configuration, it does an even better job than Emacs of
+providing both a programmable and a GUI configuration method and the
+two work largely well together.  Some of the reasons I use Sawfish:</p>
+<ul>
+<li>hugely configurable but sane defaults</li>
+<li>my fingers have learned the key bindings I chose years (decades!) ago</li>
+<li>I bake the configuration into a git repo</li>
+<li>I can run an arbitrary program from a command line without opening a terminal</li>
+<li>tab-like navigation between virtual desktops</li>
+<li>window &ldquo;filling&rdquo; which I find a better compromise between stacking and tiling idioms</li>
+<li>window dressing with themes and per matched windows (eg, Firefox has no borders)</li>
+</ul>
+<h3 id="desktop-environment">Desktop environment&nbsp;<a class="headline-hash" href="#desktop-environment">#</a> </h3>
+<p>I largely have moved away from using a full DE.  I have MATE (Gnome 2) in with Sawfish on some computers but been replacing MATE panel and menus with dzen2 and rofi.</p>
+<h2 id="2021-02-09-Web">Web&nbsp;<a class="headline-hash" href="#2021-02-09-Web">#</a> </h2>
+<h3 id="2021-02-09-Firefox">Firefox&nbsp;<a class="headline-hash" href="#2021-02-09-Firefox">#</a> </h3>
+<p>Firefox is the least worse web browser despite how Mozilla tries so
+hard to kill off its user base.  Not much to say except how I battle
+some of its worse behavior:</p>
+<h4 id="load-url-via-remote-without-grabbing-attention">Load URL via remote without grabbing attention&nbsp;<a class="headline-hash" href="#load-url-via-remote-without-grabbing-attention">#</a> </h4>
+<p>Set <code>browser.tabs.loadDivertedInBackground</code> to <code>true</code> in
+<code>about:config</code>.  Otherwise sending a URL via remote open will have
+Firefox grab focus, possibly switching to it on a different virtual
+desktop.  This is super annoying when doing important things like
+loading the morning&rsquo;s web comics from <code>liferea</code>.</p>
+<h4 id="emacs-like-keybindings-in-firefox">Emacs-like keybindings in firefox&nbsp;<a class="headline-hash" href="#emacs-like-keybindings-in-firefox">#</a> </h4>
+<p>This is one of the most frustrating things and most of the things
+found online are wrong.  What to do depends on the desktop environment
+<strong>and</strong> its version <strong>and</strong> maybe the distribution.</p>
+<p>Debian <code>buster</code> and MATE 1.20.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">gsettings set org.mate.interface gtk-key-theme &#39;Emacs&#39;
+</code></pre></div><p>Or,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">~/.config/gtk-3.0/settings.ini:
+
+# Get firefox to use emacs keybindings
+[Settings]
+gtk-key-theme-name = Emacs
+</code></pre></div><p>For <a href="https://developer.mozilla.org/en-US/docs/Tools/Settings#Editor%5FPreferences">editor</a> <code>about:config</code> and</p>
+<style>.org-center { margin-left: auto; margin-right: auto; text-align: center; }</style>
+<div class="org-center">
+  <div></div>
+<p>devtools.editor.keymap emacs</p>
+</div>
+<h4 id="using-emacs-to-edit-text">Using Emacs to edit text&nbsp;<a class="headline-hash" href="#using-emacs-to-edit-text">#</a> </h4>
+<p>There used to be ItsAllText.  Now there is <a href="https://addons.mozilla.org/en-US/firefox/addon/edit-with-emacs1/">Edit with Emacs</a> and
+<a href="https://addons.mozilla.org/en-US/firefox/addon/ghosttext/">GhostText</a>.  The former I could not make work and the latter seems
+fine.</p>
+<p>GhostText needs <code>atomic-chrome</code> to be running on Emacs.  It&rsquo;s
+available from the Emacs package sites.  In <a href="#emacs-servers">Emacs servers</a> I describe
+how the Emacs server for atomic-chrome to talk to get started.  The
+main Emacs parts in <code>init-atomic-chrome.el</code> are:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elisp" data-lang="elisp">(setq server-name <span style="color:#e6db74">&#34;atomic-chrome&#34;</span>)
+(use-package markdown-mode
+  :ensure <span style="color:#66d9ef">t</span>
+  :config
+  (setq markdown-command <span style="color:#e6db74">&#34;/usr/bin/markdown&#34;</span>))
+(use-package markdown-preview-mode
+  :ensure <span style="color:#66d9ef">t</span>)
+(use-package atomic-chrome
+  :ensure <span style="color:#66d9ef">t</span>
+  :config
+  (setq atomic-chrome-default-major-mode <span style="color:#e6db74">&#39;markdown-mode</span>)
+  (setq atomic-chrome-url-major-mode-alist
+        <span style="color:#f92672">&#39;</span>((<span style="color:#e6db74">&#34;github\\.com&#34;</span> <span style="color:#f92672">.</span> gfm-mode)
+          (<span style="color:#e6db74">&#34;reddit\\.com&#34;</span> <span style="color:#f92672">.</span> markdown-mode)
+          (<span style="color:#e6db74">&#34;redmine&#34;</span> <span style="color:#f92672">.</span> textile-mode)))
+  (setq atomic-chrome-buffer-open-style <span style="color:#e6db74">&#39;frame</span>)
+)
+(atomic-chrome-start-server)
+</code></pre></div><p>To use, I click the GhostText icon, sometimes it prompts me for which
+text area to edit, then an Emacs frame pops us.  As I type in Emacs
+the text entry updates.</p>
+<!--list-separator-->
+<ul>
+<li><span class="org-todo todo TODO">TODO</span>  get nice rendered preview for GitHub and Reddit text entries</li>
+</ul>
+<h4 id="bookmark-capture">Bookmark capture&nbsp;<a class="headline-hash" href="#bookmark-capture">#</a> </h4>
+<p>The <code>emacs-capture</code> and Emacs server &ldquo;capture&rdquo; is described above.  On the Firefox end I need a bookmarklet:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">javascript:location.href=&#39;org-protocol://capture://w/&#39;+encodeURIComponent(location.href)+&#39;/&#39;+encodeURIComponent(document.title)+&#39;/&#39;+encodeURIComponent(window.getSelection())
+</code></pre></div><p>The <code>/w/</code> corresponds to an org capture template</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elisp" data-lang="elisp">(setq org-capture-templates
+      (quote
+       ((<span style="color:#e6db74">&#34;w&#34;</span> <span style="color:#e6db74">&#34;Web Bookmark&#34;</span> entry
+         (file+headline <span style="color:#e6db74">&#34;~/org/webcapture.org&#34;</span> <span style="color:#e6db74">&#34;Bookmarks&#34;</span>)
+         <span style="color:#e6db74">&#34;* %a :website:%^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n%i\n %?&#34;</span>
+         :empty-lines <span style="color:#ae81ff">1</span> :immediate-finish <span style="color:#66d9ef">nil</span>)))
+      org-agenda-files (<span style="color:#a6e22e">list</span> <span style="color:#e6db74">&#34;~/org/webcapture.org&#34;</span>))
+</code></pre></div><p>Some frame management is done with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elisp" data-lang="elisp">(defadvice org-capture
+    (after make-full-window-frame activate)
+  <span style="color:#e6db74">&#34;Advise capture to be the only window when used as a popup&#34;</span>
+ (if (<span style="color:#a6e22e">equal</span> <span style="color:#e6db74">&#34;emacs-capture&#34;</span> (<span style="color:#a6e22e">frame-parameter</span> <span style="color:#66d9ef">nil</span> <span style="color:#e6db74">&#39;name</span>))
+     (delete-other-windows)))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  <span style="color:#e6db74">&#34;Advise capture-finalize to close the frame&#34;</span>
+  (if (<span style="color:#a6e22e">equal</span> <span style="color:#e6db74">&#34;emacs-capture&#34;</span> (<span style="color:#a6e22e">frame-parameter</span> <span style="color:#66d9ef">nil</span> <span style="color:#e6db74">&#39;name</span>))
+      (<span style="color:#a6e22e">delete-frame</span>)))
+</code></pre></div><h4 id="kill-sticky">Kill Sticky&nbsp;<a class="headline-hash" href="#kill-sticky">#</a> </h4>
+<p>The web is mostly festering garbage and getting worse over time.  Many web sites, even ones that should know batter (stack overflow) put up so much obscuring crap that it can be hard to see the content.  Enter <strong>Kill Sticky</strong> (not a Tarantino movie, but better).  It is <a href="https://alisdair.mcdiarmid.org/kill-sticky-headers/">this bookmarklet</a>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">javascript:(function()%7B(function%20()%20%7Bvar%20i%2C%20elements%20%3D%20document.querySelectorAll(&#39;body%20*&#39;)%3Bfor%20(i%20%3D%200%3B%20i%20%3C%20elements.length%3B%20i%2B%2B)%20%7Bif%20(getComputedStyle(elements%5Bi%5D).position%20%3D%3D%3D%20&#39;fixed&#39;)%20%7Belements%5Bi%5D.parentNode.removeChild(elements%5Bi%5D)%3B%7D%7D%7D)()%7D)()
+</code></pre></div><h2 id="2021-02-09-Source">Source&nbsp;<a class="headline-hash" href="#2021-02-09-Source">#</a> </h2>
+<p>See also <a href="#2021-02-09-Configuration">Configuration</a> and individual package sections.  Here I describe ways I install software locally which means outside of Debian&rsquo;s package management.</p>
+<h3 id="2021-02-09-DIY-opt">DIY opt&nbsp;<a class="headline-hash" href="#2021-02-09-DIY-opt">#</a> </h3>
+<p>For some development dependencies, I will build and install using <code>$HOME/opt/&lt;pkg&gt;</code> as the install &ldquo;prefix&rdquo;.  I try to avoid making these part of day-to-day environment.</p>
+<h3 id="2021-02-09-Stow">Stow&nbsp;<a class="headline-hash" href="#2021-02-09-Stow">#</a> </h3>
+<p>I used to follow the <a href="#2021-02-09-DIY-opt">DIY opt</a> method to provide software that is built from source until I had a weird time traveling revelation.  I&rsquo;m essentially the only user on most machines where I need what was in <a href="#2021-02-09-DIY-opt">DIY opt</a> so why not just install to <code>/usr/local</code>.  The one thing that was lacking was pristine uninstallation.  To get that I started using the venerable GNU Stow package.</p>
+<p>Even though implemented in Perl, GNU Stow works great (joke)!  One-time setup</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># mkdir /usr/local/stow
+# chgrp staff /usr/local/stow
+# chmod g+s /usr/local/stow
+# sudo adduser bv staff
+</code></pre></div><p>I then install from source to a location under the Stow directory with a name based on the package name and version.  Eg</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ ./configure --prefix=/usr/local/stow/rofi-1.6.1/
+$ make -j (nproc)
+$ make install
+</code></pre></div><p>Then finish with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># cd /usr/local/stow
+# stow rofi-1.6.1
+</code></pre></div><h3 id="2021-02-09-CMake">CMake&nbsp;<a class="headline-hash" href="#2021-02-09-CMake">#</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ mkdir ~/opt
+$ cd pkg
+$ mkdir build &amp;&amp; cd build
+$ cmake -G Ninja .. -DCMAKE_INSTALL_PREFIX=$HOME/opt/pkg [...]
+$ cmake --build . -- -j$(nproc)
+$ cmake --build . --target install
+</code></pre></div><h3 id="2021-02-09-autoconf">autoconf&nbsp;<a class="headline-hash" href="#2021-02-09-autoconf">#</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ mkdir ~/opt
+$ cd pkg
+$ ./autogen
+$ ./configure --prefix=$HOME/opt/pkg
+$ make -j$(nproc)
+$ make install
+</code></pre></div><h3 id="2021-02-09-Spack">Spack&nbsp;<a class="headline-hash" href="#2021-02-09-Spack">#</a> </h3>
+<h3 id="2021-02-09-Nix">Nix&nbsp;<a class="headline-hash" href="#2021-02-09-Nix">#</a> </h3>
+<h3 id="2021-02-09-Python">Python&nbsp;<a class="headline-hash" href="#2021-02-09-Python">#</a> </h3>
+<p>When I work on a Python package I use <code>direnv</code> (see also <a href="#2021-02-09-Command-shell">Shells</a>) do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># apt install direnv
+$ cd a-python-package/
+$ echo layout python3 &gt; .envrc
+$ direnv allow
+$ pip install -e .
+</code></pre></div><p>A lesser way but which does not require <code>direnv</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -e .
+</code></pre></div><h2 id="2021-02-09-Photo-management">Photos&nbsp;<a class="headline-hash" href="#2021-02-09-Photo-management">#</a> </h2>
+<p>See also <a href="#2021-02-09-Syncthing">Syncthing</a> for how photos are extracted off my phone.</p>
+<h3 id="2021-02-09-Rephile">Rephile&nbsp;<a class="headline-hash" href="#2021-02-09-Rephile">#</a> </h3>
+<p>I used to dump photos from scans, cameras or phones into various directories.  This grew organic and I&rsquo;ve lost chunks of memories when directories went missing.  So I got &ldquo;serious&rdquo; and wrote <a href="https://brettviren.github.io/rephile">rephile</a>.  It still allows a distributed store sprinkled around various directories and it supports <a href="#2021-02-09-Git-annex">git-annex</a> repositories.  It keeps an <code>sqlite</code> database of metadata and has some extras such as uploads to a popular image host.</p>
+<h2 id="2021-02-09-Sync">Sync&nbsp;<a class="headline-hash" href="#2021-02-09-Sync">#</a> </h2>
+<h3 id="2021-02-09-Syncthing">Syncthing&nbsp;<a class="headline-hash" href="#2021-02-09-Syncthing">#</a> </h3>
+<p>Syncthing is a jewel of a system.  It&rsquo;s your own personal peer-to-peer (which here means you-to-you or you-to-friends not you-to-anonymous-strangers) file transfer system.  Encryption, distribute hash table, UDP hole punching, simple beautiful web interface, cross platform.  What more can you ask for?</p>
+<p>I run it on my android phone and all Linux machines, home and at work.
+For the phone I sync photos and org files.  For Linux machines various
+things but in particular a <code>~/sync/</code> is shared between all and holds
+mostly my talks.  My <code>~/org/</code> holds my personal &ldquo;wiki&rdquo; where I hold
+proto-documents, notes, etc as well as bookmarks grabbed as described
+above.</p>
+<p>One caution: the optional use of relay for data is safe and can be useful to get around tricky routing problems (both ends behind very strict firewalls) but take note that some hosts that provide Syncthing relay are also TOR nodes.  Despite these being wholly separate data streams, some idiot &ldquo;security&rdquo; mechanisms will flag your Syncthing as a TOR node because it happens to connect to an Internet host which also happens to provide a TOR service.</p>
+<h3 id="2021-02-09-Git-annex">Git annex&nbsp;<a class="headline-hash" href="#2021-02-09-Git-annex">#</a> </h3>
+<p>tbd. git + big files + sync rules + metadata.  Used for photos and other.</p>
+<h2 id="passwords">Passwords&nbsp;<a class="headline-hash" href="#passwords">#</a> </h2>
+<h3 id="pass">Pass&nbsp;<a class="headline-hash" href="#pass">#</a> </h3>
+<p>I use <a href="https://git.zx2c4.com/password-store/about/">pass</a>.  I almost never share the same password for different endpoints and almost always use high character random passwords which I never bother to remember.</p>
+<h2 id="2021-02-09-Time">Time&nbsp;<a class="headline-hash" href="#2021-02-09-Time">#</a> </h2>
+<h3 id="2021-02-09-arbtt">arbtt&nbsp;<a class="headline-hash" href="#2021-02-09-arbtt">#</a> </h3>
+<p>At work we have to &ldquo;track&rdquo; our time even though we don&rsquo;t get payed hourly.  It feels to me a very annoying and demeaning thing.  I &ldquo;protest&rdquo; by keeping hugely, massively, stupidly pedantic track of my time.  I know, it&rsquo;s nonsensical and weird but it allows me to comply without raising my blood pressure.  Fight idiocy with lunacy, I always say.</p>
+<p>I do this by running <a href="https://arbtt.nomeata.de/#what">arbtt</a> on my work computers.    It starts with cron</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ crontab -l |grep arbtt
+@reboot /home/bv/scripts/start-arbtt-capture
+</code></pre></div><p>When my employer nags me to enter this very crucial data I run a script</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ time-sheet
+...
+heather,Sat,2020-05-02,0.87,1.45
+heather,Sun,2020-05-03,1.68,1.68
+heather,Mon,2020-05-04,2.24,6.77
+heather,Tue,2020-05-05,2.80,7.89
+heather,Wed,2020-05-06,2.99,5.79
+heather,Thu,2020-05-07,8.47,9.47
+heather,Fri,2020-05-08,3.49,9.16
+heather,Sun,2020-05-10,2.30,3.24
+</code></pre></div><p>Second to last column shows total hours my session was active, last column is time diff between last action and first in the day (MTW I was on &ldquo;vacation&rdquo; so less than nominal eight).</p>
+<h3 id="2021-02-09-Meetings">Time zones&nbsp;<a class="headline-hash" href="#2021-02-09-Meetings">#</a> </h3>
+<p>I have a <a href="https://superuser.com/a/1397116">hacked scrip</a> to help me with timezones</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ time-to-meet tomorrow
+February 10, 2021
+Here          08  09  10  11  12  13  14  15  16  17  18  19  20
+UTC           13  14  15  16  17  18  19  20  21  22  23  24  25 (+5)
+Los_Angeles   05  06  07  08  09  10  11  12  13  14  15  16  17 (-3)
+Chicago       07  08  09  10  11  12  13  14  15  16  17  18  19 (-1)
+London        13  14  15  16  17  18  19  20  21  22  23  24  25 (+5)
+Zurich        14  15  16  17  18  19  20  21  22  23  24  25  26 (+6)
+Japan         22  23  24  25  26  27  28  29  30  31  32  33  34 (+14)
+</code></pre></div><h3 id="meetings">Meetings&nbsp;<a class="headline-hash" href="#meetings">#</a> </h3>
+<p>Most people around me use &ldquo;doodle&rdquo; which is kind of a pain. <a href="https://www.when2meet.com/">when2meet</a> is far superior.</p>
+<h2 id="todo">Todo&nbsp;<a class="headline-hash" href="#todo">#</a> </h2>
+<ul>
+<li><input disabled="" type="checkbox"> factor vcsh repos to move non-secret dotfiles to github and link to them from here</li>
+<li><input disabled="" type="checkbox"> section on operating system, Debian GNU/Linux</li>
+<li><input disabled="" type="checkbox"> section on ssh (many tips/tricks, jsonnet-based config)</li>
+<li><input disabled="" type="checkbox"> section on vpn (nord, linux, phone, router)</li>
+<li><input disabled="" type="checkbox"> section on router (tomato firmware)</li>
+<li><input disabled="" type="checkbox"> rss</li>
+<li><input disabled="" type="checkbox"> videos</li>
+</ul>
+                           
+
+    </div>
+  </article>
+</main>
+
+    <footer>
+  <hr>
+
+  <p>
+
+  &copy; 2021 <a href="http://brettviren.github.io/"><b>They call me Brett</b></a>.
+  </p>
+
+
+
+</footer>
+
+  </body>
+</html>

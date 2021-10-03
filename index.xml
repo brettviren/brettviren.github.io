@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>They Call Me Brett on They call me Brett</title>
+    <link>http://brettviren.github.io/</link>
+    <description>Recent content in They Call Me Brett on They call me Brett</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About this site</title>
+      <link>http://brettviren.github.io/about/this/</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/about/this/</guid>
+      <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
+site is made.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>First post</title>
+      <link>http://brettviren.github.io/posts/first/</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/posts/first/</guid>
+      <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How I Do</title>
+      <link>http://brettviren.github.io/articles/howido/</link>
+      <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
+      
+      <guid>http://brettviren.github.io/articles/howido/</guid>
+      <description>&lt;p&gt;Sometimes people ask how I do things digitally.  They can read this.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

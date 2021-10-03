@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="124px" preserveAspectRatio="none" style="width:182px;height:124px;" version="1.1" viewBox="0 0 182 124" width="182px" zoomAndPan="magnify"><defs><filter height="300%" id="f1a7bscytujct9" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[6725746db98061b12995d31afe071c54]
+class n--><rect fill="#FEFECE" filter="url(#f1a7bscytujct9)" height="105.1563" id="n" style="stroke: #A80036; stroke-width: 1.5;" width="71" x="6" y="8"/><ellipse cx="21.9" cy="26.9688" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M24.8688,32.6094 Q24.2906,32.9063 23.65,33.0469 Q23.0094,33.2031 22.3063,33.2031 Q19.8063,33.2031 18.4781,31.5625 Q17.1656,29.9063 17.1656,26.7813 Q17.1656,23.6563 18.4781,22 Q19.8063,20.3438 22.3063,20.3438 Q23.0094,20.3438 23.65,20.5 Q24.3063,20.6563 24.8688,20.9531 L24.8688,23.6719 Q24.2438,23.0938 23.65,22.8281 Q23.0563,22.5469 22.4313,22.5469 Q21.0875,22.5469 20.4,23.625 Q19.7125,24.6875 19.7125,26.7813 Q19.7125,28.875 20.4,29.9531 Q21.0875,31.0156 22.4313,31.0156 Q23.0563,31.0156 23.65,30.75 Q24.2438,30.4688 24.8688,29.8906 L24.8688,32.6094 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="41" x="34.1" y="24.1387">«type»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="33" x="38.1" y="38.1074">Node</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="76" y1="45.9375" y2="45.9375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="35" x="12" y="60.1479">typeID</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="12" y="72.9526">instanceID</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="45" x="12" y="85.7573">schema</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="29" x="12" y="98.562">roles</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="76" y1="105.1563" y2="105.1563"/><!--MD5=[a3638c1e5b65d287ecad7f06f5c0f212]
+class Role--><rect fill="#FEFECE" filter="url(#f1a7bscytujct9)" height="73.6094" id="Role" style="stroke: #A80036; stroke-width: 1.5;" width="59" x="112" y="23.5"/><ellipse cx="127" cy="39.5" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M129.9688,45.1406 Q129.3906,45.4375 128.75,45.5781 Q128.1094,45.7344 127.4063,45.7344 Q124.9063,45.7344 123.5781,44.0938 Q122.2656,42.4375 122.2656,39.3125 Q122.2656,36.1875 123.5781,34.5313 Q124.9063,32.875 127.4063,32.875 Q128.1094,32.875 128.75,33.0313 Q129.4063,33.1875 129.9688,33.4844 L129.9688,36.2031 Q129.3438,35.625 128.75,35.3594 Q128.1563,35.0781 127.5313,35.0781 Q126.1875,35.0781 125.5,36.1563 Q124.8125,37.2188 124.8125,39.3125 Q124.8125,41.4063 125.5,42.4844 Q126.1875,43.5469 127.5313,43.5469 Q128.1563,43.5469 128.75,43.2813 Q129.3438,43 129.9688,42.4219 L129.9688,45.1406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="27" x="141" y="43.6543">Role</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="113" x2="170" y1="55.5" y2="55.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="33" x="118" y="69.7104">roleID</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="45" x="118" y="82.5151">schema</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="113" x2="170" y1="89.1094" y2="89.1094"/><!--MD5=[4a78b5cac5ef0025c2d538eef12ac495]
+reverse link n to Role--><path d="M90.08,60.5 C97.31,60.5 104.55,60.5 111.79,60.5 " fill="none" id="n&lt;-Role" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="77.05,60.5,83.05,64.5,89.05,60.5,83.05,56.5,77.05,60.5" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7a3c9498bc962d1308c403f9530ce77e]
+@startuml
+class "Node" as n << type >> {
+        typeID
+        instanceID
+        schema
+        roles
+}
+class Role {
+        roleID
+        schema
+}
+"n" *- Role
+@enduml
+
+PlantUML version 1.2020.01(Sun Feb 16 12:40:32 EST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.12+7-post-Debian-2
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

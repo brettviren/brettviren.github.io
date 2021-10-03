@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>practices on They call me Brett</title>
+    <link>http://brettviren.github.io/tags/practices/</link>
+    <description>Recent content in practices on They call me Brett</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Feb 2021 00:00:00 -0500</lastBuildDate><atom:link href="http://brettviren.github.io/tags/practices/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How I Do</title>
+      <link>http://brettviren.github.io/articles/howido/</link>
+      <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
+      
+      <guid>http://brettviren.github.io/articles/howido/</guid>
+      <description>&lt;p&gt;Sometimes people ask how I do things digitally.  They can read this.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

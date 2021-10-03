@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>org on They call me Brett</title>
+    <link>http://brettviren.github.io/tags/org/</link>
+    <description>Recent content in org on They call me Brett</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>First post</title>
+      <link>http://brettviren.github.io/posts/first/</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/posts/first/</guid>
+      <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
