@@ -14,7 +14,57 @@
       
       <guid>http://brettviren.github.io/about/this/</guid>
       <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
-site is made.&lt;/p&gt;</description>
+site is made.&lt;/p&gt;
+&lt;h2 id=&#34;purpose-and-intent&#34;&gt;Purpose and intent&lt;/h2&gt;
+&lt;p&gt;This is another in a long line of attempts to put on the web various
+bits of information I have written.&lt;/p&gt;
+&lt;h2 id=&#34;organization&#34;&gt;Organization&lt;/h2&gt;
+&lt;p&gt;Following Hugo nomenclature the site is organized first by &lt;em&gt;sections&lt;/em&gt;:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;meta descriptions (ie, this page),&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;blog entries unlikely to see updates,&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;long form on a topic and potentially updated over time.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;All &lt;em&gt;pages&lt;/em&gt; in these sections may have one or more &lt;em&gt;category&lt;/em&gt; or &lt;em&gt;tag&lt;/em&gt;.  In
+Hugo these are both &lt;em&gt;taxonomies&lt;/em&gt;.  They are provided by Hugo with no
+assumed interpretation and so these are taken:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;limited number of general descriptors defined in a top-down manner&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h2 id=&#34;tech&#34;&gt;Tech&lt;/h2&gt;
+&lt;p&gt;This blog uses &lt;a href=&#34;https://www.gnu.org/software/emacs/&#34;&gt;GNU Emacs&lt;/a&gt; &lt;a href=&#34;https://orgmode.org/&#34;&gt;Org Mode&lt;/a&gt; with &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;ox-hugo&lt;/a&gt; to make content for
+&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
+configuration.&lt;/p&gt;
+&lt;h2 id=&#34;todo&#34;&gt;Todo&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Basic RSS feeds, these are out-of-the-box&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to my github&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to local &lt;code&gt;public_html&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to my BNL via rsync&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; automate deployment&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; org mode capture templates&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; per heading anchor links (as ripped from &lt;a href=&#34;https://github.com/kaushalmodi/hugo-onyx-theme&#34;&gt;hugo-onyx-theme&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -23,7 +73,63 @@ site is made.&lt;/p&gt;</description>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
       <guid>http://brettviren.github.io/posts/first/</guid>
-      <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;</description>
+      <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
+&lt;p&gt;In this test post I cover the following topics shows as a ToC.&lt;/p&gt;
+&lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div class=&#34;heading&#34;&gt;Table of Contents&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#math&#34;&gt;Math&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#section&#34;&gt;Section&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#plantuml&#34;&gt;Plantuml&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#jsonnet&#34;&gt;Jsonnet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#c-plus-plus&#34;&gt;C++&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;!--endtoc--&gt;
+&lt;h2 id=&#34;math&#34;&gt;Math&lt;/h2&gt;
+&lt;p&gt;\[\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }\]&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;\[ \alpha\beta\gamma \]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;gives:&lt;/p&gt;
+&lt;p&gt;\[ \alpha\beta\gamma \]&lt;/p&gt;
+&lt;h2 id=&#34;section&#34;&gt;Section&lt;/h2&gt;
+&lt;p&gt;text text&lt;/p&gt;
+&lt;h3 id=&#34;subsection&#34;&gt;Subsection&lt;/h3&gt;
+&lt;p&gt;more text&lt;/p&gt;
+&lt;h2 id=&#34;plantuml&#34;&gt;Plantuml&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-plantuml&#34; data-lang=&#34;plantuml&#34;&gt;@startuml
+class &amp;quot;Node&amp;quot; as n &amp;lt;&amp;lt; type &amp;gt;&amp;gt; {
+        typeID
+        instanceID
+        schema
+        roles
+}
+class Role {
+        roleID
+        schema
+}
+&amp;quot;n&amp;quot; *- Role
+@enduml
+&lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;
+    &lt;img src=&#34;http://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-jsonnet&#34; data-lang=&#34;jsonnet&#34;&gt;{ a:42, b:&amp;quot;string&amp;quot;, c:[&amp;quot;array&amp;quot;] }
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;,
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;,
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt;: [
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;array&amp;#34;&lt;/span&gt;
+   ]
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;c-plus-plus&#34;&gt;C++&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Convert to C++ type
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T convert&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg);
+&lt;span style=&#34;color:#75715e&#34;&gt;// Get object attribute as C++ type
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T get&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg, &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; name);
+x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>
