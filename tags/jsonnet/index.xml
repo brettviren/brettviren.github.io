@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jsonnet on They call me Brett</title>
+    <link>http://brettviren.github.io/tags/jsonnet/</link>
+    <description>Recent content in jsonnet on They call me Brett</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/jsonnet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Babel in Jsonnet with ob-jsonnet.el</title>
+      <link>http://brettviren.github.io/posts/ob-jsonnet/</link>
+      <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/posts/ob-jsonnet/</guid>
+      <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

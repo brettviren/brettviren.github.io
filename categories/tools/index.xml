@@ -6,7 +6,16 @@
     <description>Recent content in Tools on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Feb 2021 00:00:00 -0500</lastBuildDate><atom:link href="http://brettviren.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Babel in Jsonnet with ob-jsonnet.el</title>
+      <link>http://brettviren.github.io/posts/ob-jsonnet/</link>
+      <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/posts/ob-jsonnet/</guid>
+      <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>How I Do</title>
       <link>http://brettviren.github.io/articles/howido/</link>

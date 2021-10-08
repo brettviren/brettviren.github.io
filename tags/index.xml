@@ -6,7 +6,34 @@
     <description>Recent content in Tags on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>emacs</title>
+      <link>http://brettviren.github.io/tags/emacs/</link>
+      <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jsonnet</title>
+      <link>http://brettviren.github.io/tags/jsonnet/</link>
+      <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/tags/jsonnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>org</title>
+      <link>http://brettviren.github.io/tags/org/</link>
+      <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/tags/org/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>hugo</title>
       <link>http://brettviren.github.io/tags/hugo/</link>
@@ -22,15 +49,6 @@
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
       <guid>http://brettviren.github.io/tags/math/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>org</title>
-      <link>http://brettviren.github.io/tags/org/</link>
-      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
-      
-      <guid>http://brettviren.github.io/tags/org/</guid>
       <description></description>
     </item>
     

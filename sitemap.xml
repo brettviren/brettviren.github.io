@@ -2,6 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://brettviren.github.io/posts/ob-jsonnet/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/categories/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/tags/emacs/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/tags/jsonnet/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/tags/org/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/posts/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/tags/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
+    <loc>http://brettviren.github.io/categories/tools/</loc>
+    <lastmod>2021-10-08T18:48:05-04:00</lastmod>
+  </url><url>
     <loc>http://brettviren.github.io/categories/about/</loc>
     <lastmod>2021-10-03T17:16:33-04:00</lastmod>
   </url><url>
@@ -9,9 +33,6 @@
     <lastmod>2021-10-03T17:16:33-04:00</lastmod>
   </url><url>
     <loc>http://brettviren.github.io/about/</loc>
-    <lastmod>2021-10-03T17:16:33-04:00</lastmod>
-  </url><url>
-    <loc>http://brettviren.github.io/categories/</loc>
     <lastmod>2021-10-03T17:16:33-04:00</lastmod>
   </url><url>
     <loc>http://brettviren.github.io/posts/first/</loc>
@@ -22,15 +43,6 @@
   </url><url>
     <loc>http://brettviren.github.io/tags/math/</loc>
     <lastmod>2021-10-03T16:44:56-04:00</lastmod>
-  </url><url>
-    <loc>http://brettviren.github.io/tags/org/</loc>
-    <lastmod>2021-10-03T16:44:56-04:00</lastmod>
-  </url><url>
-    <loc>http://brettviren.github.io/posts/</loc>
-    <lastmod>2021-10-03T16:44:56-04:00</lastmod>
-  </url><url>
-    <loc>http://brettviren.github.io/tags/</loc>
-    <lastmod>2021-10-03T17:16:33-04:00</lastmod>
   </url><url>
     <loc>http://brettviren.github.io/tags/test/</loc>
     <lastmod>2021-10-03T17:16:33-04:00</lastmod>
@@ -54,9 +66,6 @@
     <lastmod>2021-10-03T15:45:48-04:00</lastmod>
   </url><url>
     <loc>http://brettviren.github.io/tags/software/</loc>
-    <lastmod>2021-10-03T15:45:48-04:00</lastmod>
-  </url><url>
-    <loc>http://brettviren.github.io/categories/tools/</loc>
     <lastmod>2021-10-03T15:45:48-04:00</lastmod>
   </url>
 </urlset>
