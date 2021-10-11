@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tools on They call me Brett</title>
-    <link>http://brettviren.github.io/categories/tools/</link>
+    <link>https://brettviren.github.io/categories/tools/</link>
     <description>Recent content in Tools on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Babel in Jsonnet with ob-jsonnet.el</title>
-      <link>http://brettviren.github.io/posts/ob-jsonnet/</link>
+      <link>https://brettviren.github.io/posts/ob-jsonnet/</link>
       <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/posts/ob-jsonnet/</guid>
+      <guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
       <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el&#34;&gt;ob-template.el&lt;/a&gt; is a great starting point and made for light work.&lt;/p&gt;
 &lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
@@ -38,10 +38,10 @@ std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
     
     <item>
       <title>How I Do</title>
-      <link>http://brettviren.github.io/articles/howido/</link>
+      <link>https://brettviren.github.io/articles/howido/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
       
-      <guid>http://brettviren.github.io/articles/howido/</guid>
+      <guid>https://brettviren.github.io/articles/howido/</guid>
       <description>&lt;p&gt;Sometimes people ask how I do things digitally.  They can read this.&lt;/p&gt;
 &lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
 &lt;div&gt;&lt;/div&gt;

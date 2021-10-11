@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>test on They call me Brett</title>
-    <link>http://brettviren.github.io/tags/test/</link>
+    <link>https://brettviren.github.io/tags/test/</link>
     <description>Recent content in test on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>First post</title>
-      <link>http://brettviren.github.io/posts/first/</link>
+      <link>https://brettviren.github.io/posts/first/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/posts/first/</guid>
+      <guid>https://brettviren.github.io/posts/first/</guid>
       <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
 &lt;p&gt;In this test post I cover the following topics shows as a ToC.&lt;/p&gt;
 &lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
@@ -51,7 +51,7 @@ class Role {
 &amp;quot;n&amp;quot; *- Role
 @enduml
 &lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;
-    &lt;img src=&#34;http://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
+    &lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
 &lt;/figure&gt;
 
 &lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;

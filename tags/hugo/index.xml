@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hugo on They call me Brett</title>
-    <link>http://brettviren.github.io/tags/hugo/</link>
+    <link>https://brettviren.github.io/tags/hugo/</link>
     <description>Recent content in hugo on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About this site</title>
-      <link>http://brettviren.github.io/about/this/</link>
+      <link>https://brettviren.github.io/about/this/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/about/this/</guid>
+      <guid>https://brettviren.github.io/about/this/</guid>
       <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
 site is made.&lt;/p&gt;
 &lt;h2 id=&#34;purpose-and-intent&#34;&gt;Purpose and intent&lt;/h2&gt;
 &lt;p&gt;Many times in the past I have attempted to make a &amp;ldquo;web site&amp;rdquo; that is
-somehow &lt;a href=&#34;http://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
+somehow &lt;a href=&#34;https://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
 &lt;p&gt;This site is intended as an outlet for:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Detailed responses to technical inquires that might otherwise go
 into an individual email message.  Seeking &amp;ldquo;efficiency&amp;rdquo; (laziness) I
-may instead turn a response into a &lt;a href=&#34;http://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
-&lt;a href=&#34;http://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
+may instead turn a response into a &lt;a href=&#34;https://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
+&lt;a href=&#34;https://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
 land in &lt;a href=&#34;https://wirecell.github.io/news/&#34;&gt;Wire-Cell News&lt;/a&gt; posts.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -54,27 +54,27 @@ expect you may see here to change over time.&lt;/p&gt;
 Sections are interpreted as a type or a form of page.  The following
 sections may be found:&lt;/p&gt;
 &lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;meta descriptions (ie, this site),&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;short &amp;ldquo;blog&amp;rdquo; entries, unlikely to (but may) see updates,&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;long form on a topic and potentially updated over time.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence.&lt;/dd&gt;
 &lt;/dl&gt;
 &lt;p&gt;All &lt;em&gt;pages&lt;/em&gt; in these sections may have one or more &lt;em&gt;category&lt;/em&gt; or &lt;em&gt;tag&lt;/em&gt;.  In
 Hugo these are both &lt;em&gt;taxonomies&lt;/em&gt;.  They are provided by Hugo with no
 assumed interpretation and so these are taken:&lt;/p&gt;
 &lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.&lt;/dd&gt;
 &lt;/dl&gt;
 &lt;h2 id=&#34;tech&#34;&gt;Tech&lt;/h2&gt;
 &lt;p&gt;This blog uses &lt;a href=&#34;https://www.gnu.org/software/emacs/&#34;&gt;GNU Emacs&lt;/a&gt; &lt;a href=&#34;https://orgmode.org/&#34;&gt;Org Mode&lt;/a&gt; with &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;ox-hugo&lt;/a&gt; to make content for
-&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
+&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
 configuration.  The source to this site is in my &lt;a href=&#34;https://github.com/brettviren/pub&#34;&gt;pub&lt;/a&gt; repo and though
 not likely interesting to humans the exported HTML lands in &lt;a href=&#34;https://github.com/brettviren/brettviren.github.io&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;todo&#34;&gt;Todo&lt;/h2&gt;
@@ -105,10 +105,10 @@ not likely interesting to humans the exported HTML lands in &lt;a href=&#34;http
     
     <item>
       <title>First post</title>
-      <link>http://brettviren.github.io/posts/first/</link>
+      <link>https://brettviren.github.io/posts/first/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/posts/first/</guid>
+      <guid>https://brettviren.github.io/posts/first/</guid>
       <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
 &lt;p&gt;In this test post I cover the following topics shows as a ToC.&lt;/p&gt;
 &lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
@@ -147,7 +147,7 @@ class Role {
 &amp;quot;n&amp;quot; *- Role
 @enduml
 &lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;
-    &lt;img src=&#34;http://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
+    &lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
 &lt;/figure&gt;
 
 &lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;

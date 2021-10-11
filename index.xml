@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>They Call Me Brett on They call me Brett</title>
-    <link>http://brettviren.github.io/</link>
+    <link>https://brettviren.github.io/</link>
     <description>Recent content in They Call Me Brett on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Old test note</title>
-      <link>http://brettviren.github.io/notes/2017-12-09/</link>
+      <link>https://brettviren.github.io/notes/2017-12-09/</link>
       <pubDate>Sun, 10 Oct 2021 12:13:23 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/notes/2017-12-09/</guid>
+      <guid>https://brettviren.github.io/notes/2017-12-09/</guid>
       <description>&lt;p&gt;Some other junk.&lt;/p&gt;
 &lt;p&gt;Now comes the beep.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Babel in Jsonnet with ob-jsonnet.el</title>
-      <link>http://brettviren.github.io/posts/ob-jsonnet/</link>
+      <link>https://brettviren.github.io/posts/ob-jsonnet/</link>
       <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/posts/ob-jsonnet/</guid>
+      <guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
       <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el&#34;&gt;ob-template.el&lt;/a&gt; is a great starting point and made for light work.&lt;/p&gt;
 &lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
@@ -48,12 +48,12 @@ std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
     
     <item>
       <title>About Face</title>
-      <link>http://brettviren.github.io/about/me/</link>
+      <link>https://brettviren.github.io/about/me/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/about/me/</guid>
+      <guid>https://brettviren.github.io/about/me/</guid>
       <description>&lt;p&gt;Hello.&lt;/p&gt;
-&lt;img src=&#34;http://brettviren.github.io/images/Viren.jpg&#34; hsize=&#34;5px&#34; width=&#34;50%&#34; align=&#34;right&#34;/&gt;
+&lt;img src=&#34;https://brettviren.github.io/images/Viren.jpg&#34; hsize=&#34;5px&#34; width=&#34;50%&#34; align=&#34;right&#34;/&gt;
 &lt;p&gt;In society, I am paid to conduct research in experimental neutrino physics by &lt;a href=&#34;https://www.bnl.gov&#34;&gt;Brookhaven National Lab&lt;/a&gt; as part of the &lt;a href=&#34;https://www.phy.bnl.gov/edg/&#34;&gt;Electronic Detector Group&lt;/a&gt; in the &lt;a href=&#34;https://www.bnl.gov/physics/&#34;&gt;Physics Department&lt;/a&gt;.  What you may read here are my own representations.  Financial considerations aside, I also happen to enjoy this activity particularly as it pertains to developing and applying various computing software and hardware tools.&lt;/p&gt;
 &lt;p&gt;The challenges these tools pose are interesting to me in their own right but my underlying motivation is to help bring us more fundamental understanding of our universe.  And toward that end neutrinos provide sharp though even challenging tools.&lt;/p&gt;
 &lt;p&gt;My contributions to this combination to turning bytes into neutrinos may be roughly categorized as:&lt;/p&gt;
@@ -65,27 +65,27 @@ std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
 &lt;dt&gt;online software&lt;/dt&gt;
 &lt;dd&gt;I contribute to development of &lt;a href=&#34;https://github.com/dune-daq&#34;&gt;data acquisition software&lt;/a&gt; for the DUNE experiment particularly in the area of configuration management with my &lt;a href=&#34;https://github.com/brettviren/moo&#34;&gt;moo&lt;/a&gt; schema based code generator playing an important role.&lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;Throughout this web site you may find &lt;a href=&#34;http://brettviren.github.io/posts&#34;&gt;blog posts&lt;/a&gt; or longer &lt;a href=&#34;http://brettviren.github.io/articles&#34;&gt;articles&lt;/a&gt; that give details on these and other activities.  More meta details may be found in the &lt;a href=&#34;http://brettviren.github.io/about/this&#34;&gt;about this site&lt;/a&gt; page.&lt;/p&gt;</description>
+&lt;p&gt;Throughout this web site you may find &lt;a href=&#34;https://brettviren.github.io/posts&#34;&gt;blog posts&lt;/a&gt; or longer &lt;a href=&#34;https://brettviren.github.io/articles&#34;&gt;articles&lt;/a&gt; that give details on these and other activities.  More meta details may be found in the &lt;a href=&#34;https://brettviren.github.io/about/this&#34;&gt;about this site&lt;/a&gt; page.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>About this site</title>
-      <link>http://brettviren.github.io/about/this/</link>
+      <link>https://brettviren.github.io/about/this/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/about/this/</guid>
+      <guid>https://brettviren.github.io/about/this/</guid>
       <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
 site is made.&lt;/p&gt;
 &lt;h2 id=&#34;purpose-and-intent&#34;&gt;Purpose and intent&lt;/h2&gt;
 &lt;p&gt;Many times in the past I have attempted to make a &amp;ldquo;web site&amp;rdquo; that is
-somehow &lt;a href=&#34;http://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
+somehow &lt;a href=&#34;https://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
 &lt;p&gt;This site is intended as an outlet for:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Detailed responses to technical inquires that might otherwise go
 into an individual email message.  Seeking &amp;ldquo;efficiency&amp;rdquo; (laziness) I
-may instead turn a response into a &lt;a href=&#34;http://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
-&lt;a href=&#34;http://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
+may instead turn a response into a &lt;a href=&#34;https://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
+&lt;a href=&#34;https://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
 land in &lt;a href=&#34;https://wirecell.github.io/news/&#34;&gt;Wire-Cell News&lt;/a&gt; posts.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -115,27 +115,27 @@ expect you may see here to change over time.&lt;/p&gt;
 Sections are interpreted as a type or a form of page.  The following
 sections may be found:&lt;/p&gt;
 &lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;meta descriptions (ie, this site),&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;short &amp;ldquo;blog&amp;rdquo; entries, unlikely to (but may) see updates,&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;long form on a topic and potentially updated over time.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence.&lt;/dd&gt;
 &lt;/dl&gt;
 &lt;p&gt;All &lt;em&gt;pages&lt;/em&gt; in these sections may have one or more &lt;em&gt;category&lt;/em&gt; or &lt;em&gt;tag&lt;/em&gt;.  In
 Hugo these are both &lt;em&gt;taxonomies&lt;/em&gt;.  They are provided by Hugo with no
 assumed interpretation and so these are taken:&lt;/p&gt;
 &lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.&lt;/dd&gt;
 &lt;/dl&gt;
 &lt;h2 id=&#34;tech&#34;&gt;Tech&lt;/h2&gt;
 &lt;p&gt;This blog uses &lt;a href=&#34;https://www.gnu.org/software/emacs/&#34;&gt;GNU Emacs&lt;/a&gt; &lt;a href=&#34;https://orgmode.org/&#34;&gt;Org Mode&lt;/a&gt; with &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;ox-hugo&lt;/a&gt; to make content for
-&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
+&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
 configuration.  The source to this site is in my &lt;a href=&#34;https://github.com/brettviren/pub&#34;&gt;pub&lt;/a&gt; repo and though
 not likely interesting to humans the exported HTML lands in &lt;a href=&#34;https://github.com/brettviren/brettviren.github.io&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;todo&#34;&gt;Todo&lt;/h2&gt;
@@ -166,10 +166,10 @@ not likely interesting to humans the exported HTML lands in &lt;a href=&#34;http
     
     <item>
       <title>First post</title>
-      <link>http://brettviren.github.io/posts/first/</link>
+      <link>https://brettviren.github.io/posts/first/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/posts/first/</guid>
+      <guid>https://brettviren.github.io/posts/first/</guid>
       <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
 &lt;p&gt;In this test post I cover the following topics shows as a ToC.&lt;/p&gt;
 &lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
@@ -208,7 +208,7 @@ class Role {
 &amp;quot;n&amp;quot; *- Role
 @enduml
 &lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;
-    &lt;img src=&#34;http://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
+    &lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
 &lt;/figure&gt;
 
 &lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;
@@ -231,10 +231,10 @@ x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;c
     
     <item>
       <title>How I Do</title>
-      <link>http://brettviren.github.io/articles/howido/</link>
+      <link>https://brettviren.github.io/articles/howido/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
       
-      <guid>http://brettviren.github.io/articles/howido/</guid>
+      <guid>https://brettviren.github.io/articles/howido/</guid>
       <description>&lt;p&gt;Sometimes people ask how I do things digitally.  They can read this.&lt;/p&gt;
 &lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
 &lt;div&gt;&lt;/div&gt;

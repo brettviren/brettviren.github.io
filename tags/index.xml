@@ -2,89 +2,89 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on They call me Brett</title>
-    <link>http://brettviren.github.io/tags/</link>
+    <link>https://brettviren.github.io/tags/</link>
     <description>Recent content in Tags on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 18:48:05 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>emacs</title>
-      <link>http://brettviren.github.io/tags/emacs/</link>
+      <link>https://brettviren.github.io/tags/emacs/</link>
       <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/emacs/</guid>
+      <guid>https://brettviren.github.io/tags/emacs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>jsonnet</title>
-      <link>http://brettviren.github.io/tags/jsonnet/</link>
+      <link>https://brettviren.github.io/tags/jsonnet/</link>
       <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/jsonnet/</guid>
+      <guid>https://brettviren.github.io/tags/jsonnet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>org</title>
-      <link>http://brettviren.github.io/tags/org/</link>
+      <link>https://brettviren.github.io/tags/org/</link>
       <pubDate>Fri, 08 Oct 2021 18:48:05 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/org/</guid>
+      <guid>https://brettviren.github.io/tags/org/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hugo</title>
-      <link>http://brettviren.github.io/tags/hugo/</link>
+      <link>https://brettviren.github.io/tags/hugo/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/hugo/</guid>
+      <guid>https://brettviren.github.io/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>math</title>
-      <link>http://brettviren.github.io/tags/math/</link>
+      <link>https://brettviren.github.io/tags/math/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/math/</guid>
+      <guid>https://brettviren.github.io/tags/math/</guid>
       <description></description>
     </item>
     
     <item>
       <title>test</title>
-      <link>http://brettviren.github.io/tags/test/</link>
+      <link>https://brettviren.github.io/tags/test/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
       
-      <guid>http://brettviren.github.io/tags/test/</guid>
+      <guid>https://brettviren.github.io/tags/test/</guid>
       <description></description>
     </item>
     
     <item>
       <title>environment</title>
-      <link>http://brettviren.github.io/tags/environment/</link>
+      <link>https://brettviren.github.io/tags/environment/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
       
-      <guid>http://brettviren.github.io/tags/environment/</guid>
+      <guid>https://brettviren.github.io/tags/environment/</guid>
       <description></description>
     </item>
     
     <item>
       <title>practices</title>
-      <link>http://brettviren.github.io/tags/practices/</link>
+      <link>https://brettviren.github.io/tags/practices/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
       
-      <guid>http://brettviren.github.io/tags/practices/</guid>
+      <guid>https://brettviren.github.io/tags/practices/</guid>
       <description></description>
     </item>
     
     <item>
       <title>software</title>
-      <link>http://brettviren.github.io/tags/software/</link>
+      <link>https://brettviren.github.io/tags/software/</link>
       <pubDate>Tue, 09 Feb 2021 00:00:00 -0500</pubDate>
       
-      <guid>http://brettviren.github.io/tags/software/</guid>
+      <guid>https://brettviren.github.io/tags/software/</guid>
       <description></description>
     </item>
     
