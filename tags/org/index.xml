@@ -37,6 +37,102 @@ std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
     </item>
     
     <item>
+      <title>About this site</title>
+      <link>http://brettviren.github.io/about/this/</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/about/this/</guid>
+      <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
+site is made.&lt;/p&gt;
+&lt;h2 id=&#34;purpose-and-intent&#34;&gt;Purpose and intent&lt;/h2&gt;
+&lt;p&gt;Many times in the past I have attempted to make a &amp;ldquo;web site&amp;rdquo; that is
+somehow &lt;a href=&#34;http://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
+&lt;p&gt;This site is intended as an outlet for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Detailed responses to technical inquires that might otherwise go
+into an individual email message.  Seeking &amp;ldquo;efficiency&amp;rdquo; (laziness) I
+may instead turn a response into a &lt;a href=&#34;http://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
+&lt;a href=&#34;http://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
+land in &lt;a href=&#34;https://wirecell.github.io/news/&#34;&gt;Wire-Cell News&lt;/a&gt; posts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I want a way to distribute information which has some amount of
+independent from my employer be it related to physics, software or
+other topics not appropriately served from a &lt;code&gt;.gov&lt;/code&gt; address.  Thus,
+this site will not be served from my &lt;a href=&#34;https://www.phy.bnl.gov/~bviren/&#34;&gt;BNL web area&lt;/a&gt; (which I mostly
+use for random file distribution, especially in a very permanent
+&lt;a href=&#34;https://www.phy.bnl.gov/~bviren/tmp/&#34;&gt;tmp/&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Remembering all my past activities is becoming a chore and noting
+them down will hopefully make that easy.  Thus some posts may be
+rather boring, as they will be literally web logs.  They will be
+kept distinct from more interesting items in some manner (likely in
+a &amp;ldquo;notes&amp;rdquo; section).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When solving problems I tend to talk to myself using fingers typing
+instead of lips flapping.  Putting these thoughts on this help me
+focus them and find them later.  Maybe.  I also tend to revisit so
+expect you may see here to change over time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;organization&#34;&gt;Organization&lt;/h2&gt;
+&lt;p&gt;Following Hugo nomenclature the site is organized first by &lt;em&gt;sections&lt;/em&gt;.
+Sections are interpreted as a type or a form of page.  The following
+sections may be found:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;meta descriptions (ie, this site),&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;short &amp;ldquo;blog&amp;rdquo; entries, unlikely to (but may) see updates,&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;long form on a topic and potentially updated over time.&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;All &lt;em&gt;pages&lt;/em&gt; in these sections may have one or more &lt;em&gt;category&lt;/em&gt; or &lt;em&gt;tag&lt;/em&gt;.  In
+Hugo these are both &lt;em&gt;taxonomies&lt;/em&gt;.  They are provided by Hugo with no
+assumed interpretation and so these are taken:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.&lt;/dd&gt;
+&lt;dt&gt;&lt;a href=&#34;http://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h2 id=&#34;tech&#34;&gt;Tech&lt;/h2&gt;
+&lt;p&gt;This blog uses &lt;a href=&#34;https://www.gnu.org/software/emacs/&#34;&gt;GNU Emacs&lt;/a&gt; &lt;a href=&#34;https://orgmode.org/&#34;&gt;Org Mode&lt;/a&gt; with &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;ox-hugo&lt;/a&gt; to make content for
+&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;http://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
+configuration.  The source to this site is in my &lt;a href=&#34;https://github.com/brettviren/pub&#34;&gt;pub&lt;/a&gt; repo and though
+not likely interesting to humans the exported HTML lands in &lt;a href=&#34;https://github.com/brettviren/brettviren.github.io&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;todo&#34;&gt;Todo&lt;/h2&gt;
+&lt;h3 id=&#34;templates&#34;&gt;templates&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Basic RSS feeds, these are out-of-the-box&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Full content RSS feeds.&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Two RSS feed variants: ordered by pub date and by last modified date&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; per heading anchor links (as ripped from &lt;a href=&#34;https://github.com/kaushalmodi/hugo-onyx-theme&#34;&gt;hugo-onyx-theme&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; customize notes list.html&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; sidebar with recents, tags, categories&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; home page with tagclouds and most recent of each section&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;deploy&#34;&gt;deploy&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to my github&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to local &lt;code&gt;public_html&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;del&gt;Deploy to my BNL via rsync&lt;/del&gt; wontfix&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; automate deployment&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; some kind of comments system?  maybe offload to github discussions with auto thread start based on a deploy?  using GH API and &lt;code&gt;hub&lt;/code&gt;?  there&amp;rsquo;s a topic for a post.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;editing&#34;&gt;editing&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; org mode capture templates&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; org capture for notes&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>First post</title>
       <link>http://brettviren.github.io/posts/first/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Notes on They call me Brett</title>
+    <link>http://brettviren.github.io/notes/</link>
+    <description>Recent content in Notes on They call me Brett</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="http://brettviren.github.io/notes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Old test note</title>
+      <link>http://brettviren.github.io/notes/2017-12-09/</link>
+      <pubDate>Sun, 10 Oct 2021 12:13:23 -0400</pubDate>
+      
+      <guid>http://brettviren.github.io/notes/2017-12-09/</guid>
+      <description>&lt;p&gt;Some other junk.&lt;/p&gt;
+&lt;p&gt;Now comes the beep.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
