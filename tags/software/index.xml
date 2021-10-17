@@ -6,7 +6,310 @@
     <description>Recent content in software on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Feb 2021 00:00:00 -0500</lastBuildDate><atom:link href="https://brettviren.github.io/tags/software/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/software/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Adding more CPU or GPU slows things down</title>
+      <link>https://brettviren.github.io/articles/salad/</link>
+      <pubDate>Sun, 17 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>https://brettviren.github.io/articles/salad/</guid>
+      <description>&lt;p&gt;Adding more computing units reduces computing throughput.  I will try
+to describe what I mean by this true but internally paradoxical
+sounding statement, some ways we can break it and the new problems
+these solutions bring.&lt;/p&gt;
+&lt;h2 id=&#34;more-is-less&#34;&gt;More is less&lt;/h2&gt;
+&lt;p&gt;For the longest time, the software workloads in our field (neutrino
+hep-ex but also others) enjoyed a trio of enabling features:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;perfectly (embarrassingly) job-level parallelism&lt;/li&gt;
+&lt;li&gt;ever faster CPU cores over time and&lt;/li&gt;
+&lt;li&gt;adequate amount of RAM relative to what was needed.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;As is well known by now, those salad days are long over.  Over the
+past decade, acceleration of CPU core processing has ceased while CPU
+core density is increasing.  RAM has not kept up with core count and
+our software has outgrown its nominal RAM allocations.  Finally, much
+of our software is stuck in a serial processing paradigm so we lack
+flexibility to effectively utilize the growing multiplicity of cores.&lt;/p&gt;
+&lt;p&gt;Typically our jobs require 2-3x or more of the RAM nominally allocated
+per core as offered by high-throughput computing (HTC) facilities.  We
+have been forced to follow a tactic of over-allocating and then
+wasting CPU cores in order to gain their associated RAM.&lt;/p&gt;
+&lt;p&gt;This core-time waste is strongly frowned upon by HTC managers.  If
+that were not enough, two other trends put this over-allocation tactic
+in jeopardy.&lt;/p&gt;
+&lt;p&gt;First, as we enter the era of &lt;a href=&#34;https://www.bnl.gov/science/DUNE.php&#34;&gt;DUNE&lt;/a&gt; we potentially face an even larger
+RAM usage.  If we continue to &amp;ldquo;scale&amp;rdquo; the code for current &amp;ldquo;small&amp;rdquo;
+detectors such as MicroBooNE and ProtoDUNE-SP to DUNE FDHD we may
+expect a 25x increase in RAM usage.  Of course, some tricks can and
+will be played in our current paradigm to limit this absurd growth but
+I feel a paradigm shift is needed and in part I guess I am struggling
+here to define what that may look like.&lt;/p&gt;
+&lt;p&gt;Second, we expect we must seek slivers of time in high-&lt;strong&gt;performance&lt;/strong&gt;
+computing (HPC) facilities as we see their funding is waxing and
+expect to be forced to make our software run on their hardware instead
+of or in addition to the more familiar HTC.  This takes us further
+from our salad days as HPC tend to be designed with yet higher CPU/RAM
+ratios.  HPC also brings in hardware &amp;ldquo;accelerators&amp;rdquo; such as GPU (use
+of scare quotes will become apparent).  Our community is and will be a
+relatively minor user of HPC and that gives their facilities less
+motivation to allow our CPU-wasting tactic.&lt;/p&gt;
+&lt;p&gt;Seeking HPC time also brings in a deep and interesting problem of how
+to &lt;strong&gt;also&lt;/strong&gt; effectively use GPU.  The ratio of GPU/CPU provided by a given
+HPC brings in a problem very similar to the problem of the CPU/RAM
+ratio.&lt;/p&gt;
+&lt;p&gt;So, we as a community are stuck with the unusual problem: how to
+effectively use &lt;strong&gt;more&lt;/strong&gt; CPU (but not more RAM).  What can be done?&lt;/p&gt;
+&lt;h2 id=&#34;loop-level-multi-threading&#34;&gt;Loop-level multi-threading&lt;/h2&gt;
+&lt;p&gt;This means to make use of small scale, &amp;ldquo;loop level&amp;rdquo; MT parallelism.
+In the old CPU-bottleneck days, employing this tactic alone would be
+sociopathetic to the job.  An $N$-way parallel loop would require an
+allocation of \(N\) CPU cores.  Once the loop happily completes $N$-times
+faster (at best) the rest of job which nominally will be executing in
+a serial manner.  The need to allocate \(N\) cores per job and no way to
+share them outside the MT code segment leads to waste and frowning HTC
+managers.&lt;/p&gt;
+&lt;p&gt;Of course, when following the waste-CPU-for-RAM tactic, we nominally
+waste \(N-1\) cores anyways.  In this tactic, loop-level algorithms are
+encouraged to make use of the otherwise wated cores.  This helps to
+turn that frown right-way around.&lt;/p&gt;
+&lt;p&gt;We want further utilize the wasted cores, especially as that waste
+will grow as the hardware CPU/RAM ratio increases.  We do that with
+task-level parallelization, described in the next section.  When
+introduced, we allow more than one loop-level MT process to run in
+parallel and that will lead to an CPU over-load condition.  The
+significance of overhead due to context switching that will result
+rightly must be profiled to ascertain if it is a practical problem or
+not.&lt;/p&gt;
+&lt;p&gt;On the other hand if all MT algorithms are implemented with the same
+threading system, or compatible systems, there can be a coherently way
+to share the same thread pool and avoid CPU overloading.  This can be
+done with, for exaple, TBB.  In practice, loop-level MT algorithms are
+developed by a variety of individuals and they are pursuing a variety
+of implementations such as those based on &lt;code&gt;std::thread&lt;/code&gt;, Kokkos, OpenMP
+and TBB and others may be expected.&lt;/p&gt;
+&lt;h2 id=&#34;task-level-multi-threading&#34;&gt;Task level multi-threading&lt;/h2&gt;
+&lt;p&gt;The overall processing patterns enacted by a job tend to break up into
+discrete computational units which exchange data.  This is fractal
+(scale invariant) in nature.  We described loop level above, but that
+is an arbitrary level distinction.  Even there we talk of
+parallelizing &amp;ldquo;the inner&amp;rdquo; and &amp;ldquo;the outer&amp;rdquo; loop of some code context.
+As we go up in scale at some point we reach an arbitrary point we call
+&amp;ldquo;task level&amp;rdquo; and above that we get back to our salad day friend, &amp;ldquo;job
+level&amp;rdquo;.  In fact, we may go down in scale from loop level and consider
+SIMD/vectorization.  On CPU, I will ignore that (important though it
+be) and will address it a bit for GPU.&lt;/p&gt;
+&lt;p&gt;The offline software for most of our experiments is built on The
+Framework, hallowed be its name.  In all popular instances of The
+Framework we define a &amp;ldquo;task&amp;rdquo; which is rigidly associated with a unit
+of data which we name with maximal ambiguity as &amp;ldquo;the event&amp;rdquo;.  In &lt;em&gt;art&lt;/em&gt;
+the &amp;ldquo;task&amp;rdquo; is a &amp;ldquo;module&amp;rdquo; and in Gaudi it is an &amp;ldquo;algorithm&amp;rdquo;, both which
+provide a single C++ base class interface for the developer to
+implement.  Through this interface, a task is executed once per
+&amp;ldquo;event&amp;rdquo;.  The Framework is thus formally (if still ambiguously) an
+&lt;em&gt;event processing framework&lt;/em&gt;.  This &amp;ldquo;event&amp;rdquo; unit is enforced by The
+Framework from its input, through all processing and to final output.
+The choice of the scope of data that &amp;ldquo;the event&amp;rdquo; unit spans determines
+and ties together the memory usage and the units and structure of task
+scheduling.  All concerned must agree on what is &amp;ldquo;the event&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Both frameworks named above are popular in the neutrino hep-ex sphere
+(and beyond) and both have made strives to add task-level parallelism.
+Gaudi has its swarm and &lt;em&gt;art&lt;/em&gt; has its &amp;ldquo;path level&amp;rdquo; parallelism
+(granularity that of a pipeline of tasks).  However, developers of the
+tasks still design their code under assumptions made by the monolithic
+&amp;ldquo;event&amp;rdquo; data model.  The Framework must then forever maintain the unit
+of &amp;ldquo;the event&amp;rdquo; in order to honor these developer assumptions.&lt;/p&gt;
+&lt;p&gt;This focus on &amp;ldquo;the event&amp;rdquo; leads to some potential extreme absurdity.
+For example, much useful code is developed for MicroBooNE with its
+single anode and ProtoDUNE-SP with its &amp;ldquo;mere&amp;rdquo; six dual-faced anodes.
+Meanwhile, DUNE FDHD will have 150 in one of its four modules.  From a
+single DUNE module a nominal &amp;ldquo;event&amp;rdquo; will be 25x larger than that of
+ProtoDUNE-SP, which already stresses memory.  More absurdly, special
+&amp;ldquo;events&amp;rdquo; will record possible supernova bursts over a vastly extended
+period of time.  Such &amp;ldquo;events&amp;rdquo; will be 200x larger than nominal.
+Clearly something has to give.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://wirecell.github.io/&#34;&gt;Wire-Cell Toolkit&lt;/a&gt; (WCT) was designed without the arbitrary
+limiting definition of &amp;ldquo;the event&amp;rdquo; which opens up a new but not so
+unfamiliar paradigm.  It honors the fact that &amp;ldquo;task level&amp;rdquo; is scale
+invariant and encourages developers design a code unit (WCT calls is a
+&amp;ldquo;component&amp;rdquo;) at a scale which is natural to the problem it solves.
+The design of a WCT &amp;ldquo;component&amp;rdquo; is still familiar to an &lt;em&gt;art&lt;/em&gt; &amp;ldquo;module&amp;rdquo;
+or Gaudi &amp;ldquo;algorithm&amp;rdquo; in it may be structured in a serial
+single-threaded manner or may house loop-level parallelism.  The
+difference is that a WCT component is not constrained to an interface
+that is tied to &amp;ldquo;the event&amp;rdquo; but in fact may assume smaller grained (or
+indeed larger grained) data scope.&lt;/p&gt;
+&lt;p&gt;Isolated components are of course useless and WCT provides means to
+&lt;em&gt;compose&lt;/em&gt; them into larger aggregates and to further compose those in to
+yet larger.  This composition may continue until reaching a scale
+appropriate for running the result on a given hardware resource.  With
+existing code releases, WCT jobs may scale up to the point they
+completely fill the confines of one physical computer.  Experimental
+extensions in development for WCT allow a single &amp;ldquo;job&amp;rdquo; to span
+multiple computers.&lt;/p&gt;
+&lt;p&gt;These WCT task compositions are structured in the form of a &lt;em&gt;data flow&lt;/em&gt;
+graph.  Each task represents a &lt;em&gt;node&lt;/em&gt; in a graph.  Nodes are connected
+via their &lt;em&gt;ports&lt;/em&gt; by graph &lt;em&gt;edges&lt;/em&gt; that transport and sometimes
+buffer data.  A node may have input or output ports and each port is
+identified on the node and well defined in terms of the data type it
+may pass.&lt;/p&gt;
+&lt;p&gt;WCT allows different strategies to execute nodes in its data flow
+graph.  Two exist now and more can be developed against WCT&amp;rsquo;s abstract
+graph execution interface.  A single-threaded engine exists to
+optimize for the conservation of RAM by minimizing the data &amp;ldquo;in
+flight&amp;rdquo; through the graph at any given time.  A multi-threaded engine
+based on TBB &lt;code&gt;flow_graph&lt;/code&gt; executes some number nodes in parallel up to a
+maximum number given by the user.&lt;/p&gt;
+&lt;p&gt;As said, a node developer may assume a data context smaller than one
+&amp;ldquo;event&amp;rdquo;.  For example, we may add \(N\) instances of a node implementation
+to a graph, one for each of \(N\) sub-detector units (eg one for each of
+150 APAs in DUNE FDHD).  It further allows pipeline-parallelism where
+for each sub-detector unit we may have multiple nodes in a line each
+processing as a chain.  Typical pipelines are composed of a few stages
+and so a job can effectively utilize many hundreds of cores.  Many
+sub-detector units provide obvious further sectioning.  For example,
+many operations for LArTPC with tomographic readout apply on a per
+view basis, giving allowance for another 3x increase in potential
+thread utilization.&lt;/p&gt;
+&lt;p&gt;Thus, for DUNE far detector modules, WCT provides the basis for
+effective use of &lt;em&gt;kilo-core&lt;/em&gt; CPUs.  100-core CPUs exist now and 3-4
+Moores lifetimes brings us to DUNE data an to the 1k-core era.
+Running on today&amp;rsquo;s CPUs, the &lt;em&gt;flow graph&lt;/em&gt; structure with broad and
+pipelined graphs can have more nodes than available cores.  This is
+still an advantage as it allows for there always to be work available
+whenever a core may otherwise go idle.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;flow graph&lt;/em&gt; paradigm solves another problem of large jobs related
+to I/O.  The Framework tends to reflect the monolith of &amp;ldquo;the event&amp;rdquo;
+into monolithic and serial I/O.  Loading &amp;ldquo;the event&amp;rdquo; is a single
+threaded operation happening at &amp;ldquo;the start of the event&amp;rdquo; while wasting
+\(N-1\) threads.  Likewise event ending output.  With compression
+necessarily being employed on the expected large volumes of data, this
+single-threaded I/O stages can be significant and in some cases
+dominate the run time of some jobs.&lt;/p&gt;
+&lt;p&gt;However, with WCT, input is &amp;ldquo;merely&amp;rdquo; a source-type node and output a
+sink.  Multiple files may be read or written in parallel, each in a
+simple single threaded context.  Only the exact amount of data
+required at any given time by the downstream node of the source.  This
+may easily be 1% or in some cases a minuscule fraction of the &amp;ldquo;event&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;As any given graph node does not care to what nodes it connects, any
+graph may be cut with sinks added to cap off the output and sources
+added to replace the files saved to the remainder.  In addition, any
+edge may be cut to insert a node which &amp;ldquo;taps&amp;rdquo; the data stream for
+saving or consumed immediately for some purpose and otherwise passes
+it along to its output port.&lt;/p&gt;
+&lt;p&gt;This flexibility solves another thorny application level problem which
+often goes under the name &amp;ldquo;event mixing&amp;rdquo;.  Here, we do not wish to mix
+events but mix portions.  For example, we wish to properly combine
+kinematics level data from independent generators prior to feeding to
+some tracking simulation.  Or, we wish to embed the readout of a
+simulated signal interaction to a readout of &amp;ldquo;background&amp;rdquo; taken from a
+real detector (or vice versa).  WCT and the flow graph paradigm in
+general naturally supports this kind of &amp;ldquo;mixing&amp;rdquo;.  The push/pull
+nature of the graph execution means that sources to mix will execute
+&amp;ldquo;just in time&amp;rdquo; to provide the next input needed.  The &amp;ldquo;mixer&amp;rdquo; node
+becomes relatively trivial to implement and configuring for different
+&amp;ldquo;mixes&amp;rdquo; poses no extra burden.&lt;/p&gt;
+&lt;h2 id=&#34;gpu-parallelism&#34;&gt;GPU parallelism&lt;/h2&gt;
+&lt;p&gt;GPUs essentially represent the worse case of non-salad days&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;many many many cores&lt;/li&gt;
+&lt;li&gt;all of them very slow&lt;/li&gt;
+&lt;li&gt;with very very limited RAM/core&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, the three &amp;ldquo;many&amp;rsquo;s&amp;rdquo; can outweigh the three &amp;ldquo;very&amp;rsquo;s&amp;rdquo; in that
+description for an algorithm that can be implemented in a highly
+data-parallel manner.  In particular, FFT and AI/ML inference are
+important bottlenecks and both are greatly accelerated on GPU relative
+to running them on a single CPU core.&lt;/p&gt;
+&lt;p&gt;This advantage also leads to another &amp;ldquo;hardware ratio problem&amp;rdquo;.  For
+GPU we leave the world of HTC and seek time on HPC.  Their managers
+frown on jobs that waste either CPU or GPU allocations.  And like with
+our jobs on CPU, on GPU the bottleneck is not cores but (GPU) RAM.  To
+utilize GPUs we are again judged on fully utilizing a resource (GPU
+cores) where to do so we must limit utilization on an unmetered
+resource (GPU RAM).&lt;/p&gt;
+&lt;p&gt;Our typical jobs require O(few GB) of GPU RAM from GPUs.  Some rely on
+the Pytorch kernel which itself accounts for 0.5 GB and thus we strive
+to require only one instance.  These jobs must run on hardware that
+may provide anywhere from 1 GB on older workstations to 4G on modern
+laptops to 32 GB on the latest GPU cards provided by HPC.&lt;/p&gt;
+&lt;p&gt;As GPU cores do not provide the bottleneck, a naive job will learn it
+has over used the GPU by receiving an out-of-memory error in response
+to an allocation.  When code bounces against this RAM limit, handling
+the OOM exception involves cleaning up current usage and trying again.
+This can lead to a repeat of many try/fail/clean loops.  At best this
+reduces throughput and at worse may become an infinite recursion.&lt;/p&gt;
+&lt;p&gt;Thus, a proactive resource limiting mechanism is required in the
+software.  Given previous understanding of the GPU RAM requirements
+per unit of processing we may (and in WCT have) implemented a
+semaphore pattern to limit the number of processes which may execute
+in parallel on the GPU at any given time.&lt;/p&gt;
+&lt;p&gt;This simple solution brings a new problem.  When the \(N+1^{st}\) thread
+wishes to execute work on a GPU which is already at its limit of \(N\)
+it must wait in some manner.  A simple semaphore will simply block
+that thread.  Thus by accelerating the code with a GPU of limited
+memory we must &lt;strong&gt;slow down&lt;/strong&gt; the job by making threads wait.  This is even
+when using TBB &lt;code&gt;flow_graph&lt;/code&gt; based engine which otherwise could make use
+of the idle thread!  The threads that hold the semaphore are also
+idle, while they wait for the GPU to return.  So while the GPU does
+accelerate some algorithms, it does so at the cost of directly
+blocking a thread and potentially blocking yet more.&lt;/p&gt;
+&lt;p&gt;A smarter semaphore may be implemented whch is somehow aware of the
+larger thread pool so that it may return a waiting thread for use
+while the semaphore is occupied.  Naively we may say, &amp;ldquo;just use a TBB
+semaphore&amp;rdquo;.  This would be fine except for the minor fact that there
+is no such beast.  Instead, TBB &lt;code&gt;flow_graph&lt;/code&gt; provides a far more elegant
+solution, though one which brings a challenging if interesting host of
+yet newer problems.&lt;/p&gt;
+&lt;p&gt;With TBB &lt;code&gt;flow_graph&lt;/code&gt; we may designate a &lt;em&gt;max concurrency&lt;/em&gt; number for each
+graph node.  WCT currently sets this to unity for all nodes.  Set
+larger, TBB becomes free to run one instance of a node concurrently on
+multiple threads.  For a node to operate in this manner, it must be
+implemented inherently thread safe which is a requirement that most of
+our developers can not handle.  But even if that is overcome,
+concurrent node execution in the flow graph will lead to out-of-order
+data.  This causes a loss of synchronization in the graph which spoils
+various assumptions.  It is possible to construct a subgraph which
+contains the concurrent nodes such that synchronicity is restored at
+its output.&lt;/p&gt;
+&lt;p&gt;Thus to make use of TBB &lt;code&gt;flow_graph&lt;/code&gt; concurrency to enact a semaphore
+pattern to protect from over use of GPU memory requires developing
+special purpose nodes which isolate the new problems that this
+solution brings.  This is very doable if challenging to develop and
+will maximize both CPU and GPU utilization by leveraging the inherent
+load balancing nature of parallel &lt;em&gt;data flow&lt;/em&gt; graph execution.&lt;/p&gt;
+&lt;h2 id=&#34;where-are-we&#34;&gt;Where are we?&lt;/h2&gt;
+&lt;p&gt;I&amp;rsquo;m still not sure where I wanted to go with this article or what
+exactly is the paradigm we should chase and so I have no deep
+conclusions.  For now, the main points I tried to make are the
+following.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;We face a RAM problem not a CPU problem.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The problem is really due to respecting HTC/HPC accounting biases
+for CPU/GPU utilization while it is their RAM limitation that we
+bump against.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Application of multi-thread parallelism is scale invariant and we
+should design solutions that honor and enable this fact.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;GPU brings its own problems which are also largely RAM problems but
+also push can lead to forced CPU idleness that we should and can
+avoid with some new development.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The Wire-Cell Toolkit provides a new if minor paradigm shift that
+solves many of the problems we face in these post-salad days and so
+far appears to provide a good basis as we go to utilize
+heterogeneous hardware and yet larger core/RAM ratios.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
     <item>
       <title>How I Do</title>
       <link>https://brettviren.github.io/articles/howido/</link>
