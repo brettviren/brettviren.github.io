@@ -6,7 +6,34 @@
     <description>Recent content in Tags on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Oct 2021 10:45:10 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Dec 2021 00:00:00 -0500</lastBuildDate><atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>critique</title>
+      <link>https://brettviren.github.io/tags/critique/</link>
+      <pubDate>Fri, 24 Dec 2021 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/critique/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>design</title>
+      <link>https://brettviren.github.io/tags/design/</link>
+      <pubDate>Fri, 24 Dec 2021 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/design/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zeromq</title>
+      <link>https://brettviren.github.io/tags/zeromq/</link>
+      <pubDate>Fri, 24 Dec 2021 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/zeromq/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>emacs</title>
       <link>https://brettviren.github.io/tags/emacs/</link>

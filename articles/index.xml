@@ -8,6 +8,250 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/articles/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>ingescape</title>
+      <link>https://brettviren.github.io/articles/ingescape/</link>
+      <pubDate>Fri, 24 Dec 2021 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/articles/ingescape/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a fan of ZeroMQ and recently got notice of a new (to me) project
+in the ZeroMQ organization called &lt;strong&gt;ingescape&lt;/strong&gt;.  Here I give a somewhat
+superficial &amp;ldquo;review&amp;rdquo; of this package as I simultaneously dig in and
+learn about it.&lt;/p&gt;
+&lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div class=&#34;heading&#34;&gt;Table of Contents&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#summary&#34;&gt;Summary&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#impressions&#34;&gt;Impressions&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#nic-device&#34;&gt;NIC device&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#services&#34;&gt;Services&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#mapping&#34;&gt;Mapping&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#services-data-flow-dichotomy&#34;&gt;Services/data-flow dichotomy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#configuration&#34;&gt;Configuration&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#load-balancing&#34;&gt;Load balancing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#lossy-data-flow&#34;&gt;Lossy data flow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#splitting&#34;&gt;&lt;span class=&#34;org-todo todo TODO&#34;&gt;TODO&lt;/span&gt; Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#end-note&#34;&gt;End note&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;!--endtoc--&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/zeromq/ingescape&#34;&gt;ingescape&lt;/a&gt; is a layer on top of Zyre to provide a simplified basis for
+developing distributed applications by abstracting away much of the
+details related to managing sockets.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; supports two high level distributed processing patterns:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;data flow&lt;/dt&gt;
+&lt;dd&gt;flow graph model with nodes having named and typed
+input or output ports and with edges implemented via PUB/SUB links&lt;/dd&gt;
+&lt;dt&gt;services&lt;/dt&gt;
+&lt;dd&gt;reliable, addressed one-way notifications over Zyre chat
+(not just request/reply as it is billed, see below)&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; is implemented in C on CZMQ, Zyre and libsodium with no
+other dependencies.  It provides a &lt;code&gt;zproject&lt;/code&gt; API (but not following
+CLASS) so in principle the package can automatically generate
+low-level bindings to other languages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; lets us develop &amp;ldquo;agents&amp;rdquo; with only a modest amount of code
+devoted to socket wrangling allowing us to focus on functionality.  A
+given agent may be developed with minimal (but not zero, see
+discussion below) knowledge about the agent&amp;rsquo;s peers.&lt;/p&gt;
+&lt;h2 id=&#34;impressions&#34;&gt;Impressions&lt;/h2&gt;
+&lt;p&gt;I see in &lt;strong&gt;ingescape&lt;/strong&gt; many of the themes I have explored in the &lt;a href=&#34;https://wirecell.github.io/&#34;&gt;Wire-Cell
+Toolkit&lt;/a&gt;, &lt;a href=&#34;https://github.com/brettviren/ptmp/&#34;&gt;PTMP&lt;/a&gt;, &lt;a href=&#34;https://brettviren.github.io/zio/&#34;&gt;ZIO&lt;/a&gt; and &lt;a href=&#34;https://github.com/brettviren/yamz&#34;&gt;YAMZ&lt;/a&gt;.  In particular the idea of a &amp;ldquo;ported flow
+graph&amp;rdquo; providing the context for distributed execution can be seen in
+&lt;strong&gt;ingescape&lt;/strong&gt;&amp;rsquo;s &lt;em&gt;data flow&lt;/em&gt; (and in its &lt;em&gt;services&lt;/em&gt; for that matter) as well as
+exploiting discovery and distributed configuration, specifically with Zyre.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; looks like a very good basis for many classes of distributed
+processes relevant to my area including DAQ, distributed parallel data
+processing, GPU-as-a-service, etc.  From a point of view of
+contemplating what it would be like to adopt &lt;strong&gt;ingescape&lt;/strong&gt; in the projects
+like those I name above, I give some initial impressions and
+unsolicited suggestions.&lt;/p&gt;
+&lt;h3 id=&#34;nic-device&#34;&gt;NIC device&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; examples use the NIC device name (and a TCP/IP port) as an
+agent endpoint identifier.  This is somewhat unusual (at least in my
+experience) but it makes some sense when you think that &lt;strong&gt;ingescape&lt;/strong&gt;
+tries to abstract away network.&lt;/p&gt;
+&lt;p&gt;Trying the &lt;strong&gt;ingescape&lt;/strong&gt; tests on the &lt;code&gt;lo&lt;/code&gt; device was not successful:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;igsTester --device &amp;#34;lo&amp;#34; --port 5670 --verbose --auto
+tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps something is wrongly configured here though I believe my &lt;code&gt;lo&lt;/code&gt; is default from the Debian factory.  It looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;$ ip a
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Beside whatever is going on there, using a NIC device name as an
+endpoint identifier has at least two problems.  First, for a human,
+their names are hard to predict and remember.  Once I use the
+obviously &lt;code&gt;/s&lt;/code&gt; named &lt;code&gt;wlp82s0&lt;/code&gt; device the &lt;strong&gt;ingescape&lt;/strong&gt; tests run fine.&lt;/p&gt;
+&lt;p&gt;Second would be the (admittedly rare) situation of having one NIC
+serve multiple IP addresses.  I don&amp;rsquo;t know how ZeroMQ handles this but
+I guess it must either listen either on all or onnly on the &amp;ldquo;first&amp;rdquo; in
+some order.  Neither policy would fit all uses of multi-IP NICs.&lt;/p&gt;
+&lt;p&gt;Thankfully, digging into the code I find two functions that instead
+take ZeroMQ &lt;code&gt;tcp://&lt;/code&gt; endpoint addresses:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;igs_start_with_ip()
+igs_start_with_brokers()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The latter allows for TCP-based gossip discovery (instead of Zyre&amp;rsquo;s default UDP).  That&amp;rsquo;s nice!&lt;/p&gt;
+&lt;h3 id=&#34;services&#34;&gt;Services&lt;/h3&gt;
+&lt;p&gt;The &amp;ldquo;services&amp;rdquo; feature is described as &amp;ldquo;request/reply&amp;rdquo; and &amp;ldquo;RPC/RMI&amp;rdquo;.
+However, it appears rather more general than that.  At its essential,
+I would describe the &amp;ldquo;services&amp;rdquo; feature as a one-way, one-shot,
+peer-addressed notification mechanism.  The example applications
+&amp;ldquo;merely&amp;rdquo; approximates the usual RPC pattern by having the request
+method of the &amp;ldquo;server&amp;rdquo; call a (statically named) method back on the
+&amp;ldquo;sender&amp;rdquo; in order to deliver a reply.  Thus the example applications
+enact an asynchronous RPC with a hard-wired reply method name which is
+in fact also an RPC call made in a symmetric manner as the original
+&amp;ldquo;request&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;But, the essential nature of &lt;strong&gt;ingescape&lt;/strong&gt; &amp;ldquo;services&amp;rdquo; also allow other
+behavior patterns.  The possibilities can perhaps be well described in
+email terms if we think of &lt;code&gt;user@host&lt;/code&gt; email address strings to map to
+be interpreted as &lt;code&gt;method@peer&lt;/code&gt; and method arguments to play a role
+similar to email headers.  We might then imagine these patterns of
+behavior:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;static-reply&lt;/dt&gt;
+&lt;dd&gt;as in the example, the &amp;ldquo;service&amp;rdquo; replies via the
+sender ID and a static, hard-wired method name.  Analogous to a
+&lt;code&gt;Reply-To: static@sender&lt;/code&gt; requiring sender to have method (user) name
+called &lt;code&gt;static&lt;/code&gt;.&lt;/dd&gt;
+&lt;dt&gt;dynamic-reply&lt;/dt&gt;
+&lt;dd&gt;a service method call arguments may include a
+method name that the service is expected to use for a reply.  Eg,
+&lt;code&gt;call(reply=&amp;quot;dynamic&amp;quot;)&lt;/code&gt; causes a reply to &lt;code&gt;dynamic@sender&lt;/code&gt;.  This
+decouples the caller/callee development a little.&lt;/dd&gt;
+&lt;dt&gt;group&lt;/dt&gt;
+&lt;dd&gt;Like &lt;strong&gt;dynamic-reply&lt;/strong&gt; but with a list of &lt;code&gt;method@peer&lt;/code&gt; pairs.
+The service would be programmed to iterate on this list and send the
+reply to each entry.&lt;/dd&gt;
+&lt;dt&gt;forward&lt;/dt&gt;
+&lt;dd&gt;a service may call to another peer which is hard-wired in
+the service.  Analogous to the use of a &lt;code&gt;~/.forward&lt;/code&gt; file for email
+delivery.&lt;/dd&gt;
+&lt;dt&gt;ignore&lt;/dt&gt;
+&lt;dd&gt;the service may simply not reply to the original sender.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;And, of course, a &amp;ldquo;service&amp;rdquo; method may implement a mix of these
+patterns either statically or dynamically depending on method
+arguments or external factors.&lt;/p&gt;
+&lt;h3 id=&#34;mapping&#34;&gt;Mapping&lt;/h3&gt;
+&lt;p&gt;For &lt;strong&gt;ingescape&lt;/strong&gt; &lt;strong&gt;data flow&lt;/strong&gt; this function is provided:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;igs_mapping_add(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;input&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;output&amp;#34;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When called in the context of defining an agent, this function call
+declares the agent&amp;rsquo;s &lt;code&gt;input&lt;/code&gt; port shall receive messages that the &lt;code&gt;peer&lt;/code&gt;
+may send out its own &lt;code&gt;output&lt;/code&gt; port.  Presumably, &lt;code&gt;peer:ouput&lt;/code&gt; maps to a
+PUB and &lt;code&gt;agent:input&lt;/code&gt; to a SUB and then Zyre is used to discover the addresses for their &lt;code&gt;bind()/connect()&lt;/code&gt; calls.&lt;/p&gt;
+&lt;p&gt;The abstraction this function provides is very good.  However, the
+examples show the function being called in the context of the agent&amp;rsquo;s
+&lt;code&gt;main()&lt;/code&gt;.  This conflates implementation of agent functionality with
+peer linkage.&lt;/p&gt;
+&lt;p&gt;This conflation is somewhat softened when instead of the mapping being
+hard-wired it is built from a user-provided JSON text with a call to
+the function &lt;code&gt;igs_mapping_load_file()&lt;/code&gt;.  This leaves it to the user to
+determine graph linkage.&lt;/p&gt;
+&lt;p&gt;A side comment on that mapping JSON: the &lt;code&gt;toOutput&lt;/code&gt; and &lt;code&gt;fromInput&lt;/code&gt; key
+names are rather confusing (to me) as to which side of what boundary
+&lt;code&gt;to&lt;/code&gt; and &lt;code&gt;from&lt;/code&gt; refers.  My understanding is &lt;code&gt;to&lt;/code&gt; refers to the sender while
+&lt;code&gt;from&lt;/code&gt; refers to the receiver which is rather backwards unless one reads
+each to be from the point of view of their respective agent implementation.  Ie, a sender sends &amp;ldquo;to output&amp;rdquo; and a receiver receives &amp;ldquo;from input&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;In any case, forming a graph edge, either in the hard-coded way or
+with the JSON object, is apparently done only from the implementation
+of the &amp;ldquo;target&amp;rdquo; side of the edge.  This probably hints to a choice to
+hard-wire PUB to &lt;code&gt;bind()&lt;/code&gt;, SUB to &lt;code&gt;connect()&lt;/code&gt;.  It is a reasonable,
+simplifying choice.  A more general, complex one can be envisioned
+where PUB and SUB may &lt;code&gt;bind()&lt;/code&gt; and/or &lt;code&gt;connect()&lt;/code&gt; as needed and linkage is
+performed by a non-agent role through Zyre communication.  One benefit
+from such a variant design would be to allow a SUB to live on an
+accessible network while a PUB may be behind NAT.&lt;/p&gt;
+&lt;h3 id=&#34;services-data-flow-dichotomy&#34;&gt;Services/data-flow dichotomy&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; provides this dichotomy between services and data flow which
+is implemented in a somewhat uneven way.  On the one hand, the JSON
+mapping gives the end user say in how the data flow graph is wired.
+On the other hand, service calls use hard-wired identifiers or the
+application developer may invent their own way to let users configure
+the &amp;ldquo;service graph&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;I feel there is benefit to have &lt;strong&gt;ingescape&lt;/strong&gt; provide first class support
+in the JSON handling to configure services.  This can then allow
+caller code development independent from details of callee.  The two
+may use different identifiers for the service and the JSON may provide
+a second kind of &amp;ldquo;mapping&amp;rdquo; between them.  It would also allow swapping
+out different implementations of some &amp;ldquo;service&amp;rdquo; w/out concerns of
+service or method name conflicts.&lt;/p&gt;
+&lt;p&gt;Second, with the data flow mapping context, it is also possible to
+distribute service information in Zyre which can minimize user
+configuration effort.  For example, a service may advertise in Zyre
+its methods with each associated with a descriptive attribute set.  A
+client may then match its needs, also expressed as an attribute set,
+against attributes of the known services in order to locate a matching
+callee.  This is the approach tried in YAMZ and is flexible but of
+course more complex.&lt;/p&gt;
+&lt;p&gt;The other part of this dichotomy I find interesting is how it couples
+input, operation and output.  This is not strictly required and one
+can at least contemplate using an &amp;ldquo;operation&amp;rdquo; function in either a
+data flow or service context.  The proper context to apply could
+depend on how the user configures the &amp;ldquo;flow graph&amp;rdquo; and &amp;ldquo;service
+graph&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;This factoring could be provide at application level or better made
+first class in &lt;strong&gt;ingescape&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;configuration&#34;&gt;Configuration&lt;/h3&gt;
+&lt;p&gt;The JSON &amp;ldquo;definition&amp;rdquo; and &amp;ldquo;mapping&amp;rdquo; file types are good.  However,
+they still rely on application code to register an association between
+an input observer (&lt;code&gt;igs_observe_input()&lt;/code&gt;) and the data flow node input
+port name.  Likewise, a service method function must be registered to
+its externally known name via &lt;code&gt;igs_service_init()&lt;/code&gt;.  This is very
+reasonable and simple.  But it requires custom &lt;code&gt;main()&lt;/code&gt; programs for
+each agent holding largely boilerplate code.&lt;/p&gt;
+&lt;p&gt;Two patterns used in Wire-Cell Toolkit and PTMP are &amp;ldquo;plugin&amp;rdquo; and
+&amp;ldquo;named factory&amp;rdquo;.  These patterns allow shared libraries to provide
+compiled functions which can be mapped via configuration strings.
+Adding them to the mix would allow a single, generic &lt;code&gt;main()&lt;/code&gt; agent
+program and would allow configuration to fully drive the make up of
+the application.  &lt;code&gt;dlopen()&lt;/code&gt; is needed for C/C++ which may entail some
+portability issues.  The same pattern can also be enacted in Python
+(if/when &lt;strong&gt;ingescape&lt;/strong&gt; apps are developed in that language).&lt;/p&gt;
+&lt;h3 id=&#34;load-balancing&#34;&gt;Load balancing&lt;/h3&gt;
+&lt;p&gt;In the README overview on data flow is this tantalizing comment:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;optional capability to dispatch data between workers for workload distribution&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I could not determine what this implies though certainly any &amp;ldquo;service&amp;rdquo;
+or &amp;ldquo;data flow&amp;rdquo; node would be free to operate as a Majordomo client.&lt;/p&gt;
+&lt;h3 id=&#34;lossy-data-flow&#34;&gt;Lossy data flow&lt;/h3&gt;
+&lt;p&gt;Use of PUB/SUB for data flow has one very substantial issue: there is
+no back pressure.  Data &lt;strong&gt;will&lt;/strong&gt; be lost when an upstream node outpaces a
+downstream node long enough for the PUB/SUB buffers to reach HWM.
+This may actually be a desirable feature for some systems while
+utterly disastrous for others.  Adopters should consider if this lossy
+reality is acceptable.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; can be used also to form lossless, back-pressured graphs
+using purely the service pattern.  This rides on Zyre chat and thus
+can rely on ROUTER/DEALER mute policy of block when HWM is hit.
+Bouncing against a socket&amp;rsquo;s high-water marks degrades throughput
+compared to other flow-control mechanisms.  If both lossless and very
+high rates are needed then a better type of flow control is needed.
+The credit-based flow control described in the zguide, and implemented
+in ZIO, is one good approach.  Adding this as a first-class transport
+in &lt;strong&gt;ingescape&lt;/strong&gt; might be worth considering if one needs such performance.&lt;/p&gt;
+&lt;h3 id=&#34;splitting&#34;&gt;&lt;span class=&#34;org-todo todo TODO&#34;&gt;TODO&lt;/span&gt; Splitting&lt;/h3&gt;
+&lt;p&gt;There&amp;rsquo;s something hinted about &amp;ldquo;splits&amp;rdquo; which I didn&amp;rsquo;t look into yet.&lt;/p&gt;
+&lt;h2 id=&#34;end-note&#34;&gt;End note&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;ingescape&lt;/strong&gt; looks very exciting and codifies many ideas I have wanted to
+see or have realized.  I suggest some things which may potentially
+bring improvement but come with a cost of increasing complexity.&lt;/p&gt;
+&lt;p&gt;Finally, like all good software, &lt;strong&gt;ingescape&lt;/strong&gt; has an ambiguous
+pronunciation.  Is it ing-escape?  inge-scape?  I don&amp;rsquo;t know, but I
+like it.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Adding more CPU or GPU slows things down</title>
       <link>https://brettviren.github.io/articles/salad/</link>
       <pubDate>Sun, 17 Oct 2021 00:00:00 -0400</pubDate>
