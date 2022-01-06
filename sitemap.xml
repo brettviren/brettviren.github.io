@@ -5,11 +5,29 @@
     <loc>https://brettviren.github.io/notes/2017-12-09/</loc>
     <lastmod>2021-10-10T12:13:23-04:00</lastmod>
   </url><url>
+    <loc>https://brettviren.github.io/posts/vaccine-effectiveness/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
     <loc>https://brettviren.github.io/posts/ob-jsonnet/</loc>
-    <lastmod>2021-10-17T10:45:10-04:00</lastmod>
+    <lastmod>2021-10-08T00:00:00-04:00</lastmod>
   </url><url>
     <loc>https://brettviren.github.io/categories/</loc>
-    <lastmod>2021-12-24T16:53:08-05:00</lastmod>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/covid/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/categories/learning/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/posts/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/stats/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/</loc>
+    <lastmod>2022-01-05T00:00:00-05:00</lastmod>
   </url><url>
     <loc>https://brettviren.github.io/tags/critique/</loc>
     <lastmod>2021-12-24T16:53:08-05:00</lastmod>
@@ -20,26 +38,11 @@
     <loc>https://brettviren.github.io/articles/ingescape/</loc>
     <lastmod>2021-12-24T16:53:08-05:00</lastmod>
   </url><url>
-    <loc>https://brettviren.github.io/tags/</loc>
-    <lastmod>2021-12-24T16:53:08-05:00</lastmod>
-  </url><url>
     <loc>https://brettviren.github.io/categories/tools/</loc>
     <lastmod>2021-12-24T16:53:08-05:00</lastmod>
   </url><url>
     <loc>https://brettviren.github.io/tags/zeromq/</loc>
     <lastmod>2021-12-24T16:53:08-05:00</lastmod>
-  </url><url>
-    <loc>https://brettviren.github.io/tags/emacs/</loc>
-    <lastmod>2021-10-17T10:45:10-04:00</lastmod>
-  </url><url>
-    <loc>https://brettviren.github.io/tags/jsonnet/</loc>
-    <lastmod>2021-10-17T10:45:10-04:00</lastmod>
-  </url><url>
-    <loc>https://brettviren.github.io/tags/org/</loc>
-    <lastmod>2021-10-17T10:45:10-04:00</lastmod>
-  </url><url>
-    <loc>https://brettviren.github.io/posts/</loc>
-    <lastmod>2021-10-17T10:45:10-04:00</lastmod>
   </url><url>
     <loc>https://brettviren.github.io/articles/salad/</loc>
     <lastmod>2021-10-17T12:35:44-04:00</lastmod>
@@ -70,6 +73,15 @@
   </url><url>
     <loc>https://brettviren.github.io/categories/meta/</loc>
     <lastmod>2021-10-10T11:57:34-04:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/emacs/</loc>
+    <lastmod>2021-10-08T00:00:00-04:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/jsonnet/</loc>
+    <lastmod>2021-10-08T00:00:00-04:00</lastmod>
+  </url><url>
+    <loc>https://brettviren.github.io/tags/org/</loc>
+    <lastmod>2021-10-10T11:46:54-04:00</lastmod>
   </url><url>
     <loc>https://brettviren.github.io/about/</loc>
     <lastmod>2021-10-02T00:00:00-04:00</lastmod>

@@ -6,11 +6,11 @@
     <description>Recent content in emacs on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Oct 2021 10:45:10 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Babel in Jsonnet with ob-jsonnet.el</title>
       <link>https://brettviren.github.io/posts/ob-jsonnet/</link>
-      <pubDate>Sun, 17 Oct 2021 10:45:10 -0400</pubDate>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
       
       <guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
       <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;
@@ -32,7 +32,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;#+begin_src jsonnet :cmdline &amp;#34;-S&amp;#34; :exports both :wrap &amp;#34;example&amp;#34;
 std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
 #+end_src
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&amp;#34;hello world&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;hello world
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, if only we had proper syntax highlighting for Jsonnet in Hugo.&lt;/p&gt;</description>
     </item>
     

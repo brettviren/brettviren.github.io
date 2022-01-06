@@ -6,7 +6,25 @@
     <description>Recent content in Tags on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Dec 2021 00:00:00 -0500</lastBuildDate><atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Jan 2022 00:00:00 -0500</lastBuildDate><atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>covid</title>
+      <link>https://brettviren.github.io/tags/covid/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/covid/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stats</title>
+      <link>https://brettviren.github.io/tags/stats/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/stats/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>critique</title>
       <link>https://brettviren.github.io/tags/critique/</link>
@@ -31,33 +49,6 @@
       <pubDate>Fri, 24 Dec 2021 00:00:00 -0500</pubDate>
       
       <guid>https://brettviren.github.io/tags/zeromq/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>emacs</title>
-      <link>https://brettviren.github.io/tags/emacs/</link>
-      <pubDate>Sun, 17 Oct 2021 10:45:10 -0400</pubDate>
-      
-      <guid>https://brettviren.github.io/tags/emacs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jsonnet</title>
-      <link>https://brettviren.github.io/tags/jsonnet/</link>
-      <pubDate>Sun, 17 Oct 2021 10:45:10 -0400</pubDate>
-      
-      <guid>https://brettviren.github.io/tags/jsonnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>org</title>
-      <link>https://brettviren.github.io/tags/org/</link>
-      <pubDate>Sun, 17 Oct 2021 10:45:10 -0400</pubDate>
-      
-      <guid>https://brettviren.github.io/tags/org/</guid>
       <description></description>
     </item>
     
@@ -121,6 +112,33 @@
       <pubDate>Sun, 17 Oct 2021 00:00:00 -0400</pubDate>
       
       <guid>https://brettviren.github.io/tags/wct/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>emacs</title>
+      <link>https://brettviren.github.io/tags/emacs/</link>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jsonnet</title>
+      <link>https://brettviren.github.io/tags/jsonnet/</link>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/jsonnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>org</title>
+      <link>https://brettviren.github.io/tags/org/</link>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
+      
+      <guid>https://brettviren.github.io/tags/org/</guid>
       <description></description>
     </item>
     

@@ -18,9 +18,101 @@
     </item>
     
     <item>
+      <title>Vaccine Effectiveness</title>
+      <link>https://brettviren.github.io/posts/vaccine-effectiveness/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 -0500</pubDate>
+      
+      <guid>https://brettviren.github.io/posts/vaccine-effectiveness/</guid>
+      <description>&lt;p&gt;I have seen the quantitiy &lt;em&gt;vaccine effectiveness&lt;/em&gt; (VE) used in many
+contexts and never really knew what it meant.  Today, I checked and
+this is what I learned.  As I sort of expected, the casual connection
+with the workings of the vaccine is not complete.  It leaves some room
+to be influenced things that are merely correlated with being
+vaccinated.&lt;/p&gt;
+&lt;p&gt;NY state gov has some good info on &lt;a href=&#34;https://coronavirus.health.ny.gov/covid-19-breakthrough-data&#34;&gt;vaccine breakthrough&lt;/a&gt;.  Currently
+4.9% of vaxxed NYers caught COVID.  If you are vaxxed and catch it,
+you&amp;rsquo;ll contribute to only 0.15% of hospitalized COVID patients.  On
+the topic of hospitalization, the page continues with:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For the week of May 3, 2021, the estimated vaccine effectiveness shows
+fully-vaccinated New Yorkers had a 92.4% lower chance of becoming a
+COVID-19 case, compared to unvaccinated New Yorkers.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Well, 92.4 seems like a nice happy big number, great!&amp;hellip;  But then,
+&amp;ldquo;%-lower chance&amp;rdquo;, that just sounds weird to me.  What does it mean?&lt;/p&gt;
+&lt;p&gt;That page conveniently links to the open article &lt;a href=&#34;https://www.nejm.org/doi/full/10.1056/NEJMoa2116063&#34;&gt;Rosenberg et all, Dec
+2021&lt;/a&gt; which conveniently links to the even more useful &lt;a href=&#34;https://www.nejm.org/doi/suppl/10.1056/NEJMoa2116063/suppl%5Ffile/nejmoa2116063%5Fappendix.pdf&#34;&gt;appendix&lt;/a&gt; which
+defines&lt;/p&gt;
+&lt;p&gt;\[HR = \frac{h_{vaxxed}(t)}{h_{nasty}(t)}\]&lt;/p&gt;
+&lt;p&gt;Okay, those are my subscripts.  The \(h(t)\) here is the called the
+&lt;em&gt;hazard function&lt;/em&gt; which is apparently a term-of-art.  To the google!
+That turns up these very clear and concise &lt;a href=&#34;https://web.stanford.edu/~lutian/coursepdf/unit1.pdf&#34;&gt;note&lt;/a&gt; and &lt;a href=&#34;https://web.stanford.edu/~lutian/coursepdf/slideweek1.pdf&#34;&gt;presentation&lt;/a&gt; from
+a Stanford bio class.&lt;/p&gt;
+&lt;p&gt;There is explained that the &lt;em&gt;hazard function&lt;/em&gt; is a conditional
+probability that some &amp;ldquo;event&amp;rdquo; (catching COVID) will occur for a time
+\(T \in [t,t+dt]\) given that the event had yet to occur by time \(T=t\).&lt;/p&gt;
+&lt;p&gt;For example, a daily hazard function can tell us the probability we
+get COVID tomorrow given we don&amp;rsquo;t have it today. (Maybe it should be
+called the Wimpy Hamburger Function).&lt;/p&gt;
+&lt;p&gt;The Stanford continues to define a &lt;em&gt;survival function&lt;/em&gt; and various
+relations between it, a &lt;em&gt;cumulative hazard function&lt;/em&gt;, the original PDF
+and the hazard function.  But, I leave it there and go back to the NY
+State report.&lt;/p&gt;
+&lt;p&gt;There it gives this example:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;cohort size&lt;/dt&gt;
+&lt;dd&gt;\(N_c=215,159\) vaxxed people at risk in first week of May&lt;/dd&gt;
+&lt;dt&gt;infected&lt;/dt&gt;
+&lt;dd&gt;\(N_i = 56\) number of vaxxed infected in first week of May&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;It defines the hazard function for that cohort that week as&lt;/p&gt;
+&lt;p&gt;\[h(t) = \frac{N_i}{N_c - \frac{N_i}{2}}\]&lt;/p&gt;
+&lt;p&gt;where the \(\frac{1}{2}\) in the denominator is apparently an attempt to
+place the measure at the middle of the week (?).  Ie, half the
+infected are removed from cohort.  That looks a little weird to me,
+but it doesn&amp;rsquo;t change the result much as long as \(N_i \ll N_c\) so
+whatever.&lt;/p&gt;
+&lt;p&gt;The collected data gives \(h_{vaxxed} = 3.68\) per 100,000 people for that
+first month of May.&lt;/p&gt;
+&lt;p&gt;For that week the nasty unvaxxed saw an \(N_c\) about 10x larger and
+\(N_i\) is 100x larger so \(h_{nasty} = 35.80\) per 100,000 is 10x more.&lt;/p&gt;
+&lt;p&gt;Then an intermediate &lt;em&gt;hazard ratio&lt;/em&gt; of those two functions, \(HR = 0.103\)
+and finally the &lt;em&gt;vax effectiveness&lt;/em&gt; of 89.7%,&lt;/p&gt;
+&lt;p&gt;\[VE = 1-HR\]&lt;/p&gt;
+&lt;p&gt;To calculate the VE for the next week we do the same thing after
+reducing the number of cohorts by how many got COVID during the
+current week: \(N^{w+1}_c = N^w_c - N^w_i\).&lt;/p&gt;
+&lt;p&gt;After all that, VE is simply and effectively (one minus) a double
+ratio of the relative infected fractions between vaxxed and unvaxxed.&lt;/p&gt;
+&lt;p&gt;Now, knowing the definition it is clear to me that we are making a
+small category error by attributing this measure of &amp;ldquo;effectiveness&amp;rdquo; to
+just the mechanism of the vaccine.  There must be other, unknown (to
+me at least), contributions that are correlated with being vaccinated.
+For example, people that get vaxxed must also be more likely to wear
+masks, socially distance and engage in other behavior that counters
+the spread of the virus.  All those activities will keep their
+relative infections lower than their nastier counterparts.&lt;/p&gt;
+&lt;p&gt;So what?  Well, not much.  Mostly I don&amp;rsquo;t like so much attention payed
+to undefined numbers.  But also, there is a potential curiosity of
+statistics we are missing.  Faced with two choices, say two types of
+vaccines, we might want to know more about these correlations to see
+if they might break the tie for which choice is best for our personal
+choice.&lt;/p&gt;
+&lt;p&gt;Say, just for sake of example, Pfizer and Moderna had the same VE as
+defined above.  Now let&amp;rsquo;s pretend we knew that &amp;ldquo;Pfizer people&amp;rdquo; were
+much more into masks and social distancing.  That would mean that
+Moderna must be a better vaccine in order for the two to have an equal
+VE.  We might then decide personally to get Modernal and mask up and
+distance socially.  Again, just a fabricated example.  I&amp;rsquo;m not saying
+one vax is better or the other.&lt;/p&gt;
+&lt;p&gt;And, I&amp;rsquo;m also definitely not saying don&amp;rsquo;t get vaxxed.  Get vaxxed, you
+filthy swine!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Babel in Jsonnet with ob-jsonnet.el</title>
       <link>https://brettviren.github.io/posts/ob-jsonnet/</link>
-      <pubDate>Sun, 17 Oct 2021 10:45:10 -0400</pubDate>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
       
       <guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
       <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;
@@ -42,7 +134,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;#+begin_src jsonnet :cmdline &amp;#34;-S&amp;#34; :exports both :wrap &amp;#34;example&amp;#34;
 std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
 #+end_src
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&amp;#34;hello world&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;hello world
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, if only we had proper syntax highlighting for Jsonnet in Hugo.&lt;/p&gt;</description>
     </item>
     

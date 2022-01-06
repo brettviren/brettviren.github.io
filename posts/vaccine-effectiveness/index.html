@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <link rel="stylesheet" href="https://brettviren.github.io/css/katex.min.css">
+<script defer src="https://brettviren.github.io/js/katex.min.js"></script>
+<script defer src="https://brettviren.github.io/js/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+          delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+          ]
+      });
+  });
+</script>
+
+  
+
+  
+  <style type=text/css>body{font-family:monospace;}</style>
+  <title>Vaccine Effectiveness</title>
+  
+  <meta name="author" content="Brett Viren">
+  <link rel="stylesheet" href="https://brettviren.github.io/css/style.css">
+  
+  
+</head>
+
+
+
+  <body>
+    <header>
+    <div style="text-align: center;">
+    <a href="mailto:bv@bnl.gov"><img src="https://brettviren.github.io/icons/email.svg"></a>
+    <a href="mailto:brett.viren@gmail.com"><img src="https://brettviren.github.io/icons/email.svg"></a>
+    <a href="https://www.phy.bnl.gov/~bviren/"><img src="https://brettviren.github.io/icons/dollar-sign.svg"></a>
+    <a href="https://github.com/brettviren"><img src="https://brettviren.github.io/icons/github.svg"></a>
+    <a href="https://twitter.com/brett_viren"><img src="https://brettviren.github.io/icons/twitter.svg"></a>
+    <a href="https://fosstodon.org/@bv"><img src="https://brettviren.github.io/icons/matrix.svg"></a>
+
+  
+  </div>
+  <div class="banner-left" style="float: left;">  
+    <a href="https://brettviren.github.io/">They call me Brett</a> <br>
+  </div>
+  <div class="banner-right" style="float: right;">
+    turning neutrinos in to bytes <br>
+  </div>
+  <br/>
+  <hr>
+
+  <p>
+
+  <nav>
+    <div style="text-align: center;">
+    
+    
+    [<a href="https://brettviren.github.io/posts/"><b>Blog</b></a>]
+    
+    [<a href="https://brettviren.github.io/articles/"><b>Articles</b></a>]
+    
+    [<a href="https://brettviren.github.io/notes/"><b>Notes</b></a>]
+    
+    [<a href="https://brettviren.github.io/about/"><b>About</b></a>]
+    
+    </div>
+  </nav>
+
+</header>
+
+    
+<main>
+  <article>
+    <h1>Vaccine Effectiveness</h1>
+    <b><time>Wed 5 Jan 2022</time></b>
+    
+    <a href="https://brettviren.github.io/tags/covid">covid</a>
+    <img src="https://brettviren.github.io/icons/tag-12.svg">
+    
+    <a href="https://brettviren.github.io/tags/stats">stats</a>
+    <img src="https://brettviren.github.io/icons/tag-12.svg">
+    
+    <div>
+      <p>I have seen the quantitiy <em>vaccine effectiveness</em> (VE) used in many
+contexts and never really knew what it meant.  Today, I checked and
+this is what I learned.  As I sort of expected, the casual connection
+with the workings of the vaccine is not complete.  It leaves some room
+to be influenced things that are merely correlated with being
+vaccinated.</p>
+<p>NY state gov has some good info on <a href="https://coronavirus.health.ny.gov/covid-19-breakthrough-data">vaccine breakthrough</a>.  Currently
+4.9% of vaxxed NYers caught COVID.  If you are vaxxed and catch it,
+you&rsquo;ll contribute to only 0.15% of hospitalized COVID patients.  On
+the topic of hospitalization, the page continues with:</p>
+<blockquote>
+<p>For the week of May 3, 2021, the estimated vaccine effectiveness shows
+fully-vaccinated New Yorkers had a 92.4% lower chance of becoming a
+COVID-19 case, compared to unvaccinated New Yorkers.</p>
+</blockquote>
+<p>Well, 92.4 seems like a nice happy big number, great!&hellip;  But then,
+&ldquo;%-lower chance&rdquo;, that just sounds weird to me.  What does it mean?</p>
+<p>That page conveniently links to the open article <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2116063">Rosenberg et all, Dec
+2021</a> which conveniently links to the even more useful <a href="https://www.nejm.org/doi/suppl/10.1056/NEJMoa2116063/suppl%5Ffile/nejmoa2116063%5Fappendix.pdf">appendix</a> which
+defines</p>
+<p>\[HR = \frac{h_{vaxxed}(t)}{h_{nasty}(t)}\]</p>
+<p>Okay, those are my subscripts.  The \(h(t)\) here is the called the
+<em>hazard function</em> which is apparently a term-of-art.  To the google!
+That turns up these very clear and concise <a href="https://web.stanford.edu/~lutian/coursepdf/unit1.pdf">note</a> and <a href="https://web.stanford.edu/~lutian/coursepdf/slideweek1.pdf">presentation</a> from
+a Stanford bio class.</p>
+<p>There is explained that the <em>hazard function</em> is a conditional
+probability that some &ldquo;event&rdquo; (catching COVID) will occur for a time
+\(T \in [t,t+dt]\) given that the event had yet to occur by time \(T=t\).</p>
+<p>For example, a daily hazard function can tell us the probability we
+get COVID tomorrow given we don&rsquo;t have it today. (Maybe it should be
+called the Wimpy Hamburger Function).</p>
+<p>The Stanford continues to define a <em>survival function</em> and various
+relations between it, a <em>cumulative hazard function</em>, the original PDF
+and the hazard function.  But, I leave it there and go back to the NY
+State report.</p>
+<p>There it gives this example:</p>
+<dl>
+<dt>cohort size</dt>
+<dd>\(N_c=215,159\) vaxxed people at risk in first week of May</dd>
+<dt>infected</dt>
+<dd>\(N_i = 56\) number of vaxxed infected in first week of May</dd>
+</dl>
+<p>It defines the hazard function for that cohort that week as</p>
+<p>\[h(t) = \frac{N_i}{N_c - \frac{N_i}{2}}\]</p>
+<p>where the \(\frac{1}{2}\) in the denominator is apparently an attempt to
+place the measure at the middle of the week (?).  Ie, half the
+infected are removed from cohort.  That looks a little weird to me,
+but it doesn&rsquo;t change the result much as long as \(N_i \ll N_c\) so
+whatever.</p>
+<p>The collected data gives \(h_{vaxxed} = 3.68\) per 100,000 people for that
+first month of May.</p>
+<p>For that week the nasty unvaxxed saw an \(N_c\) about 10x larger and
+\(N_i\) is 100x larger so \(h_{nasty} = 35.80\) per 100,000 is 10x more.</p>
+<p>Then an intermediate <em>hazard ratio</em> of those two functions, \(HR = 0.103\)
+and finally the <em>vax effectiveness</em> of 89.7%,</p>
+<p>\[VE = 1-HR\]</p>
+<p>To calculate the VE for the next week we do the same thing after
+reducing the number of cohorts by how many got COVID during the
+current week: \(N^{w+1}_c = N^w_c - N^w_i\).</p>
+<p>After all that, VE is simply and effectively (one minus) a double
+ratio of the relative infected fractions between vaxxed and unvaxxed.</p>
+<p>Now, knowing the definition it is clear to me that we are making a
+small category error by attributing this measure of &ldquo;effectiveness&rdquo; to
+just the mechanism of the vaccine.  There must be other, unknown (to
+me at least), contributions that are correlated with being vaccinated.
+For example, people that get vaxxed must also be more likely to wear
+masks, socially distance and engage in other behavior that counters
+the spread of the virus.  All those activities will keep their
+relative infections lower than their nastier counterparts.</p>
+<p>So what?  Well, not much.  Mostly I don&rsquo;t like so much attention payed
+to undefined numbers.  But also, there is a potential curiosity of
+statistics we are missing.  Faced with two choices, say two types of
+vaccines, we might want to know more about these correlations to see
+if they might break the tie for which choice is best for our personal
+choice.</p>
+<p>Say, just for sake of example, Pfizer and Moderna had the same VE as
+defined above.  Now let&rsquo;s pretend we knew that &ldquo;Pfizer people&rdquo; were
+much more into masks and social distancing.  That would mean that
+Moderna must be a better vaccine in order for the two to have an equal
+VE.  We might then decide personally to get Modernal and mask up and
+distance socially.  Again, just a fabricated example.  I&rsquo;m not saying
+one vax is better or the other.</p>
+<p>And, I&rsquo;m also definitely not saying don&rsquo;t get vaxxed.  Get vaxxed, you
+filthy swine!</p>
+
+
+    </div>
+  </article>
+</main>
+
+    <footer>
+  <hr>
+
+  <p>
+
+    <img width="10px" src="https://brettviren.github.io/icons/copyleft.svg">
+ 2022 <a href="https://brettviren.github.io/"><b>They call me Brett</b></a>.
+  </p>
+
+
+
+</footer>
+
+  </body>
+</html>
