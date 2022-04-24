@@ -6,11 +6,11 @@
     <description>Recent content in Testing on They call me Brett</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/categories/testing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://brettviren.github.io/categories/testing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>First post</title>
       <link>https://brettviren.github.io/posts/first/</link>
-      <pubDate>Sat, 02 Oct 2021 00:00:00 -0400</pubDate>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://brettviren.github.io/posts/first/</guid>
       <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
@@ -29,7 +29,7 @@
 &lt;!--endtoc--&gt;
 &lt;h2 id=&#34;math&#34;&gt;Math&lt;/h2&gt;
 &lt;p&gt;\[\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }\]&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;\[ \alpha\beta\gamma \]
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;\[ \alpha\beta\gamma \]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;gives:&lt;/p&gt;
 &lt;p&gt;\[ \alpha\beta\gamma \]&lt;/p&gt;
 &lt;h2 id=&#34;section&#34;&gt;Section&lt;/h2&gt;
@@ -37,7 +37,7 @@
 &lt;h3 id=&#34;subsection&#34;&gt;Subsection&lt;/h3&gt;
 &lt;p&gt;more text&lt;/p&gt;
 &lt;h2 id=&#34;plantuml&#34;&gt;Plantuml&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&#34;language-plantuml&#34; data-lang=&#34;plantuml&#34;&gt;@startuml
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-plantuml&#34; data-lang=&#34;plantuml&#34;&gt;@startuml
 class &amp;quot;Node&amp;quot; as n &amp;lt;&amp;lt; type &amp;gt;&amp;gt; {
         typeID
         instanceID
@@ -50,13 +50,12 @@ class Role {
 }
 &amp;quot;n&amp;quot; *- Role
 @enduml
-&lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;
-    &lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;&lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt;
 &lt;/figure&gt;
 
 &lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&#34;language-jsonnet&#34; data-lang=&#34;jsonnet&#34;&gt;{ a:42, b:&amp;quot;string&amp;quot;, c:[&amp;quot;array&amp;quot;] }
-&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-jsonnet&#34; data-lang=&#34;jsonnet&#34;&gt;{ a:42, b:&amp;quot;string&amp;quot;, c:[&amp;quot;array&amp;quot;] }
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;,
    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;,
    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt;: [
@@ -64,7 +63,7 @@ class Role {
    ]
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;c-plus-plus&#34;&gt;C++&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Convert to C++ type
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Convert to C++ type
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T convert&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg);
 &lt;span style=&#34;color:#75715e&#34;&gt;// Get object attribute as C++ type
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T get&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg, &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; name);

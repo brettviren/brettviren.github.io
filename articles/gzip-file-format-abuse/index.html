@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <link rel="stylesheet" href="https://brettviren.github.io/css/katex.min.css">
+<script defer src="https://brettviren.github.io/js/katex.min.js"></script>
+<script defer src="https://brettviren.github.io/js/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+          delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+          ]
+      });
+  });
+</script>
+
+  
+
+  
+  <style type=text/css>body{font-family:monospace;}</style>
+  <title>gzip file format abuse</title>
+  
+  <meta name="author" content="Brett Viren">
+  <link rel="stylesheet" href="https://brettviren.github.io/css/style.css">
+  
+  
+</head>
+
+
+
+  <body>
+    <header>
+    <div style="text-align: center;">
+    <a href="mailto:bv@bnl.gov"><img src="https://brettviren.github.io/icons/email.svg"></a>
+    <a href="mailto:brett.viren@gmail.com"><img src="https://brettviren.github.io/icons/email.svg"></a>
+    <a href="https://www.phy.bnl.gov/~bviren/"><img src="https://brettviren.github.io/icons/dollar-sign.svg"></a>
+    <a href="https://github.com/brettviren"><img src="https://brettviren.github.io/icons/github.svg"></a>
+    <a href="https://twitter.com/brett_viren"><img src="https://brettviren.github.io/icons/twitter.svg"></a>
+    <a href="https://fosstodon.org/@bv"><img src="https://brettviren.github.io/icons/matrix.svg"></a>
+
+  
+  </div>
+  <div class="banner-left" style="float: left;">  
+    <a href="https://brettviren.github.io/">They call me Brett</a> <br>
+  </div>
+  <div class="banner-right" style="float: right;">
+    turning neutrinos in to bytes <br>
+  </div>
+  <br/>
+  <hr>
+
+  <p>
+
+  <nav>
+    <div style="text-align: center;">
+    
+    
+    [<a href="https://brettviren.github.io/posts/"><b>Blog</b></a>]
+    
+    [<a href="https://brettviren.github.io/articles/"><b>Articles</b></a>]
+    
+    [<a href="https://brettviren.github.io/notes/"><b>Notes</b></a>]
+    
+    [<a href="https://brettviren.github.io/about/"><b>About</b></a>]
+    
+    </div>
+  </nav>
+
+</header>
+
+    
+<main>
+  <article>
+    <h1>gzip file format abuse</h1>
+    <b><time>Sun 24 Apr 2022</time></b>
+    
+    <div>
+      <p>I&rsquo;ve been abusing the gzip file format and realize the Unix world has
+missed an opportunity and it is probably impossible to reclaim it.</p>
+<h2 id="what-i-want">What I want&nbsp;<a class="headline-hash" href="#what-i-want">#</a> </h2>
+<p>I have been looking to replace compressed Numpy <code>.npz</code> file format
+satisfying these requirements.</p>
+<ul>
+<li>compressed multi-file archive but not zip</li>
+<li>indexed for fast content listing and read with file level seek</li>
+<li>prefer low computation cost over high compression factor</li>
+<li>writeable from C++, preferably with Boost.Iostreams</li>
+<li>readable from Python</li>
+</ul>
+<h2 id="what-i-found">What I found&nbsp;<a class="headline-hash" href="#what-i-found">#</a> </h2>
+<p>The <a href="https://github.com/vasi/pixz">pixz</a> tool is very close to what I&rsquo;m looking for.  It provides
+indexed <code>tar+xz</code>.  It only loses a few points in that <code>xz/lzma2</code> is
+somewhat slower than <code>gzip</code> tested at both of their lower compression
+levels.  OTOH, <code>xz</code> does a few 10% more compression than <code>gzip</code> so it&rsquo;s
+got that going for it, which is nice.</p>
+<p>In the end, <code>pixz</code> is likely what I will use and to that end have added
+support to <a href="https://github.com/brettviren/custard">custard</a> to tack on calling <code>pixz</code> to a Boost.Iostreams
+following the custard stream protocol.  This weirdness of exec&rsquo;ing
+another program is due to <code>pixz</code> not providing a library.  Something
+that would be not so hard to fix.</p>
+<p>But that got me thinking, the <code>pixz</code> way of indexing <code>tar+xz</code> must be
+possible with <code>tar+gz</code> and if anything could do that it would be <a href="https://zlib.net/pigz/">pigz</a>!.
+I mean after all they differ by only one letter.  But, alas, no.  <code>pigz</code>
+is cool, but not this kind of cool.</p>
+<h2 id="hubris-oriented-programming-paradigm">Hubris Oriented Programming paradigm&nbsp;<a class="headline-hash" href="#hubris-oriented-programming-paradigm">#</a> </h2>
+<p>I was surprised to not find someone already providing what I&rsquo;m
+looking for which goosed my hubris glands enough to take a shot at
+coming up with something myself.  Reading the <a href="http://www.zlib.org/rfc-gzip.html">gzip format</a> docs I was
+drawn to the existence of <code>FEXTRA</code> and <code>FCOMMENT</code>.</p>
+<p>It gave me a first order design:</p>
+<ol>
+<li>Write multiple files (members) into one <code>.gz</code>.</li>
+<li>Write into <code>FEXTRA</code> the byte offset to the file byte offset of the <strong>prior member</strong>.</li>
+<li>Append a final, zero-byte payload member so that its <code>FEXTRA</code> can be located a fixed number of bytes from the end of the file.</li>
+<li>Reader seeks to last byte less this fixed offset to and on the start of this zero-byte, reads <code>FEXTRA</code>.</li>
+<li>Reader seeks to member N&rsquo;s location, reads its header to get <code>FNAME</code> and the <code>FEXTRA</code> to get member N-1&rsquo;s location</li>
+<li>Repeat until reaching the first member.</li>
+</ol>
+<p>At this point the reader knows all file names and their start and stop
+locations in the <code>.gz</code> file at the cost of N calls to <code>seek()</code> and no
+decompression.  At the user&rsquo;s command it may then <code>seek()</code> to individual
+members and decompress (just) them.</p>
+<p>The second order design is to add more file metadata to allow a single
+<code>.gz</code> file to act like a more full featured <code>tar.gz</code> file.  There are two
+approaches.</p>
+<ol>
+<li>
+<p>Use <code>FCOMMENT</code> (or <code>FEXTRA</code>) to stash per-file metadata in some format.
+As the reader ascends the index it collects this.  Once complete it
+can satisfy the equivalent to <code>tar -cf foo.tar path/in/tar</code></p>
+</li>
+<li>
+<p>Add a penultimate system file between the last user member and the
+final zero-byte marker member.  This file would hold all offset and
+file metadata allowing a reader to avoid even having to ascend the
+index.</p>
+</li>
+</ol>
+<h2 id="when-it-all-falls-apart">When it all falls apart&nbsp;<a class="headline-hash" href="#when-it-all-falls-apart">#</a> </h2>
+<p>After implementing a prototype writer in Python (named <code>gzit.py</code> -
+&ldquo;gzipped, indexed tar-like&rdquo;) I was able to produce some test files and
+see how standard <code>gunzip</code> handles them.  Well, it doesn&rsquo;t.</p>
+<p>Despite the promise from the <code>gzip/gunzip</code> man page discussion on their
+<code>-N/--name</code> option:</p>
+<blockquote>
+<p>When compressing, always save the original file name and timestamp;
+this is the default. When decompressing, restore the original file
+name and timestamp if present.  This option is useful on systems which
+have a limit on file name length or when the timestamp has been lost
+after a file transfer.</p>
+</blockquote>
+<p>Most critical is it speaks in singular about the file which I didn&rsquo;t
+catch at first.  It does not imply that subsequent members in the <code>gzip</code>
+file will be unpacked to their original file names.  Indeed, <code>gunzip</code>
+applies a &ldquo;first file wins all the data&rdquo; rule.  And, I didn&rsquo;t need to
+prototype this crazy scheme to learn that.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo aaa &gt; a.txt
+echo bbb &gt; b.txt
+gzip -N <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt
+cat <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt.gz &gt; ab.txt.gz
+rm -f <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt<span style="color:#f92672">{</span>,.gz<span style="color:#f92672">}</span>
+echo <span style="color:#e6db74">&#34;&gt; zcat&#34;</span>
+zcat ab.txt.gz
+echo <span style="color:#e6db74">&#34;&gt; gzip -lv&#34;</span>
+gzip -lv ab.txt.gz
+echo <span style="color:#e6db74">&#34;&gt; od -d ab.txt.gz&#34;</span>
+od -a ab.txt.gz
+gunzip -N ab.txt.gz
+echo <span style="color:#e6db74">&#34;&gt; just a.txt&#34;</span>
+cat a.txt
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&gt; zcat
+aaa
+bbb
+&gt; gzip -lv
+method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
+defla 4c261fe1 Apr 24 18:30                  60                   4 -800.0% ab.txt
+&gt; od -d ab.txt.gz
+0000000  us  vt  bs  bs esc   O   e   b nul etx   a   .   t   x   t nul
+0000020   K   L   L   d stx nul nak   ]   x   w eot nul nul nul  us  vt
+0000040  bs  bs esc   O   e   b nul etx   b   .   t   x   t nul   K   J
+0000060   J   b stx nul   a  us   &amp;   L eot nul nul nul
+0000074
+&gt; just a.txt
+aaa
+bbb
+</code></pre></div><p>You can see <code>a.txt</code> and <code>b.txt</code> file names are stored in the gzip header
+but no <code>b.txt</code> is produced and <code>a.txt</code> includes the contents from <code>b.txt</code>.</p>
+<h2 id="just-provide-a-custom-decompressor">Just provide a custom decompressor&nbsp;<a class="headline-hash" href="#just-provide-a-custom-decompressor">#</a> </h2>
+<p>While a more sophisticated decompressor could certainly be created to
+support this extension to the GZIP format it would be a foot gun.
+Imagine some poor user given a 50 MB file of 100s of large but sparse
+Numpy files.  They hit it with gzip and instead of getting 100 <code>.npy</code>
+files, each of some 10s of MB, they get a single monolith a GB in size
+and yet loading that into Numpy gives them only a single relatively
+small array.  Much confusion would follow.</p>
+<p>So, with the long-established behavior of the ubiquitous <code>gunzip</code> this
+idea to extend GZIP to be an indexible archive format is a loser at
+birth.  One would have to at least call the format something else to
+avoid the footgun and make a new commpressor and decompressor tool.
+But, then, going that far, there&rsquo;s no benefit to retain the GZIP
+format.</p>
+<p>All this messing about doe make me wonder.  Was the GZIP format meant
+for a greater purpose and the decoders and society that uses them
+limited that greater purpose?</p>
+<h2 id="leaving-me-exactly-where">Leaving me exactly where&nbsp;<a class="headline-hash" href="#leaving-me-exactly-where">#</a> </h2>
+<p>I&rsquo;ll likely accept the slightly slower <code>xz</code> compression and use <code>pixz</code> to
+make indexed <code>.tar.xz</code> files.  It works already with custard so I should
+just move on. (But, oh, <code>FEXTRA</code> you entice me so!)</p>
+<p>An alternative is to write a custard stream filter that internally
+runs the body of each file individually through the Boost.Iostreams
+filter for <code>gzip</code> prior to entering the <code>tar</code> filter.  Instead of <code>.tar.gz</code>
+this would give a <code>.gz.tar</code> file (sort of).  The usual indexing tricks
+of uncompressed <code>tar</code> files can then be applied and random file-level
+reads can be done with each engaging a <code>gunzip</code> post processor.  All
+very straight-forward and boring.</p>
+
+
+    </div>
+  </article>
+</main>
+
+    <footer>
+  <hr>
+
+  <p>
+
+    <img width="10px" src="https://brettviren.github.io/icons/copyleft.svg">
+ 2022 <a href="https://brettviren.github.io/"><b>They call me Brett</b></a>.
+  </p>
+
+
+
+</footer>
+
+  </body>
+</html>

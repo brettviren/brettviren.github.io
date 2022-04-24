@@ -79,22 +79,22 @@
 <p><a href="https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el">ob-template.el</a> is a great starting point and made for light work.</p>
 <h2 id="install">Install&nbsp;<a class="headline-hash" href="#install">#</a> </h2>
 <p>Download <a href="https://raw.githubusercontent.com/brettviren/ob-jsonnet/master/ob-jsonnet.el"><code>ob-jsonnet.el</code></a> to somewhere in your load path and add</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lisp" data-lang="lisp">(<span style="color:#a6e22e">require</span> <span style="color:#e6db74">&#39;ob-jsonnet</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lisp" data-lang="lisp">(<span style="color:#a6e22e">require</span> <span style="color:#e6db74">&#39;ob-jsonnet</span>)
 </code></pre></div><p>And append <code>(jsonnet . t)</code> to <code>org-babel-load-languages</code>.</p>
 <p>You may customize <code>org-babel-jsonnet-command</code> if the <code>jsonnet</code> command is not in your <code>$PATH</code>.</p>
 <h2 id="examples">Examples&nbsp;<a class="headline-hash" href="#examples">#</a> </h2>
 <p>Basic usage</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#+begin_src jsonnet :exports both :wrap &#34;src json&#34;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#+begin_src jsonnet :exports both :wrap &#34;src json&#34;
 {a:42}
 #+end_src
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
    <span style="color:#f92672">&#34;a&#34;</span>: <span style="color:#ae81ff">42</span>
 }
 </code></pre></div><p>You can also supply command line options:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#+begin_src jsonnet :cmdline &#34;-S&#34; :exports both :wrap &#34;example&#34;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#+begin_src jsonnet :cmdline &#34;-S&#34; :exports both :wrap &#34;example&#34;
 std.join(&#34; &#34;, [&#34;hello&#34;,&#34;world&#34;])
 #+end_src
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hello world
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hello world
 </code></pre></div><p>Now, if only we had proper syntax highlighting for Jsonnet in Hugo.</p>
 
 

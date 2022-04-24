@@ -112,7 +112,7 @@
 <!--endtoc-->
 <h2 id="math">Math&nbsp;<a class="headline-hash" href="#math">#</a> </h2>
 <p>\[\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }\]</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">\[ \alpha\beta\gamma \]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">\[ \alpha\beta\gamma \]
 </code></pre></div><p>gives:</p>
 <p>\[ \alpha\beta\gamma \]</p>
 <h2 id="section">Section&nbsp;<a class="headline-hash" href="#section">#</a> </h2>
@@ -120,7 +120,7 @@
 <h3 id="subsection">Subsection&nbsp;<a class="headline-hash" href="#subsection">#</a> </h3>
 <p>more text</p>
 <h2 id="plantuml">Plantuml&nbsp;<a class="headline-hash" href="#plantuml">#</a> </h2>
-<pre><code class="language-plantuml" data-lang="plantuml">@startuml
+<pre tabindex="0"><code class="language-plantuml" data-lang="plantuml">@startuml
 class &quot;Node&quot; as n &lt;&lt; type &gt;&gt; {
         typeID
         instanceID
@@ -133,13 +133,12 @@ class Role {
 }
 &quot;n&quot; *- Role
 @enduml
-</code></pre><figure>
-    <img src="https://brettviren.github.io/ox-hugo/testnode.svg"/> 
+</code></pre><figure><img src="https://brettviren.github.io/ox-hugo/testnode.svg"/>
 </figure>
 
 <h2 id="jsonnet">Jsonnet&nbsp;<a class="headline-hash" href="#jsonnet">#</a> </h2>
-<pre><code class="language-jsonnet" data-lang="jsonnet">{ a:42, b:&quot;string&quot;, c:[&quot;array&quot;] }
-</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<pre tabindex="0"><code class="language-jsonnet" data-lang="jsonnet">{ a:42, b:&quot;string&quot;, c:[&quot;array&quot;] }
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
    <span style="color:#f92672">&#34;a&#34;</span>: <span style="color:#ae81ff">42</span>,
    <span style="color:#f92672">&#34;b&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>,
    <span style="color:#f92672">&#34;c&#34;</span>: [
@@ -147,7 +146,7 @@ class Role {
    ]
 }
 </code></pre></div><h2 id="c-plus-plus">C++&nbsp;<a class="headline-hash" href="#c-plus-plus">#</a> </h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// Convert to C++ type
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// Convert to C++ type
 </span><span style="color:#75715e"></span>T convert<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">const</span> Configuration<span style="color:#f92672">&amp;</span> cfg);
 <span style="color:#75715e">// Get object attribute as C++ type
 </span><span style="color:#75715e"></span>T get<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">const</span> Configuration<span style="color:#f92672">&amp;</span> cfg, <span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>string<span style="color:#f92672">&amp;</span> name);
