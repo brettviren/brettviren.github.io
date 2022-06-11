@@ -17,23 +17,23 @@
 &lt;p&gt;&lt;a href=&#34;https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el&#34;&gt;ob-template.el&lt;/a&gt; is a great starting point and made for light work.&lt;/p&gt;
 &lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
 &lt;p&gt;Download &lt;a href=&#34;https://raw.githubusercontent.com/brettviren/ob-jsonnet/master/ob-jsonnet.el&#34;&gt;&lt;code&gt;ob-jsonnet.el&lt;/code&gt;&lt;/a&gt; to somewhere in your load path and add&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-lisp&#34; data-lang=&#34;lisp&#34;&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ob-jsonnet&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And append &lt;code&gt;(jsonnet . t)&lt;/code&gt; to &lt;code&gt;org-babel-load-languages&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lisp&#34; data-lang=&#34;lisp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ob-jsonnet&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And append &lt;code&gt;(jsonnet . t)&lt;/code&gt; to &lt;code&gt;org-babel-load-languages&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You may customize &lt;code&gt;org-babel-jsonnet-command&lt;/code&gt; if the &lt;code&gt;jsonnet&lt;/code&gt; command is not in your &lt;code&gt;$PATH&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
 &lt;p&gt;Basic usage&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;#+begin_src jsonnet :exports both :wrap &amp;#34;src json&amp;#34;
-{a:42}
-#+end_src
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
-   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also supply command line options:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;#+begin_src jsonnet :cmdline &amp;#34;-S&amp;#34; :exports both :wrap &amp;#34;example&amp;#34;
-std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
-#+end_src
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;hello world
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, if only we had proper syntax highlighting for Jsonnet in Hugo.&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+begin_src jsonnet :exports both :wrap &amp;#34;src json&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{a:42}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+end_src
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also supply command line options:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+begin_src jsonnet :cmdline &amp;#34;-S&amp;#34; :exports both :wrap &amp;#34;example&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+end_src
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hello world
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, if only we had proper syntax highlighting for Jsonnet in Hugo.&lt;/p&gt;</description>
     </item>
     
   </channel>

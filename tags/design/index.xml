@@ -77,17 +77,17 @@ agent endpoint identifier.  This is somewhat unusual (at least in my
 experience) but it makes some sense when you think that &lt;strong&gt;ingescape&lt;/strong&gt;
 tries to abstract away network.&lt;/p&gt;
 &lt;p&gt;Trying the &lt;strong&gt;ingescape&lt;/strong&gt; tests on the &lt;code&gt;lo&lt;/code&gt; device was not successful:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;igsTester --device &amp;#34;lo&amp;#34; --port 5670 --verbose --auto
-tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps something is wrongly configured here though I believe my &lt;code&gt;lo&lt;/code&gt; is default from the Debian factory.  It looks like:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;$ ip a
-1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Beside whatever is going on there, using a NIC device name as an
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;igsTester --device &amp;#34;lo&amp;#34; --port 5670 --verbose --auto
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps something is wrongly configured here though I believe my &lt;code&gt;lo&lt;/code&gt; is default from the Debian factory.  It looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ip a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inet 127.0.0.1/8 scope host lo
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       valid_lft forever preferred_lft forever
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inet6 ::1/128 scope host
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       valid_lft forever preferred_lft forever
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Beside whatever is going on there, using a NIC device name as an
 endpoint identifier has at least two problems.  First, for a human,
 their names are hard to predict and remember.  Once I use the
 obviously &lt;code&gt;/s&lt;/code&gt; named &lt;code&gt;wlp82s0&lt;/code&gt; device the &lt;strong&gt;ingescape&lt;/strong&gt; tests run fine.&lt;/p&gt;
@@ -97,9 +97,9 @@ I guess it must either listen either on all or onnly on the &amp;ldquo;first&amp
 some order.  Neither policy would fit all uses of multi-IP NICs.&lt;/p&gt;
 &lt;p&gt;Thankfully, digging into the code I find two functions that instead
 take ZeroMQ &lt;code&gt;tcp://&lt;/code&gt; endpoint addresses:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;igs_start_with_ip()
-igs_start_with_brokers()
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The latter allows for TCP-based gossip discovery (instead of Zyre&amp;rsquo;s default UDP).  That&amp;rsquo;s nice!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;igs_start_with_ip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;igs_start_with_brokers()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The latter allows for TCP-based gossip discovery (instead of Zyre&amp;rsquo;s default UDP).  That&amp;rsquo;s nice!&lt;/p&gt;
 &lt;h3 id=&#34;services&#34;&gt;Services&lt;/h3&gt;
 &lt;p&gt;The &amp;ldquo;services&amp;rdquo; feature is described as &amp;ldquo;request/reply&amp;rdquo; and &amp;ldquo;RPC/RMI&amp;rdquo;.
 However, it appears rather more general than that.  At its essential,
@@ -144,8 +144,8 @@ patterns either statically or dynamically depending on method
 arguments or external factors.&lt;/p&gt;
 &lt;h3 id=&#34;mapping&#34;&gt;Mapping&lt;/h3&gt;
 &lt;p&gt;For &lt;strong&gt;ingescape&lt;/strong&gt; &lt;strong&gt;data flow&lt;/strong&gt; this function is provided:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;igs_mapping_add(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;input&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;output&amp;#34;&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When called in the context of defining an agent, this function call
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;igs_mapping_add(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;input&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;output&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When called in the context of defining an agent, this function call
 declares the agent&amp;rsquo;s &lt;code&gt;input&lt;/code&gt; port shall receive messages that the &lt;code&gt;peer&lt;/code&gt;
 may send out its own &lt;code&gt;output&lt;/code&gt; port.  Presumably, &lt;code&gt;peer:ouput&lt;/code&gt; maps to a
 PUB and &lt;code&gt;agent:input&lt;/code&gt; to a SUB and then Zyre is used to discover the addresses for their &lt;code&gt;bind()/connect()&lt;/code&gt; calls.&lt;/p&gt;

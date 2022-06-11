@@ -139,17 +139,17 @@ agent endpoint identifier.  This is somewhat unusual (at least in my
 experience) but it makes some sense when you think that <strong>ingescape</strong>
 tries to abstract away network.</p>
 <p>Trying the <strong>ingescape</strong> tests on the <code>lo</code> device was not successful:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">igsTester --device &#34;lo&#34; --port 5670 --verbose --auto
-tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
-</code></pre></div><p>Perhaps something is wrongly configured here though I believe my <code>lo</code> is default from the Debian factory.  It looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ ip a
-1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-</code></pre></div><p>Beside whatever is going on there, using a NIC device name as an
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>igsTester --device &#34;lo&#34; --port 5670 --verbose --auto
+</span></span><span style="display:flex;"><span>tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
+</span></span></code></pre></div><p>Perhaps something is wrongly configured here though I believe my <code>lo</code> is default from the Debian factory.  It looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ ip a
+</span></span><span style="display:flex;"><span>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span></span><span style="display:flex;"><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span></span><span style="display:flex;"><span>    inet 127.0.0.1/8 scope host lo
+</span></span><span style="display:flex;"><span>       valid_lft forever preferred_lft forever
+</span></span><span style="display:flex;"><span>    inet6 ::1/128 scope host
+</span></span><span style="display:flex;"><span>       valid_lft forever preferred_lft forever
+</span></span></code></pre></div><p>Beside whatever is going on there, using a NIC device name as an
 endpoint identifier has at least two problems.  First, for a human,
 their names are hard to predict and remember.  Once I use the
 obviously <code>/s</code> named <code>wlp82s0</code> device the <strong>ingescape</strong> tests run fine.</p>
@@ -159,9 +159,9 @@ I guess it must either listen either on all or onnly on the &ldquo;first&rdquo; 
 some order.  Neither policy would fit all uses of multi-IP NICs.</p>
 <p>Thankfully, digging into the code I find two functions that instead
 take ZeroMQ <code>tcp://</code> endpoint addresses:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">igs_start_with_ip()
-igs_start_with_brokers()
-</code></pre></div><p>The latter allows for TCP-based gossip discovery (instead of Zyre&rsquo;s default UDP).  That&rsquo;s nice!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>igs_start_with_ip()
+</span></span><span style="display:flex;"><span>igs_start_with_brokers()
+</span></span></code></pre></div><p>The latter allows for TCP-based gossip discovery (instead of Zyre&rsquo;s default UDP).  That&rsquo;s nice!</p>
 <h3 id="services">Services&nbsp;<a class="headline-hash" href="#services">#</a> </h3>
 <p>The &ldquo;services&rdquo; feature is described as &ldquo;request/reply&rdquo; and &ldquo;RPC/RMI&rdquo;.
 However, it appears rather more general than that.  At its essential,
@@ -206,8 +206,8 @@ patterns either statically or dynamically depending on method
 arguments or external factors.</p>
 <h3 id="mapping">Mapping&nbsp;<a class="headline-hash" href="#mapping">#</a> </h3>
 <p>For <strong>ingescape</strong> <strong>data flow</strong> this function is provided:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">igs_mapping_add(<span style="color:#e6db74">&#34;input&#34;</span>, <span style="color:#e6db74">&#34;peer&#34;</span>, <span style="color:#e6db74">&#34;output&#34;</span>)
-</code></pre></div><p>When called in the context of defining an agent, this function call
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>igs_mapping_add(<span style="color:#e6db74">&#34;input&#34;</span>, <span style="color:#e6db74">&#34;peer&#34;</span>, <span style="color:#e6db74">&#34;output&#34;</span>)
+</span></span></code></pre></div><p>When called in the context of defining an agent, this function call
 declares the agent&rsquo;s <code>input</code> port shall receive messages that the <code>peer</code>
 may send out its own <code>output</code> port.  Presumably, <code>peer:ouput</code> maps to a
 PUB and <code>agent:input</code> to a SUB and then Zyre is used to discover the addresses for their <code>bind()/connect()</code> calls.</p>

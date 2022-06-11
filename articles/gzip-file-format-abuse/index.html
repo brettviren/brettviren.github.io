@@ -163,36 +163,36 @@ catch at first.  It does not imply that subsequent members in the <code>gzip</co
 file will be unpacked to their original file names.  Indeed, <code>gunzip</code>
 applies a &ldquo;first file wins all the data&rdquo; rule.  And, I didn&rsquo;t need to
 prototype this crazy scheme to learn that.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo aaa &gt; a.txt
-echo bbb &gt; b.txt
-gzip -N <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt
-cat <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt.gz &gt; ab.txt.gz
-rm -f <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt<span style="color:#f92672">{</span>,.gz<span style="color:#f92672">}</span>
-echo <span style="color:#e6db74">&#34;&gt; zcat&#34;</span>
-zcat ab.txt.gz
-echo <span style="color:#e6db74">&#34;&gt; gzip -lv&#34;</span>
-gzip -lv ab.txt.gz
-echo <span style="color:#e6db74">&#34;&gt; od -d ab.txt.gz&#34;</span>
-od -a ab.txt.gz
-gunzip -N ab.txt.gz
-echo <span style="color:#e6db74">&#34;&gt; just a.txt&#34;</span>
-cat a.txt
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&gt; zcat
-aaa
-bbb
-&gt; gzip -lv
-method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
-defla 4c261fe1 Apr 24 18:30                  60                   4 -800.0% ab.txt
-&gt; od -d ab.txt.gz
-0000000  us  vt  bs  bs esc   O   e   b nul etx   a   .   t   x   t nul
-0000020   K   L   L   d stx nul nak   ]   x   w eot nul nul nul  us  vt
-0000040  bs  bs esc   O   e   b nul etx   b   .   t   x   t nul   K   J
-0000060   J   b stx nul   a  us   &amp;   L eot nul nul nul
-0000074
-&gt; just a.txt
-aaa
-bbb
-</code></pre></div><p>You can see <code>a.txt</code> and <code>b.txt</code> file names are stored in the gzip header
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo aaa &gt; a.txt
+</span></span><span style="display:flex;"><span>echo bbb &gt; b.txt
+</span></span><span style="display:flex;"><span>gzip -N <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt
+</span></span><span style="display:flex;"><span>cat <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt.gz &gt; ab.txt.gz
+</span></span><span style="display:flex;"><span>rm -f <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt<span style="color:#f92672">{</span>,.gz<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; zcat&#34;</span>
+</span></span><span style="display:flex;"><span>zcat ab.txt.gz
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; gzip -lv&#34;</span>
+</span></span><span style="display:flex;"><span>gzip -lv ab.txt.gz
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; od -d ab.txt.gz&#34;</span>
+</span></span><span style="display:flex;"><span>od -a ab.txt.gz
+</span></span><span style="display:flex;"><span>gunzip -N ab.txt.gz
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; just a.txt&#34;</span>
+</span></span><span style="display:flex;"><span>cat a.txt
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&gt; zcat
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbb
+</span></span><span style="display:flex;"><span>&gt; gzip -lv
+</span></span><span style="display:flex;"><span>method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
+</span></span><span style="display:flex;"><span>defla 4c261fe1 Apr 24 18:30                  60                   4 -800.0% ab.txt
+</span></span><span style="display:flex;"><span>&gt; od -d ab.txt.gz
+</span></span><span style="display:flex;"><span>0000000  us  vt  bs  bs esc   O   e   b nul etx   a   .   t   x   t nul
+</span></span><span style="display:flex;"><span>0000020   K   L   L   d stx nul nak   ]   x   w eot nul nul nul  us  vt
+</span></span><span style="display:flex;"><span>0000040  bs  bs esc   O   e   b nul etx   b   .   t   x   t nul   K   J
+</span></span><span style="display:flex;"><span>0000060   J   b stx nul   a  us   &amp;   L eot nul nul nul
+</span></span><span style="display:flex;"><span>0000074
+</span></span><span style="display:flex;"><span>&gt; just a.txt
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbb
+</span></span></code></pre></div><p>You can see <code>a.txt</code> and <code>b.txt</code> file names are stored in the gzip header
 but no <code>b.txt</code> is produced and <code>a.txt</code> includes the contents from <code>b.txt</code>.</p>
 <h2 id="just-provide-a-custom-decompressor">Just provide a custom decompressor&nbsp;<a class="headline-hash" href="#just-provide-a-custom-decompressor">#</a> </h2>
 <p>While a more sophisticated decompressor could certainly be created to
