@@ -7,6 +7,9 @@ h1 {
 }
 body {
     font-family: "Computer Modern Serif", serif;
+    /* back to 1972 https://rachelbythebay.com/w/2022/06/24/1972/ */
+    color:#FFBF00;
+    background-color:#000000;
 }
 
 .banner-left, .banner-right {
@@ -18,8 +21,10 @@ body {
 
 /* for tag/categorie "cloud" */
 .btn {
+    /*
     color:#586e75;
     background-color:#eee8d5;
+   */
     border-radius: 5px;
     padding: 1px;
 }
@@ -48,8 +53,10 @@ code[class^="language-"],code[class*=" language-"] {
     padding:5px;
     width:100%;
     display: inline-block;
+    /*
     color:#586e75;
     background-color:#eee8d5;
+*/
     -moz-tab-size:4;
     -o-tab-size:4;
     tab-size:4
