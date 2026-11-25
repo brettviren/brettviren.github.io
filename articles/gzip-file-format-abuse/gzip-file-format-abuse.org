@@ -1,0 +1,203 @@
+#+title: gzip file format abuse
+#+date: 2022-04-24
+#+hugo_base_dir: ../../..
+#+hugo_section: articles
+#+hugo_bundle: gzip-file-format-abuse
+#+export_file_name: index
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args+ :eval never-export
+#+subtitle:
+#+hugo_tags: 
+#+hugo_categories: 
+#+hugo_publishdate: 2022-04-24
+#+hugo_custom_front_matter: :math true
+
+I've been abusing the gzip file format and realize the Unix world has
+missed an opportunity and it is probably impossible to reclaim it.
+
+#+hugo: more
+
+* What I want
+:PROPERTIES:
+:CUSTOM_ID: what-i-want
+:END:
+
+I have been looking to replace compressed Numpy ~.npz~ file format
+satisfying these requirements.
+
+- compressed multi-file archive but not zip
+- indexed for fast content listing and read with file level seek 
+- prefer low computation cost over high compression factor
+- writeable from C++, preferably with Boost.Iostreams
+- readable from Python
+
+* What I found
+:PROPERTIES:
+:CUSTOM_ID: what-i-found
+:END:
+
+
+The [[https://github.com/vasi/pixz][pixz]] tool is very close to what I'm looking for.  It provides
+indexed ~tar+xz~.  It only loses a few points in that ~xz/lzma2~ is
+somewhat slower than ~gzip~ tested at both of their lower compression
+levels.  OTOH, ~xz~ does a few 10% more compression than ~gzip~ so it's
+got that going for it, which is nice.
+
+In the end, ~pixz~ is likely what I will use and to that end have added
+support to [[https://github.com/brettviren/custard][custard]] to tack on calling ~pixz~ to a Boost.Iostreams
+following the custard stream protocol.  This weirdness of exec'ing
+another program is due to ~pixz~ not providing a library.  Something
+that would be not so hard to fix.
+
+But that got me thinking, the ~pixz~ way of indexing ~tar+xz~ must be
+possible with ~tar+gz~ and if anything could do that it would be [[https://zlib.net/pigz/][pigz]]!.
+I mean after all they differ by only one letter.  But, alas, no.  ~pigz~
+is cool, but not this kind of cool.
+
+* Hubris Oriented Programming paradigm
+:PROPERTIES:
+:CUSTOM_ID: hubris-oriented-programming-paradigm
+:END:
+
+I was surprised to not find someone already providing what I'm
+looking for which goosed my hubris glands enough to take a shot at
+coming up with something myself.  Reading the [[http://www.zlib.org/rfc-gzip.html][gzip format]] docs I was
+drawn to the existence of ~FEXTRA~ and ~FCOMMENT~.
+
+It gave me a first order design:
+
+1) Write multiple files (members) into one ~.gz~.
+2) Write into ~FEXTRA~ the byte offset to the file byte offset of the *prior member*.
+3) Append a final, zero-byte payload member so that its ~FEXTRA~ can be located a fixed number of bytes from the end of the file.
+4) Reader seeks to last byte less this fixed offset to and on the start of this zero-byte, reads ~FEXTRA~.
+5) Reader seeks to member N's location, reads its header to get ~FNAME~ and the ~FEXTRA~ to get member N-1's location
+6) Repeat until reaching the first member.
+
+At this point the reader knows all file names and their start and stop
+locations in the ~.gz~ file at the cost of N calls to ~seek()~ and no
+decompression.  At the user's command it may then ~seek()~ to individual
+members and decompress (just) them.
+
+The second order design is to add more file metadata to allow a single
+~.gz~ file to act like a more full featured ~tar.gz~ file.  There are two
+approaches.
+
+1) Use ~FCOMMENT~ (or ~FEXTRA~) to stash per-file metadata in some format.
+   As the reader ascends the index it collects this.  Once complete it
+   can satisfy the equivalent to ~tar -cf foo.tar path/in/tar~ 
+
+2) Add a penultimate system file between the last user member and the
+   final zero-byte marker member.  This file would hold all offset and
+   file metadata allowing a reader to avoid even having to ascend the
+   index.
+
+* When it all falls apart
+:PROPERTIES:
+:CUSTOM_ID: when-it-all-falls-apart
+:END:
+
+After implementing a prototype writer in Python (named ~gzit.py~ -
+"gzipped, indexed tar-like") I was able to produce some test files and
+see how standard ~gunzip~ handles them.  Well, it doesn't.
+
+Despite the promise from the ~gzip/gunzip~ man page discussion on their
+~-N/--name~ option:
+
+#+begin_quote
+When compressing, always save the original file name and timestamp;
+this is the default. When decompressing, restore the original file
+name and timestamp if present.  This option is useful on systems which
+have a limit on file name length or when the timestamp has been lost
+after a file transfer.
+#+end_quote
+
+
+Most critical is it speaks in singular about the file which I didn't
+catch at first.  It does not imply that subsequent members in the ~gzip~
+file will be unpacked to their original file names.  Indeed, ~gunzip~
+applies a "first file wins all the data" rule.  And, I didn't need to
+prototype this crazy scheme to learn that.
+
+#+begin_src shell :exports both :results output code :wrap example
+echo aaa > a.txt
+echo bbb > b.txt
+gzip -N {a,b}.txt
+cat {a,b}.txt.gz > ab.txt.gz
+rm -f {a,b}.txt{,.gz}
+echo "> zcat"
+zcat ab.txt.gz
+echo "> gzip -lv"
+gzip -lv ab.txt.gz
+echo "> od -d ab.txt.gz"
+od -a ab.txt.gz
+gunzip -N ab.txt.gz
+echo "> just a.txt"
+cat a.txt
+#+end_src
+
+#+RESULTS:
+#+begin_example
+> zcat
+aaa
+bbb
+> gzip -lv
+method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
+defla 4c261fe1 Apr 24 17:53                  60                   4 -800.0% ab.txt
+> od -d ab.txt.gz
+0000000  us  vt  bs  bs   E   F   e   b nul etx   a   .   t   x   t nul
+0000020   K   L   L   d stx nul nak   ]   x   w eot nul nul nul  us  vt
+0000040  bs  bs   E   F   e   b nul etx   b   .   t   x   t nul   K   J
+0000060   J   b stx nul   a  us   &   L eot nul nul nul
+0000074
+> just a.txt
+aaa
+bbb
+#+end_example
+
+
+You can see ~a.txt~ and ~b.txt~ file names are stored in the gzip header
+but no ~b.txt~ is produced and ~a.txt~ includes the contents from ~b.txt~.
+
+* Just provide a custom decompressor
+:PROPERTIES:
+:CUSTOM_ID: just-provide-a-custom-decompressor
+:END:
+
+While a more sophisticated decompressor could certainly be created to
+support this extension to the GZIP format it would be a foot gun.
+Imagine some poor user given a 50 MB file of 100s of large but sparse
+Numpy files.  They hit it with gzip and instead of getting 100 ~.npy~
+files, each of some 10s of MB, they get a single monolith a GB in size
+and yet loading that into Numpy gives them only a single relatively
+small array.  Much confusion would follow.
+
+So, with the long-established behavior of the ubiquitous ~gunzip~ this
+idea to extend GZIP to be an indexible archive format is a loser at
+birth.  One would have to at least call the format something else to
+avoid the footgun and make a new commpressor and decompressor tool.
+But, then, going that far, there's no benefit to retain the GZIP
+format.
+
+All this messing about doe make me wonder.  Was the GZIP format meant
+for a greater purpose and the decoders and society that uses them
+limited that greater purpose?
+
+
+* Leaving me exactly where
+:PROPERTIES:
+:CUSTOM_ID: leaving-me-exactly-where
+:END:
+
+I'll likely accept the slightly slower ~xz~ compression and use ~pixz~ to
+make indexed ~.tar.xz~ files.  It works already with custard so I should
+just move on. (But, oh, ~FEXTRA~ you entice me so!)
+
+An alternative is to write a custard stream filter that internally
+runs the body of each file individually through the Boost.Iostreams
+filter for ~gzip~ prior to entering the ~tar~ filter.  Instead of ~.tar.gz~
+this would give a ~.gz.tar~ file (sort of).  The usual indexing tricks
+of uncompressed ~tar~ files can then be applied and random file-level
+reads can be done with each engaging a ~gunzip~ post processor.  All
+very straight-forward and boring.

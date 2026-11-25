@@ -1,92 +1,38 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  
-  
-  <link rel="stylesheet" href="https://brettviren.github.io/css/katex.min.css">
-<script defer src="https://brettviren.github.io/js/katex.min.js"></script>
-<script defer src="https://brettviren.github.io/js/auto-render.min.js"
-        onload="renderMathInElement(document.body);"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      renderMathInElement(document.body, {
-          delimiters: [
-              {left: "$$", right: "$$", display: true},
-              {left: "$", right: "$", display: false}
-          ]
-      });
-  });
-</script>
-
-  
-
-  
-  <style type=text/css>body{font-family:monospace;}</style>
-  <title>gzip file format abuse</title>
-  
-  <meta name="author" content="Brett Viren">
-  <link rel="stylesheet" href="https://brettviren.github.io/css/style.css">
-  
-  
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gzip file format abuse · They call me Brett</title>
+<link rel="stylesheet" href="/css/plain.min.2e1a20bc928a7b9c68215841de73694832033673b49016deb6ecb76a8d392520.css">
 </head>
+<body>
+<header class="site">
+<p><a class="site-title" href="/">They call me Brett</a> <span class="subtitle">turning neutrinos into bytes</span></p>
+<nav>
+<a href="/posts/">posts</a>
+<a href="/articles/">articles</a>
+<a href="/notes/">notes</a>
+<a href="/tags/">tags</a>
+<a href="/search/">search</a>
+<a href="/about/">about</a>
+</nav>
+</header>
+<main>
 
-
-
-  <body>
-    <header>
-    <div style="text-align: center;">
-    <a href="mailto:bv@bnl.gov"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="mailto:brett.viren@gmail.com"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="https://www.phy.bnl.gov/~bviren/"><img src="https://brettviren.github.io/icons/dollar-sign.svg"></a>
-    <a href="https://github.com/brettviren"><img src="https://brettviren.github.io/icons/github.svg"></a>
-    <a href="https://twitter.com/brett_viren"><img src="https://brettviren.github.io/icons/twitter.svg"></a>
-    <a href="https://fosstodon.org/@bv"><img src="https://brettviren.github.io/icons/matrix.svg"></a>
-
-  
-  </div>
-  <div class="banner-left" style="float: left;">  
-    <a href="https://brettviren.github.io/">They call me Brett</a> <br>
-  </div>
-  <div class="banner-right" style="float: right;">
-    turning neutrinos in to bytes <br>
-  </div>
-  <br/>
-  <hr>
-
-  <p>
-
-  <nav>
-    <div style="text-align: center;">
-    
-    
-    [<a href="https://brettviren.github.io/posts/"><b>Blog</b></a>]
-    
-    [<a href="https://brettviren.github.io/articles/"><b>Articles</b></a>]
-    
-    [<a href="https://brettviren.github.io/notes/"><b>Notes</b></a>]
-    
-    [<a href="https://brettviren.github.io/about/"><b>About</b></a>]
-    
-    </div>
-  </nav>
+<article>
+<header>
+<h1>gzip file format abuse</h1>
+<p class="meta"><time datetime="2022-04-24">2022-04-24</time>
+· updated <time datetime="2026-11-22">2026-11-22</time> · <a href="/articles/gzip-file-format-abuse/gzip-file-format-abuse.org">org source</a> · version <code>v0-0-gb998507</code>
+</p>
 
 </header>
 
-    
-<main>
-  <article>
-    <h1>gzip file format abuse</h1>
-    <b><time>Sun 24 Apr 2022</time></b>
-    
-    <div>
-      <p>I&rsquo;ve been abusing the gzip file format and realize the Unix world has
+
+<p>I&rsquo;ve been abusing the gzip file format and realize the Unix world has
 missed an opportunity and it is probably impossible to reclaim it.</p>
-<h2 id="what-i-want">What I want&nbsp;<a class="headline-hash" href="#what-i-want">#</a> </h2>
+<h2 id="what-i-want">What I want <a class="anchor" href="#what-i-want" aria-label="Link to this section">#</a></h2>
 <p>I have been looking to replace compressed Numpy <code>.npz</code> file format
 satisfying these requirements.</p>
 <ul>
@@ -96,25 +42,25 @@ satisfying these requirements.</p>
 <li>writeable from C++, preferably with Boost.Iostreams</li>
 <li>readable from Python</li>
 </ul>
-<h2 id="what-i-found">What I found&nbsp;<a class="headline-hash" href="#what-i-found">#</a> </h2>
-<p>The <a href="https://github.com/vasi/pixz">pixz</a> tool is very close to what I&rsquo;m looking for.  It provides
+<h2 id="what-i-found">What I found <a class="anchor" href="#what-i-found" aria-label="Link to this section">#</a></h2>
+<p>The <a href="https://github.com/vasi/pixz" rel="external">pixz</a> tool is very close to what I&rsquo;m looking for.  It provides
 indexed <code>tar+xz</code>.  It only loses a few points in that <code>xz/lzma2</code> is
 somewhat slower than <code>gzip</code> tested at both of their lower compression
 levels.  OTOH, <code>xz</code> does a few 10% more compression than <code>gzip</code> so it&rsquo;s
 got that going for it, which is nice.</p>
 <p>In the end, <code>pixz</code> is likely what I will use and to that end have added
-support to <a href="https://github.com/brettviren/custard">custard</a> to tack on calling <code>pixz</code> to a Boost.Iostreams
+support to <a href="https://github.com/brettviren/custard" rel="external">custard</a> to tack on calling <code>pixz</code> to a Boost.Iostreams
 following the custard stream protocol.  This weirdness of exec&rsquo;ing
 another program is due to <code>pixz</code> not providing a library.  Something
 that would be not so hard to fix.</p>
 <p>But that got me thinking, the <code>pixz</code> way of indexing <code>tar+xz</code> must be
-possible with <code>tar+gz</code> and if anything could do that it would be <a href="https://zlib.net/pigz/">pigz</a>!.
+possible with <code>tar+gz</code> and if anything could do that it would be <a href="https://zlib.net/pigz/" rel="external">pigz</a>!.
 I mean after all they differ by only one letter.  But, alas, no.  <code>pigz</code>
 is cool, but not this kind of cool.</p>
-<h2 id="hubris-oriented-programming-paradigm">Hubris Oriented Programming paradigm&nbsp;<a class="headline-hash" href="#hubris-oriented-programming-paradigm">#</a> </h2>
+<h2 id="hubris-oriented-programming-paradigm">Hubris Oriented Programming paradigm <a class="anchor" href="#hubris-oriented-programming-paradigm" aria-label="Link to this section">#</a></h2>
 <p>I was surprised to not find someone already providing what I&rsquo;m
 looking for which goosed my hubris glands enough to take a shot at
-coming up with something myself.  Reading the <a href="http://www.zlib.org/rfc-gzip.html">gzip format</a> docs I was
+coming up with something myself.  Reading the <a href="http://www.zlib.org/rfc-gzip.html" rel="external">gzip format</a> docs I was
 drawn to the existence of <code>FEXTRA</code> and <code>FCOMMENT</code>.</p>
 <p>It gave me a first order design:</p>
 <ol>
@@ -145,7 +91,7 @@ file metadata allowing a reader to avoid even having to ascend the
 index.</p>
 </li>
 </ol>
-<h2 id="when-it-all-falls-apart">When it all falls apart&nbsp;<a class="headline-hash" href="#when-it-all-falls-apart">#</a> </h2>
+<h2 id="when-it-all-falls-apart">When it all falls apart <a class="anchor" href="#when-it-all-falls-apart" aria-label="Link to this section">#</a></h2>
 <p>After implementing a prototype writer in Python (named <code>gzit.py</code> -
 &ldquo;gzipped, indexed tar-like&rdquo;) I was able to produce some test files and
 see how standard <code>gunzip</code> handles them.  Well, it doesn&rsquo;t.</p>
@@ -163,30 +109,30 @@ catch at first.  It does not imply that subsequent members in the <code>gzip</co
 file will be unpacked to their original file names.  Indeed, <code>gunzip</code>
 applies a &ldquo;first file wins all the data&rdquo; rule.  And, I didn&rsquo;t need to
 prototype this crazy scheme to learn that.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo aaa &gt; a.txt
-</span></span><span style="display:flex;"><span>echo bbb &gt; b.txt
-</span></span><span style="display:flex;"><span>gzip -N <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt
-</span></span><span style="display:flex;"><span>cat <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt.gz &gt; ab.txt.gz
-</span></span><span style="display:flex;"><span>rm -f <span style="color:#f92672">{</span>a,b<span style="color:#f92672">}</span>.txt<span style="color:#f92672">{</span>,.gz<span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; zcat&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#fdf6e3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> aaa &gt; a.txt
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> bbb &gt; b.txt
+</span></span><span style="display:flex;"><span>gzip -N {a,b}.txt
+</span></span><span style="display:flex;"><span>cat {a,b}.txt.gz &gt; ab.txt.gz
+</span></span><span style="display:flex;"><span>rm -f {a,b}.txt{,.gz}
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;&gt; zcat&#34;</span>
 </span></span><span style="display:flex;"><span>zcat ab.txt.gz
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; gzip -lv&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;&gt; gzip -lv&#34;</span>
 </span></span><span style="display:flex;"><span>gzip -lv ab.txt.gz
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; od -d ab.txt.gz&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;&gt; od -d ab.txt.gz&#34;</span>
 </span></span><span style="display:flex;"><span>od -a ab.txt.gz
 </span></span><span style="display:flex;"><span>gunzip -N ab.txt.gz
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&gt; just a.txt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">echo</span> <span style="color:#2aa198">&#34;&gt; just a.txt&#34;</span>
 </span></span><span style="display:flex;"><span>cat a.txt
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&gt; zcat
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#fdf6e3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&gt; zcat
 </span></span><span style="display:flex;"><span>aaa
 </span></span><span style="display:flex;"><span>bbb
 </span></span><span style="display:flex;"><span>&gt; gzip -lv
 </span></span><span style="display:flex;"><span>method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
-</span></span><span style="display:flex;"><span>defla 4c261fe1 Apr 24 18:30                  60                   4 -800.0% ab.txt
+</span></span><span style="display:flex;"><span>defla 4c261fe1 Apr 24 17:53                  60                   4 -800.0% ab.txt
 </span></span><span style="display:flex;"><span>&gt; od -d ab.txt.gz
-</span></span><span style="display:flex;"><span>0000000  us  vt  bs  bs esc   O   e   b nul etx   a   .   t   x   t nul
+</span></span><span style="display:flex;"><span>0000000  us  vt  bs  bs   E   F   e   b nul etx   a   .   t   x   t nul
 </span></span><span style="display:flex;"><span>0000020   K   L   L   d stx nul nak   ]   x   w eot nul nul nul  us  vt
-</span></span><span style="display:flex;"><span>0000040  bs  bs esc   O   e   b nul etx   b   .   t   x   t nul   K   J
+</span></span><span style="display:flex;"><span>0000040  bs  bs   E   F   e   b nul etx   b   .   t   x   t nul   K   J
 </span></span><span style="display:flex;"><span>0000060   J   b stx nul   a  us   &amp;   L eot nul nul nul
 </span></span><span style="display:flex;"><span>0000074
 </span></span><span style="display:flex;"><span>&gt; just a.txt
@@ -194,7 +140,7 @@ prototype this crazy scheme to learn that.</p>
 </span></span><span style="display:flex;"><span>bbb
 </span></span></code></pre></div><p>You can see <code>a.txt</code> and <code>b.txt</code> file names are stored in the gzip header
 but no <code>b.txt</code> is produced and <code>a.txt</code> includes the contents from <code>b.txt</code>.</p>
-<h2 id="just-provide-a-custom-decompressor">Just provide a custom decompressor&nbsp;<a class="headline-hash" href="#just-provide-a-custom-decompressor">#</a> </h2>
+<h2 id="just-provide-a-custom-decompressor">Just provide a custom decompressor <a class="anchor" href="#just-provide-a-custom-decompressor" aria-label="Link to this section">#</a></h2>
 <p>While a more sophisticated decompressor could certainly be created to
 support this extension to the GZIP format it would be a foot gun.
 Imagine some poor user given a 50 MB file of 100s of large but sparse
@@ -211,7 +157,7 @@ format.</p>
 <p>All this messing about doe make me wonder.  Was the GZIP format meant
 for a greater purpose and the decoders and society that uses them
 limited that greater purpose?</p>
-<h2 id="leaving-me-exactly-where">Leaving me exactly where&nbsp;<a class="headline-hash" href="#leaving-me-exactly-where">#</a> </h2>
+<h2 id="leaving-me-exactly-where">Leaving me exactly where <a class="anchor" href="#leaving-me-exactly-where" aria-label="Link to this section">#</a></h2>
 <p>I&rsquo;ll likely accept the slightly slower <code>xz</code> compression and use <code>pixz</code> to
 make indexed <code>.tar.xz</code> files.  It works already with custard so I should
 just move on. (But, oh, <code>FEXTRA</code> you entice me so!)</p>
@@ -222,24 +168,12 @@ this would give a <code>.gz.tar</code> file (sort of).  The usual indexing trick
 of uncompressed <code>tar</code> files can then be applied and random file-level
 reads can be done with each engaging a <code>gunzip</code> post processor.  All
 very straight-forward and boring.</p>
+</article>
 
-
-    </div>
-  </article>
 </main>
-
-    <footer>
-  <hr>
-
-  <p>
-
-    <img width="10px" src="https://brettviren.github.io/icons/copyleft.svg">
- 2022 <a href="https://brettviren.github.io/"><b>They call me Brett</b></a>.
-  </p>
-
-
+<footer class="site">
+<p>Brett Viren · site version <code>v0-2-g8815561</code> · <a href="/index.xml">rss</a></p>
 
 </footer>
-
-  </body>
+</body>
 </html>

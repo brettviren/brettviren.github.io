@@ -1,115 +1,40 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  
-  
-  <link rel="stylesheet" href="https://brettviren.github.io/css/katex.min.css">
-<script defer src="https://brettviren.github.io/js/katex.min.js"></script>
-<script defer src="https://brettviren.github.io/js/auto-render.min.js"
-        onload="renderMathInElement(document.body);"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      renderMathInElement(document.body, {
-          delimiters: [
-              {left: "$$", right: "$$", display: true},
-              {left: "$", right: "$", display: false}
-          ]
-      });
-  });
-</script>
-
-  
-
-  
-  <style type=text/css>body{font-family:monospace;}</style>
-  <title>Adding more CPU or GPU slows things down</title>
-  
-  <meta name="author" content="Brett Viren">
-  <link rel="stylesheet" href="https://brettviren.github.io/css/style.css">
-  
-  
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adding more CPU or GPU slows things down · They call me Brett</title>
+<link rel="stylesheet" href="/css/plain.min.2e1a20bc928a7b9c68215841de73694832033673b49016deb6ecb76a8d392520.css">
 </head>
+<body>
+<header class="site">
+<p><a class="site-title" href="/">They call me Brett</a> <span class="subtitle">turning neutrinos into bytes</span></p>
+<nav>
+<a href="/posts/">posts</a>
+<a href="/articles/">articles</a>
+<a href="/notes/">notes</a>
+<a href="/tags/">tags</a>
+<a href="/search/">search</a>
+<a href="/about/">about</a>
+</nav>
+</header>
+<main>
 
-
-
-  <body>
-    <header>
-    <div style="text-align: center;">
-    <a href="mailto:bv@bnl.gov"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="mailto:brett.viren@gmail.com"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="https://www.phy.bnl.gov/~bviren/"><img src="https://brettviren.github.io/icons/dollar-sign.svg"></a>
-    <a href="https://github.com/brettviren"><img src="https://brettviren.github.io/icons/github.svg"></a>
-    <a href="https://twitter.com/brett_viren"><img src="https://brettviren.github.io/icons/twitter.svg"></a>
-    <a href="https://fosstodon.org/@bv"><img src="https://brettviren.github.io/icons/matrix.svg"></a>
-
-  
-  </div>
-  <div class="banner-left" style="float: left;">  
-    <a href="https://brettviren.github.io/">They call me Brett</a> <br>
-  </div>
-  <div class="banner-right" style="float: right;">
-    turning neutrinos in to bytes <br>
-  </div>
-  <br/>
-  <hr>
-
-  <p>
-
-  <nav>
-    <div style="text-align: center;">
-    
-    
-    [<a href="https://brettviren.github.io/posts/"><b>Blog</b></a>]
-    
-    [<a href="https://brettviren.github.io/articles/"><b>Articles</b></a>]
-    
-    [<a href="https://brettviren.github.io/notes/"><b>Notes</b></a>]
-    
-    [<a href="https://brettviren.github.io/about/"><b>About</b></a>]
-    
-    </div>
-  </nav>
+<article>
+<header>
+<h1>Adding more CPU or GPU slows things down</h1>
+<p class="meta"><time datetime="2021-10-17">2021-10-17</time>
+· updated <time datetime="2026-11-22">2026-11-22</time> · <a href="/categories/tools/">Tools</a> · tags: <a href="/tags/thread/">thread</a>, <a href="/tags/memory/">memory</a>, <a href="/tags/gpu/">gpu</a>, <a href="/tags/hardware/">hardware</a>, <a href="/tags/software/">software</a>, <a href="/tags/paradigm/">paradigm</a>, <a href="/tags/wct/">wct</a> · <a href="/articles/salad/salad.org">org source</a> · version <code>v0-0-gb998507</code>
+</p>
 
 </header>
 
-    
-<main>
-  <article>
-    <h1>Adding more CPU or GPU slows things down</h1>
-    <b><time>Sun 17 Oct 2021</time></b>
-    
-    <a href="https://brettviren.github.io/tags/thread">thread</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/memory">memory</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/gpu">gpu</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/hardware">hardware</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/software">software</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/paradigm">paradigm</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/wct">wct</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <div>
-      <p>Adding more computing units reduces computing throughput.  I will try
+
+<p>Adding more computing units reduces computing throughput.  I will try
 to describe what I mean by this true but internally paradoxical
 sounding statement, some ways we can break it and the new problems
 these solutions bring.</p>
-<h2 id="more-is-less">More is less&nbsp;<a class="headline-hash" href="#more-is-less">#</a> </h2>
+<h2 id="more-is-less">More is less <a class="anchor" href="#more-is-less" aria-label="Link to this section">#</a></h2>
 <p>For the longest time, the software workloads in our field (neutrino
 hep-ex but also others) enjoyed a trio of enabling features:</p>
 <ol>
@@ -130,7 +55,7 @@ wasting CPU cores in order to gain their associated RAM.</p>
 <p>This core-time waste is strongly frowned upon by HTC managers.  If
 that were not enough, two other trends put this over-allocation tactic
 in jeopardy.</p>
-<p>First, as we enter the era of <a href="https://www.bnl.gov/science/DUNE.php">DUNE</a> we potentially face an even larger
+<p>First, as we enter the era of <a href="https://www.bnl.gov/science/DUNE.php" rel="external">DUNE</a> we potentially face an even larger
 RAM usage.  If we continue to &ldquo;scale&rdquo; the code for current &ldquo;small&rdquo;
 detectors such as MicroBooNE and ProtoDUNE-SP to DUNE FDHD we may
 expect a 25x increase in RAM usage.  Of course, some tricks can and
@@ -152,17 +77,17 @@ HPC brings in a problem very similar to the problem of the CPU/RAM
 ratio.</p>
 <p>So, we as a community are stuck with the unusual problem: how to
 effectively use <strong>more</strong> CPU (but not more RAM).  What can be done?</p>
-<h2 id="loop-level-multi-threading">Loop-level multi-threading&nbsp;<a class="headline-hash" href="#loop-level-multi-threading">#</a> </h2>
+<h2 id="loop-level-multi-threading">Loop-level multi-threading <a class="anchor" href="#loop-level-multi-threading" aria-label="Link to this section">#</a></h2>
 <p>This means to make use of small scale, &ldquo;loop level&rdquo; MT parallelism.
 In the old CPU-bottleneck days, employing this tactic alone would be
 sociopathetic to the job.  An $N$-way parallel loop would require an
-allocation of \(N\) CPU cores.  Once the loop happily completes $N$-times
+allocation of <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span> CPU cores.  Once the loop happily completes $N$-times
 faster (at best) the rest of job which nominally will be executing in
-a serial manner.  The need to allocate \(N\) cores per job and no way to
+a serial manner.  The need to allocate <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span> cores per job and no way to
 share them outside the MT code segment leads to waste and frowning HTC
 managers.</p>
 <p>Of course, when following the waste-CPU-for-RAM tactic, we nominally
-waste \(N-1\) cores anyways.  In this tactic, loop-level algorithms are
+waste <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N-1</annotation></semantics></math></span> cores anyways.  In this tactic, loop-level algorithms are
 encouraged to make use of the otherwise wated cores.  This helps to
 turn that frown right-way around.</p>
 <p>We want further utilize the wasted cores, especially as that waste
@@ -180,7 +105,7 @@ done with, for exaple, TBB.  In practice, loop-level MT algorithms are
 developed by a variety of individuals and they are pursuing a variety
 of implementations such as those based on <code>std::thread</code>, Kokkos, OpenMP
 and TBB and others may be expected.</p>
-<h2 id="task-level-multi-threading">Task level multi-threading&nbsp;<a class="headline-hash" href="#task-level-multi-threading">#</a> </h2>
+<h2 id="task-level-multi-threading">Task level multi-threading <a class="anchor" href="#task-level-multi-threading" aria-label="Link to this section">#</a></h2>
 <p>The overall processing patterns enacted by a job tend to break up into
 discrete computational units which exchange data.  This is fractal
 (scale invariant) in nature.  We described loop level above, but that
@@ -220,7 +145,7 @@ ProtoDUNE-SP, which already stresses memory.  More absurdly, special
 &ldquo;events&rdquo; will record possible supernova bursts over a vastly extended
 period of time.  Such &ldquo;events&rdquo; will be 200x larger than nominal.
 Clearly something has to give.</p>
-<p>The <a href="https://wirecell.github.io/">Wire-Cell Toolkit</a> (WCT) was designed without the arbitrary
+<p>The <a href="https://wirecell.github.io/" rel="external">Wire-Cell Toolkit</a> (WCT) was designed without the arbitrary
 limiting definition of &ldquo;the event&rdquo; which opens up a new but not so
 unfamiliar paradigm.  It honors the fact that &ldquo;task level&rdquo; is scale
 invariant and encourages developers design a code unit (WCT calls is a
@@ -253,8 +178,8 @@ flight&rdquo; through the graph at any given time.  A multi-threaded engine
 based on TBB <code>flow_graph</code> executes some number nodes in parallel up to a
 maximum number given by the user.</p>
 <p>As said, a node developer may assume a data context smaller than one
-&ldquo;event&rdquo;.  For example, we may add \(N\) instances of a node implementation
-to a graph, one for each of \(N\) sub-detector units (eg one for each of
+&ldquo;event&rdquo;.  For example, we may add <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span> instances of a node implementation
+to a graph, one for each of <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span> sub-detector units (eg one for each of
 150 APAs in DUNE FDHD).  It further allows pipeline-parallelism where
 for each sub-detector unit we may have multiple nodes in a line each
 processing as a chain.  Typical pipelines are composed of a few stages
@@ -274,7 +199,7 @@ whenever a core may otherwise go idle.</p>
 to I/O.  The Framework tends to reflect the monolith of &ldquo;the event&rdquo;
 into monolithic and serial I/O.  Loading &ldquo;the event&rdquo; is a single
 threaded operation happening at &ldquo;the start of the event&rdquo; while wasting
-\(N-1\) threads.  Likewise event ending output.  With compression
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N-1</annotation></semantics></math></span> threads.  Likewise event ending output.  With compression
 necessarily being employed on the expected large volumes of data, this
 single-threaded I/O stages can be significant and in some cases
 dominate the run time of some jobs.</p>
@@ -301,7 +226,7 @@ nature of the graph execution means that sources to mix will execute
 &ldquo;just in time&rdquo; to provide the next input needed.  The &ldquo;mixer&rdquo; node
 becomes relatively trivial to implement and configuring for different
 &ldquo;mixes&rdquo; poses no extra burden.</p>
-<h2 id="gpu-parallelism">GPU parallelism&nbsp;<a class="headline-hash" href="#gpu-parallelism">#</a> </h2>
+<h2 id="gpu-parallelism">GPU parallelism <a class="anchor" href="#gpu-parallelism" aria-label="Link to this section">#</a></h2>
 <p>GPUs essentially represent the worse case of non-salad days</p>
 <ul>
 <li>many many many cores</li>
@@ -336,8 +261,8 @@ software.  Given previous understanding of the GPU RAM requirements
 per unit of processing we may (and in WCT have) implemented a
 semaphore pattern to limit the number of processes which may execute
 in parallel on the GPU at any given time.</p>
-<p>This simple solution brings a new problem.  When the \(N+1^{st}\) thread
-wishes to execute work on a GPU which is already at its limit of \(N\)
+<p>This simple solution brings a new problem.  When the <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>+</mo><msup><mn>1</mn><mrow><mi>s</mi><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">N+1^{st}</annotation></semantics></math></span> thread
+wishes to execute work on a GPU which is already at its limit of <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span>
 it must wait in some manner.  A simple semaphore will simply block
 that thread.  Thus by accelerating the code with a GPU of limited
 memory we must <strong>slow down</strong> the job by making threads wait.  This is even
@@ -370,7 +295,7 @@ special purpose nodes which isolate the new problems that this
 solution brings.  This is very doable if challenging to develop and
 will maximize both CPU and GPU utilization by leveraging the inherent
 load balancing nature of parallel <em>data flow</em> graph execution.</p>
-<h2 id="where-are-we">Where are we?&nbsp;<a class="headline-hash" href="#where-are-we">#</a> </h2>
+<h2 id="where-are-we">Where are we? <a class="anchor" href="#where-are-we" aria-label="Link to this section">#</a></h2>
 <p>I&rsquo;m still not sure where I wanted to go with this article or what
 exactly is the paradigm we should chase and so I have no deep
 conclusions.  For now, the main points I tried to make are the
@@ -400,24 +325,12 @@ far appears to provide a good basis as we go to utilize
 heterogeneous hardware and yet larger core/RAM ratios.</p>
 </li>
 </ul>
+</article>
 
-
-    </div>
-  </article>
 </main>
-
-    <footer>
-  <hr>
-
-  <p>
-
-    <img width="10px" src="https://brettviren.github.io/icons/copyleft.svg">
- 2022 <a href="https://brettviren.github.io/"><b>They call me Brett</b></a>.
-  </p>
-
-
+<footer class="site">
+<p>Brett Viren · site version <code>v0-2-g8815561</code> · <a href="/index.xml">rss</a></p>
 
 </footer>
-
-  </body>
+</body>
 </html>

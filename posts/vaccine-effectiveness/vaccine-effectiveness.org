@@ -1,0 +1,121 @@
+#+title: Vaccine Effectiveness
+#+date: 2022-01-05
+#+hugo_base_dir: ../../..
+#+hugo_section: posts
+#+hugo_bundle: vaccine-effectiveness
+#+export_file_name: index
+#+hugo_draft: false
+#+hugo_tags: covid stats
+#+hugo_categories: learning
+#+hugo_custom_front_matter: :math true
+#+audience: both
+#+visibility: public
+#+property: header-args+ :eval never-export
+
+
+I have seen the quantitiy /vaccine effectiveness/ (VE) used in many
+contexts and never really knew what it meant.  Today, I checked and
+this is what I learned.  As I sort of expected, the causal connection
+with the workings of the vaccine is not complete.  It leaves some room
+to be influenced things that are merely correlated with being
+vaccinated.  
+
+#+hugo: more
+
+NY state gov has some good info on [[https://coronavirus.health.ny.gov/covid-19-breakthrough-data][vaccine breakthrough]].  Currently
+4.9% of vaxxed NYers caught COVID.  If you are vaxxed and catch it,
+you'll contribute to only 0.15% of hospitalized COVID patients.  On
+the topic of hospitalization, the page continues with:
+
+#+begin_quote
+For the week of May 3, 2021, the estimated vaccine effectiveness shows
+fully-vaccinated New Yorkers had a 92.4% lower chance of becoming a
+COVID-19 case, compared to unvaccinated New Yorkers.
+#+end_quote
+
+Well, 92.4 seems like a nice happy big number, great!...  But then,
+"%-lower chance", that just sounds weird to me.  What does it mean?
+
+That page conveniently links to the open article [[https://www.nejm.org/doi/full/10.1056/NEJMoa2116063][Rosenberg et all, Dec
+2021]] which conveniently links to the even more useful [[https://www.nejm.org/doi/suppl/10.1056/NEJMoa2116063/suppl_file/nejmoa2116063_appendix.pdf][appendix]] which 
+defines 
+
+\[HR = \frac{h_{vaxxed}(t)}{h_{nasty}(t)}\]
+
+Okay, those are my subscripts.  The $h(t)$ here is the called the
+/hazard function/ which is apparently a term-of-art.  To the google!
+That turns up these very clear and concise [[https://web.stanford.edu/~lutian/coursepdf/unit1.pdf][note]] and [[https://web.stanford.edu/~lutian/coursepdf/slideweek1.pdf][presentation]] from
+a Stanford bio class.
+
+There is explained that the /hazard function/ is a conditional
+probability that some "event" (catching COVID) will occur for a time
+$T \in [t,t+dt]$ given that the event had yet to occur by time $T=t$.
+
+For example, a daily hazard function can tell us the probability we
+get COVID tomorrow given we don't have it today. (Maybe it should be
+called the Wimpy Hamburger Function).
+
+The Stanford continues to define a /survival function/ and various
+relations between it, a /cumulative hazard function/, the original PDF
+and the hazard function.  But, I leave it there and go back to the NY
+State report.  
+
+There it gives this example:
+
+- cohort size :: $N_c=215,159$ vaxxed people at risk in first week of May
+- infected :: $N_i = 56$ number of vaxxed infected in first week of May
+
+It defines the hazard function for that cohort that week as
+
+\[h(t) = \frac{N_i}{N_c - \frac{N_i}{2}}\] 
+
+where the $\frac{1}{2}$ in the denominator is apparently an attempt to
+place the measure at the middle of the week (?).  Ie, half the
+infected are removed from cohort.  That looks a little weird to me,
+but it doesn't change the result much as long as $N_i \ll N_c$ so
+whatever.
+
+The collected data gives $h_{vaxxed} = 3.68$ per 100,000 people for that
+first month of May.
+
+For that week the nasty unvaxxed saw an $N_c$ about 10x larger and
+$N_i$ is 100x larger so $h_{nasty} = 35.80$ per 100,000 is 10x more.
+
+Then an intermediate /hazard ratio/ of those two functions, $HR = 0.103$
+and finally the /vax effectiveness/ of 89.7%,
+
+\[VE = 1-HR\]
+
+To calculate the VE for the next week we do the same thing after
+reducing the number of cohorts by how many got COVID during the
+current week: $N^{w+1}_c = N^w_c - N^w_i$.
+
+After all that, VE is simply and effectively (one minus) a double
+ratio of the relative infected fractions between vaxxed and unvaxxed.
+
+Now, knowing the definition it is clear to me that we are making a
+small category error by attributing this measure of "effectiveness" to
+just the mechanism of the vaccine.  There must be other, unknown (to
+me at least), contributions that are correlated with being vaccinated.
+For example, people that get vaxxed must also be more likely to wear
+masks, socially distance and engage in other behavior that counters
+the spread of the virus.  All those activities will keep their
+relative infections lower than their nastier counterparts.
+
+So what?  Well, not much.  Mostly I don't like so much attention payed
+to undefined numbers.  But also, there is a potential curiosity of
+statistics we are missing.  Faced with two choices, say two types of
+vaccines, we might want to know more about these correlations to see
+if they might break the tie for which choice is best for our personal
+choice.  
+
+Say, just for sake of example, Pfizer and Moderna had the same VE as
+defined above.  Now let's pretend we knew that "Pfizer people" were
+much more into masks and social distancing.  That would mean that
+Moderna must be a better vaccine in order for the two to have an equal
+VE.  We might then decide personally to get Modernal and mask up and
+distance socially.  Again, just a fabricated example.  I'm not saying
+one vax is better or the other.
+
+And, I'm also definitely not saying don't get vaxxed.  Get vaxxed, you
+filthy swine!

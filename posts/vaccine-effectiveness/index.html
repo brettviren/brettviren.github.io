@@ -1,102 +1,42 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  
-  
-  <link rel="stylesheet" href="https://brettviren.github.io/css/katex.min.css">
-<script defer src="https://brettviren.github.io/js/katex.min.js"></script>
-<script defer src="https://brettviren.github.io/js/auto-render.min.js"
-        onload="renderMathInElement(document.body);"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      renderMathInElement(document.body, {
-          delimiters: [
-              {left: "$$", right: "$$", display: true},
-              {left: "$", right: "$", display: false}
-          ]
-      });
-  });
-</script>
-
-  
-
-  
-  <style type=text/css>body{font-family:monospace;}</style>
-  <title>Vaccine Effectiveness</title>
-  
-  <meta name="author" content="Brett Viren">
-  <link rel="stylesheet" href="https://brettviren.github.io/css/style.css">
-  
-  
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vaccine Effectiveness · They call me Brett</title>
+<link rel="stylesheet" href="/css/plain.min.2e1a20bc928a7b9c68215841de73694832033673b49016deb6ecb76a8d392520.css">
 </head>
+<body>
+<header class="site">
+<p><a class="site-title" href="/">They call me Brett</a> <span class="subtitle">turning neutrinos into bytes</span></p>
+<nav>
+<a href="/posts/">posts</a>
+<a href="/articles/">articles</a>
+<a href="/notes/">notes</a>
+<a href="/tags/">tags</a>
+<a href="/search/">search</a>
+<a href="/about/">about</a>
+</nav>
+</header>
+<main>
 
-
-
-  <body>
-    <header>
-    <div style="text-align: center;">
-    <a href="mailto:bv@bnl.gov"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="mailto:brett.viren@gmail.com"><img src="https://brettviren.github.io/icons/email.svg"></a>
-    <a href="https://www.phy.bnl.gov/~bviren/"><img src="https://brettviren.github.io/icons/dollar-sign.svg"></a>
-    <a href="https://github.com/brettviren"><img src="https://brettviren.github.io/icons/github.svg"></a>
-    <a href="https://twitter.com/brett_viren"><img src="https://brettviren.github.io/icons/twitter.svg"></a>
-    <a href="https://fosstodon.org/@bv"><img src="https://brettviren.github.io/icons/matrix.svg"></a>
-
-  
-  </div>
-  <div class="banner-left" style="float: left;">  
-    <a href="https://brettviren.github.io/">They call me Brett</a> <br>
-  </div>
-  <div class="banner-right" style="float: right;">
-    turning neutrinos in to bytes <br>
-  </div>
-  <br/>
-  <hr>
-
-  <p>
-
-  <nav>
-    <div style="text-align: center;">
-    
-    
-    [<a href="https://brettviren.github.io/posts/"><b>Blog</b></a>]
-    
-    [<a href="https://brettviren.github.io/articles/"><b>Articles</b></a>]
-    
-    [<a href="https://brettviren.github.io/notes/"><b>Notes</b></a>]
-    
-    [<a href="https://brettviren.github.io/about/"><b>About</b></a>]
-    
-    </div>
-  </nav>
+<article>
+<header>
+<h1>Vaccine Effectiveness</h1>
+<p class="meta"><time datetime="2022-01-05">2022-01-05</time>
+· updated <time datetime="2026-11-22">2026-11-22</time> · <a href="/categories/learning/">learning</a> · tags: <a href="/tags/covid/">covid</a>, <a href="/tags/stats/">stats</a> · <a href="/posts/vaccine-effectiveness/vaccine-effectiveness.org">org source</a> · version <code>v0-0-gb998507</code>
+</p>
 
 </header>
 
-    
-<main>
-  <article>
-    <h1>Vaccine Effectiveness</h1>
-    <b><time>Wed 5 Jan 2022</time></b>
-    
-    <a href="https://brettviren.github.io/tags/covid">covid</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <a href="https://brettviren.github.io/tags/stats">stats</a>
-    <img src="https://brettviren.github.io/icons/tag-12.svg">
-    
-    <div>
-      <p>I have seen the quantitiy <em>vaccine effectiveness</em> (VE) used in many
+
+<p>I have seen the quantitiy <em>vaccine effectiveness</em> (VE) used in many
 contexts and never really knew what it meant.  Today, I checked and
 this is what I learned.  As I sort of expected, the causal connection
 with the workings of the vaccine is not complete.  It leaves some room
 to be influenced things that are merely correlated with being
 vaccinated.</p>
-<p>NY state gov has some good info on <a href="https://coronavirus.health.ny.gov/covid-19-breakthrough-data">vaccine breakthrough</a>.  Currently
+<p>NY state gov has some good info on <a href="https://coronavirus.health.ny.gov/covid-19-breakthrough-data" rel="external">vaccine breakthrough</a>.  Currently
 4.9% of vaxxed NYers caught COVID.  If you are vaxxed and catch it,
 you&rsquo;ll contribute to only 0.15% of hospitalized COVID patients.  On
 the topic of hospitalization, the page continues with:</p>
@@ -107,17 +47,16 @@ COVID-19 case, compared to unvaccinated New Yorkers.</p>
 </blockquote>
 <p>Well, 92.4 seems like a nice happy big number, great!&hellip;  But then,
 &ldquo;%-lower chance&rdquo;, that just sounds weird to me.  What does it mean?</p>
-<p>That page conveniently links to the open article <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2116063">Rosenberg et all, Dec
-2021</a> which conveniently links to the even more useful <a href="https://www.nejm.org/doi/suppl/10.1056/NEJMoa2116063/suppl%5Ffile/nejmoa2116063%5Fappendix.pdf">appendix</a> which
+<p>That page conveniently links to the open article <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2116063" rel="external">Rosenberg et all, Dec
+2021</a> which conveniently links to the even more useful <a href="https://www.nejm.org/doi/suppl/10.1056/NEJMoa2116063/suppl_file/nejmoa2116063_appendix.pdf" rel="external">appendix</a> which
 defines</p>
-<p>\[HR = \frac{h_{vaxxed}(t)}{h_{nasty}(t)}\]</p>
-<p>Okay, those are my subscripts.  The \(h(t)\) here is the called the
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mi>h</mi><mi mathvariant="normal">_</mi><mrow><mi>v</mi><mi>a</mi><mi>x</mi><mi>x</mi><mi>e</mi><mi>d</mi></mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mrow><mi>h</mi><mi mathvariant="normal">_</mi><mrow><mi>n</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>y</mi></mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">HR = \frac{h\_{vaxxed}(t)}{h\_{nasty}(t)}</annotation></semantics></math></span><p>Okay, those are my subscripts.  The <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">h(t)</annotation></semantics></math></span> here is the called the
 <em>hazard function</em> which is apparently a term-of-art.  To the google!
-That turns up these very clear and concise <a href="https://web.stanford.edu/~lutian/coursepdf/unit1.pdf">note</a> and <a href="https://web.stanford.edu/~lutian/coursepdf/slideweek1.pdf">presentation</a> from
+That turns up these very clear and concise <a href="https://web.stanford.edu/~lutian/coursepdf/unit1.pdf" rel="external">note</a> and <a href="https://web.stanford.edu/~lutian/coursepdf/slideweek1.pdf" rel="external">presentation</a> from
 a Stanford bio class.</p>
 <p>There is explained that the <em>hazard function</em> is a conditional
 probability that some &ldquo;event&rdquo; (catching COVID) will occur for a time
-\(T \in [t,t+dt]\) given that the event had yet to occur by time \(T=t\).</p>
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>∈</mo><mo stretchy="false">[</mo><mi>t</mi><mo separator="true">,</mo><mi>t</mi><mo>+</mo><mi>d</mi><mi>t</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">T \in [t,t+dt]</annotation></semantics></math></span> given that the event had yet to occur by time <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">T=t</annotation></semantics></math></span>.</p>
 <p>For example, a daily hazard function can tell us the probability we
 get COVID tomorrow given we don&rsquo;t have it today. (Maybe it should be
 called the Wimpy Hamburger Function).</p>
@@ -128,27 +67,25 @@ State report.</p>
 <p>There it gives this example:</p>
 <dl>
 <dt>cohort size</dt>
-<dd>\(N_c=215,159\) vaxxed people at risk in first week of May</dd>
+<dd><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>c</mi><mo>=</mo><mn>215</mn><mo separator="true">,</mo><mn>159</mn></mrow><annotation encoding="application/x-tex">N\_c=215,159</annotation></semantics></math></span> vaxxed people at risk in first week of May</dd>
 <dt>infected</dt>
-<dd>\(N_i = 56\) number of vaxxed infected in first week of May</dd>
+<dd><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>i</mi><mo>=</mo><mn>56</mn></mrow><annotation encoding="application/x-tex">N\_i = 56</annotation></semantics></math></span> number of vaxxed infected in first week of May</dd>
 </dl>
 <p>It defines the hazard function for that cohort that week as</p>
-<p>\[h(t) = \frac{N_i}{N_c - \frac{N_i}{2}}\]</p>
-<p>where the \(\frac{1}{2}\) in the denominator is apparently an attempt to
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>i</mi></mrow><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>c</mi><mo>−</mo><mfrac><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>i</mi></mrow><mn>2</mn></mfrac></mrow></mfrac></mrow><annotation encoding="application/x-tex">h(t) = \frac{N\_i}{N\_c - \frac{N\_i}{2}}</annotation></semantics></math></span><p>where the <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{2}</annotation></semantics></math></span> in the denominator is apparently an attempt to
 place the measure at the middle of the week (?).  Ie, half the
 infected are removed from cohort.  That looks a little weird to me,
-but it doesn&rsquo;t change the result much as long as \(N_i \ll N_c\) so
+but it doesn&rsquo;t change the result much as long as <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>i</mi><mo>≪</mo><mi>N</mi><mi mathvariant="normal">_</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">N\_i \ll N\_c</annotation></semantics></math></span> so
 whatever.</p>
-<p>The collected data gives \(h_{vaxxed} = 3.68\) per 100,000 people for that
+<p>The collected data gives <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mi mathvariant="normal">_</mi><mrow><mi>v</mi><mi>a</mi><mi>x</mi><mi>x</mi><mi>e</mi><mi>d</mi></mrow><mo>=</mo><mn>3.68</mn></mrow><annotation encoding="application/x-tex">h\_{vaxxed} = 3.68</annotation></semantics></math></span> per 100,000 people for that
 first month of May.</p>
-<p>For that week the nasty unvaxxed saw an \(N_c\) about 10x larger and
-\(N_i\) is 100x larger so \(h_{nasty} = 35.80\) per 100,000 is 10x more.</p>
-<p>Then an intermediate <em>hazard ratio</em> of those two functions, \(HR = 0.103\)
+<p>For that week the nasty unvaxxed saw an <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">N\_c</annotation></semantics></math></span> about 10x larger and
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">_</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">N\_i</annotation></semantics></math></span> is 100x larger so <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mi mathvariant="normal">_</mi><mrow><mi>n</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>y</mi></mrow><mo>=</mo><mn>35.80</mn></mrow><annotation encoding="application/x-tex">h\_{nasty} = 35.80</annotation></semantics></math></span> per 100,000 is 10x more.</p>
+<p>Then an intermediate <em>hazard ratio</em> of those two functions, <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>R</mi><mo>=</mo><mn>0.103</mn></mrow><annotation encoding="application/x-tex">HR = 0.103</annotation></semantics></math></span>
 and finally the <em>vax effectiveness</em> of 89.7%,</p>
-<p>\[VE = 1-HR\]</p>
-<p>To calculate the VE for the next week we do the same thing after
+<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>V</mi><mi>E</mi><mo>=</mo><mn>1</mn><mo>−</mo><mi>H</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">VE = 1-HR</annotation></semantics></math></span><p>To calculate the VE for the next week we do the same thing after
 reducing the number of cohorts by how many got COVID during the
-current week: \(N^{w+1}_c = N^w_c - N^w_i\).</p>
+current week: <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>N</mi><mrow><mi>w</mi><mo>+</mo><mn>1</mn></mrow></msup><mi mathvariant="normal">_</mi><mi>c</mi><mo>=</mo><msup><mi>N</mi><mi>w</mi></msup><mi mathvariant="normal">_</mi><mi>c</mi><mo>−</mo><msup><mi>N</mi><mi>w</mi></msup><mi mathvariant="normal">_</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">N^{w+1}\_c = N^w\_c - N^w\_i</annotation></semantics></math></span>.</p>
 <p>After all that, VE is simply and effectively (one minus) a double
 ratio of the relative infected fractions between vaxxed and unvaxxed.</p>
 <p>Now, knowing the definition it is clear to me that we are making a
@@ -174,24 +111,12 @@ distance socially.  Again, just a fabricated example.  I&rsquo;m not saying
 one vax is better or the other.</p>
 <p>And, I&rsquo;m also definitely not saying don&rsquo;t get vaxxed.  Get vaxxed, you
 filthy swine!</p>
+</article>
 
-
-    </div>
-  </article>
 </main>
-
-    <footer>
-  <hr>
-
-  <p>
-
-    <img width="10px" src="https://brettviren.github.io/icons/copyleft.svg">
- 2022 <a href="https://brettviren.github.io/"><b>They call me Brett</b></a>.
-  </p>
-
-
+<footer class="site">
+<p>Brett Viren · site version <code>v0-2-g8815561</code> · <a href="/index.xml">rss</a></p>
 
 </footer>
-
-  </body>
+</body>
 </html>

@@ -1,0 +1,37 @@
+#+title: About Face
+#+date: 2021-10-10
+#+hugo_base_dir: ../../..
+#+hugo_section: about
+#+hugo_bundle: me
+#+export_file_name: index
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args+ :eval never-export
+#+hugo_tags: 
+#+hugo_categories: meta
+#+hugo_publishdate: 2021-10-10
+#+hugo_custom_front_matter: :math false
+
+Hello.
+
+#+hugo: more
+
+#+begin_export html
+<img src="Viren.jpg" hsize="5px" width="50%" align="right"/>
+#+end_export
+
+
+In society, I am paid to conduct research in experimental neutrino physics by [[https://www.bnl.gov][Brookhaven National Lab]] as part of the [[https://www.phy.bnl.gov/edg/][Electronic Detector Group]] in the [[https://www.bnl.gov/physics/][Physics Department]].  What you may read here are my own representations.  Financial considerations aside, I also happen to enjoy this activity particularly as it pertains to developing and applying various computing software and hardware tools.  
+
+The challenges these tools pose are interesting to me in their own right but my underlying motivation is to help bring us more fundamental understanding of our universe.  And toward that end neutrinos provide sharp though even challenging tools.
+
+My contributions to this combination to turning bytes into neutrinos may be roughly categorized as:
+
+- offline software :: The center of this effort is in EDG's subgroup known as [[https://lar.bnl.gov/wire-cell/][Wire-Cell]] and expressions in the form of suites of simulation, data processing and reconstruction software in [[https://github.com/BNLIF][prototype]] and [[https://github.com/wirecell][toolkit]] form.  More broadly I am involved in general offline software ecosystems including that for [[https://github.com/DUNE][DUNE]].
+
+- machine learning :: I started and continue to participate in development of a novel "artificial intelligence / machine learning" technique which we have named [[http://github.com/ls4gan][LS4GAN]].  It is a method to strike at a core AI/ML problem: training a network on simulated data while applying it to perform inference on data from real detectors all the while knowing that these are two different data domains.
+
+- online software :: I contribute to development of [[https://github.com/dune-daq][data acquisition software]] for the DUNE experiment particularly in the area of configuration management with my [[https://github.com/brettviren/moo][moo]] schema based code generator playing an important role.
+
+Throughout this web site you may find [[/posts][blog posts]] or longer [[/articles][articles]] that give details on these and other activities.  More meta details may be found in the [[/about/this][about this site]] page.

@@ -1,200 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>org on They call me Brett</title>
-    <link>https://brettviren.github.io/tags/org/</link>
-    <description>Recent content in org on They call me Brett</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 08 Oct 2021 00:00:00 -0400</lastBuildDate><atom:link href="https://brettviren.github.io/tags/org/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Babel in Jsonnet with ob-jsonnet.el</title>
-      <link>https://brettviren.github.io/posts/ob-jsonnet/</link>
-      <pubDate>Fri, 08 Oct 2021 00:00:00 -0400</pubDate>
-      
-      <guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
-      <description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el&#34;&gt;ob-template.el&lt;/a&gt; is a great starting point and made for light work.&lt;/p&gt;
-&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
-&lt;p&gt;Download &lt;a href=&#34;https://raw.githubusercontent.com/brettviren/ob-jsonnet/master/ob-jsonnet.el&#34;&gt;&lt;code&gt;ob-jsonnet.el&lt;/code&gt;&lt;/a&gt; to somewhere in your load path and add&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lisp&#34; data-lang=&#34;lisp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ob-jsonnet&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And append &lt;code&gt;(jsonnet . t)&lt;/code&gt; to &lt;code&gt;org-babel-load-languages&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;You may customize &lt;code&gt;org-babel-jsonnet-command&lt;/code&gt; if the &lt;code&gt;jsonnet&lt;/code&gt; command is not in your &lt;code&gt;$PATH&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
-&lt;p&gt;Basic usage&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+begin_src jsonnet :exports both :wrap &amp;#34;src json&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{a:42}
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+end_src
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also supply command line options:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+begin_src jsonnet :cmdline &amp;#34;-S&amp;#34; :exports both :wrap &amp;#34;example&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;std.join(&amp;#34; &amp;#34;, [&amp;#34;hello&amp;#34;,&amp;#34;world&amp;#34;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#+end_src
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hello world
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, if only we had proper syntax highlighting for Jsonnet in Hugo.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>About this site</title>
-      <link>https://brettviren.github.io/about/this/</link>
-      <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://brettviren.github.io/about/this/</guid>
-      <description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this
-site is made.&lt;/p&gt;
-&lt;h2 id=&#34;purpose-and-intent&#34;&gt;Purpose and intent&lt;/h2&gt;
-&lt;p&gt;Many times in the past I have attempted to make a &amp;ldquo;web site&amp;rdquo; that is
-somehow &lt;a href=&#34;https://brettviren.github.io/about/me&#34;&gt;about me&lt;/a&gt;.  This is the latest.  Time will tell if it survives.&lt;/p&gt;
-&lt;p&gt;This site is intended as an outlet for:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Detailed responses to technical inquires that might otherwise go
-into an individual email message.  Seeking &amp;ldquo;efficiency&amp;rdquo; (laziness) I
-may instead turn a response into a &lt;a href=&#34;https://brettviren.github.io/posts&#34;&gt;blog post&lt;/a&gt; or a more formal
-&lt;a href=&#34;https://brettviren.github.io/articles&#34;&gt;article&lt;/a&gt; (such as &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt;).  Where applicable, some things already
-land in &lt;a href=&#34;https://wirecell.github.io/news/&#34;&gt;Wire-Cell News&lt;/a&gt; posts.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;I want a way to distribute information which has some amount of
-independent from my employer be it related to physics, software or
-other topics not appropriately served from a &lt;code&gt;.gov&lt;/code&gt; address.  Thus,
-this site will not be served from my &lt;a href=&#34;https://www.phy.bnl.gov/~bviren/&#34;&gt;BNL web area&lt;/a&gt; (which I mostly
-use for random file distribution, especially in a very permanent
-&lt;a href=&#34;https://www.phy.bnl.gov/~bviren/tmp/&#34;&gt;tmp/&lt;/a&gt;).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Remembering all my past activities is becoming a chore and noting
-them down will hopefully make that easy.  Thus some posts may be
-rather boring, as they will be literally web logs.  They will be
-kept distinct from more interesting items in some manner (likely in
-a &amp;ldquo;notes&amp;rdquo; section).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;When solving problems I tend to talk to myself using fingers typing
-instead of lips flapping.  Putting these thoughts on this help me
-focus them and find them later.  Maybe.  I also tend to revisit so
-expect you may see here to change over time.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;organization&#34;&gt;Organization&lt;/h2&gt;
-&lt;p&gt;Following Hugo nomenclature the site is organized first by &lt;em&gt;sections&lt;/em&gt;.
-Sections are interpreted as a type or a form of page.  The following
-sections may be found:&lt;/p&gt;
-&lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/about/&#34;&gt;about&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;meta descriptions (ie, this site),&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/posts/&#34;&gt;posts&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;short &amp;ldquo;blog&amp;rdquo; entries, unlikely to (but may) see updates,&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/articles/&#34;&gt;articles&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;long form on a topic and potentially updated over time.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/notes&#34;&gt;notes&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence.&lt;/dd&gt;
-&lt;/dl&gt;
-&lt;p&gt;All &lt;em&gt;pages&lt;/em&gt; in these sections may have one or more &lt;em&gt;category&lt;/em&gt; or &lt;em&gt;tag&lt;/em&gt;.  In
-Hugo these are both &lt;em&gt;taxonomies&lt;/em&gt;.  They are provided by Hugo with no
-assumed interpretation and so these are taken:&lt;/p&gt;
-&lt;dl&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/categories/&#34;&gt;categories&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.&lt;/dd&gt;
-&lt;dt&gt;&lt;a href=&#34;https://brettviren.github.io/tags/&#34;&gt;tags&lt;/a&gt;&lt;/dt&gt;
-&lt;dd&gt;Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.&lt;/dd&gt;
-&lt;/dl&gt;
-&lt;h2 id=&#34;tech&#34;&gt;Tech&lt;/h2&gt;
-&lt;p&gt;This blog uses &lt;a href=&#34;https://www.gnu.org/software/emacs/&#34;&gt;GNU Emacs&lt;/a&gt; &lt;a href=&#34;https://orgmode.org/&#34;&gt;Org Mode&lt;/a&gt; with &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;ox-hugo&lt;/a&gt; to make content for
-&lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  See &lt;a href=&#34;https://brettviren.github.io/articles/howido&#34;&gt;howido&lt;/a&gt; if interested in details of my personal computing
-configuration.  The source to this site is in my &lt;a href=&#34;https://github.com/brettviren/pub&#34;&gt;pub&lt;/a&gt; repo and though
-not likely interesting to humans the exported HTML lands in &lt;a href=&#34;https://github.com/brettviren/brettviren.github.io&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;todo&#34;&gt;Todo&lt;/h2&gt;
-&lt;h3 id=&#34;templates&#34;&gt;templates&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Basic RSS feeds, these are out-of-the-box&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Full content RSS feeds.&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Two RSS feed variants: ordered by pub date and by last modified date&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; per heading anchor links (as ripped from &lt;a href=&#34;https://github.com/kaushalmodi/hugo-onyx-theme&#34;&gt;hugo-onyx-theme&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; customize notes list.html&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; sidebar with recents, tags, categories&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; home page with tagclouds and most recent of each section&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;deploy&#34;&gt;deploy&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to my github&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Deploy to local &lt;code&gt;public_html&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;del&gt;Deploy to my BNL via rsync&lt;/del&gt; wontfix&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; automate deployment&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; some kind of comments system?  maybe offload to github discussions with auto thread start based on a deploy?  using GH API and &lt;code&gt;hub&lt;/code&gt;?  there&amp;rsquo;s a topic for a post.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;editing&#34;&gt;editing&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; org mode capture templates&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; org capture for notes&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>First post</title>
-      <link>https://brettviren.github.io/posts/first/</link>
-      <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://brettviren.github.io/posts/first/</guid>
-      <description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;
-&lt;p&gt;In this test post I cover the following topics shows as a ToC.&lt;/p&gt;
-&lt;div class=&#34;ox-hugo-toc toc&#34;&gt;
-&lt;div&gt;&lt;/div&gt;
-&lt;div class=&#34;heading&#34;&gt;Table of Contents&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#math&#34;&gt;Math&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#section&#34;&gt;Section&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#plantuml&#34;&gt;Plantuml&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#jsonnet&#34;&gt;Jsonnet&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#c-plus-plus&#34;&gt;C++&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;!--endtoc--&gt;
-&lt;h2 id=&#34;math&#34;&gt;Math&lt;/h2&gt;
-&lt;p&gt;\[\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }\]&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;\[ \alpha\beta\gamma \]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;gives:&lt;/p&gt;
-&lt;p&gt;\[ \alpha\beta\gamma \]&lt;/p&gt;
-&lt;h2 id=&#34;section&#34;&gt;Section&lt;/h2&gt;
-&lt;p&gt;text text&lt;/p&gt;
-&lt;h3 id=&#34;subsection&#34;&gt;Subsection&lt;/h3&gt;
-&lt;p&gt;more text&lt;/p&gt;
-&lt;h2 id=&#34;plantuml&#34;&gt;Plantuml&lt;/h2&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-plantuml&#34; data-lang=&#34;plantuml&#34;&gt;@startuml
-class &amp;#34;Node&amp;#34; as n &amp;lt;&amp;lt; type &amp;gt;&amp;gt; {
-        typeID
-        instanceID
-        schema
-        roles
-}
-class Role {
-        roleID
-        schema
-}
-&amp;#34;n&amp;#34; *- Role
-@enduml
-&lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;&lt;img src=&#34;https://brettviren.github.io/ox-hugo/testnode.svg&#34;/&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&#34;jsonnet&#34;&gt;Jsonnet&lt;/h2&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-jsonnet&#34; data-lang=&#34;jsonnet&#34;&gt;{ a:42, b:&amp;#34;string&amp;#34;, c:[&amp;#34;array&amp;#34;] }
-&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt;: [
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;array&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   ]
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;c-plus-plus&#34;&gt;C++&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Convert to C++ type
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T convert&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Get object attribute as C++ type
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;T get&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; Configuration&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; cfg, &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; name);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-    </item>
-    
-  </channel>
+	<channel>
+		<title>org on They call me Brett</title>
+		<link>https://brettviren.github.io/tags/org/</link>
+		<description>Recent content in org on They call me Brett</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 16:14:32 -0500</lastBuildDate>
+		
+			<atom:link href="https://brettviren.github.io/tags/org/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Babel in Jsonnet with ob-jsonnet.el</title>
+				<link>https://brettviren.github.io/posts/ob-jsonnet/</link>
+				<pubDate>Fri, 08 Oct 2021 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/posts/ob-jsonnet/</guid>
+				<description>&lt;p&gt;I made some &lt;code&gt;org-babel&lt;/code&gt; functions for Jsonnet and it was pretty easy!&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>About this site</title>
+				<link>https://brettviren.github.io/about/this/</link>
+				<pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/about/this/</guid>
+				<description>&lt;p&gt;In which I give the requisite grandiloquent soliloquy about how this&#xA;site is made.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>First post</title>
+				<link>https://brettviren.github.io/posts/first/</link>
+				<pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/posts/first/</guid>
+				<description>&lt;p&gt;A meaningless post to test ox-hugo and Hugo.&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

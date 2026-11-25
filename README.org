@@ -1,7 +1,0 @@
-#+title: My public web site
-
-Possibly viewable at:
-
-- ~/public_html/
-- https://brettviren.github.io/
-- https://www.phy.bnl.gov/~bv/

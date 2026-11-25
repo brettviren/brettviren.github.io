@@ -1,0 +1,326 @@
+#+title: ingescape
+#+date: 2021-12-24
+#+hugo_base_dir: ../../..
+#+hugo_section: articles
+#+hugo_bundle: ingescape
+#+export_file_name: index
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args+ :eval never-export
+#+hugo_tags: zeromq design critique
+#+hugo_categories: Tools
+#+hugo_publishdate: 2021-12-24
+
+I'm a fan of ZeroMQ and recently got notice of a new (to me) project
+in the ZeroMQ organization called *ingescape*.  Here I give a somewhat
+superficial "review" of this package as I simultaneously dig in and
+learn about it.
+
+#+hugo: more
+
+#+toc: headlines 2
+
+* Summary
+:PROPERTIES:
+:CUSTOM_ID: summary
+:END:
+
+[[https://github.com/zeromq/ingescape][ingescape]] is a layer on top of Zyre to provide a simplified basis for
+developing distributed applications by abstracting away much of the
+details related to managing sockets.
+
+*ingescape* supports two high level distributed processing patterns:
+
+- data flow :: flow graph model with nodes having named and typed
+  input or output ports and with edges implemented via PUB/SUB links
+
+- services :: reliable, addressed one-way notifications over Zyre chat
+  (not just request/reply as it is billed, see below)
+
+*ingescape* is implemented in C on CZMQ, Zyre and libsodium with no
+other dependencies.  It provides a ~zproject~ API (but not following
+CLASS) so in principle the package can automatically generate
+low-level bindings to other languages.
+
+*ingescape* lets us develop "agents" with only a modest amount of code
+devoted to socket wrangling allowing us to focus on functionality.  A
+given agent may be developed with minimal (but not zero, see
+discussion below) knowledge about the agent's peers.
+
+
+* Impressions
+:PROPERTIES:
+:CUSTOM_ID: impressions
+:END:
+
+I see in *ingescape* many of the themes I have explored in the [[https://wirecell.github.io/][Wire-Cell
+Toolkit]], [[https://github.com/brettviren/ptmp/][PTMP]], [[https://brettviren.github.io/zio/][ZIO]] and [[https://github.com/brettviren/yamz][YAMZ]].  In particular the idea of a "ported flow
+graph" providing the context for distributed execution can be seen in
+*ingescape*'s /data flow/ (and in its /services/ for that matter) as well as
+exploiting discovery and distributed configuration, specifically with Zyre.
+
+*ingescape* looks like a very good basis for many classes of distributed
+processes relevant to my area including DAQ, distributed parallel data
+processing, GPU-as-a-service, etc.  From a point of view of
+contemplating what it would be like to adopt *ingescape* in the projects
+like those I name above, I give some initial impressions and
+unsolicited suggestions.
+
+** NIC device
+:PROPERTIES:
+:CUSTOM_ID: nic-device
+:END:
+
+*ingescape* examples use the NIC device name (and a TCP/IP port) as an
+agent endpoint identifier.  This is somewhat unusual (at least in my
+experience) but it makes some sense when you think that *ingescape*
+tries to abstract away network.
+
+Trying the *ingescape* tests on the ~lo~ device was not successful:
+
+#+begin_example
+igsTester --device "lo" --port 5670 --verbose --auto
+tester;ERROR;igs_start_with_device;IP address could not be determined on device lo : our agent will NOT start
+#+end_example
+
+Perhaps something is wrongly configured here though I believe my ~lo~ is default from the Debian factory.  It looks like:
+
+#+begin_example
+$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+#+end_example
+
+Beside whatever is going on there, using a NIC device name as an
+endpoint identifier has at least two problems.  First, for a human,
+their names are hard to predict and remember.  Once I use the
+obviously ~/s~ named ~wlp82s0~ device the *ingescape* tests run fine.
+
+Second would be the (admittedly rare) situation of having one NIC
+serve multiple IP addresses.  I don't know how ZeroMQ handles this but
+I guess it must either listen either on all or onnly on the "first" in
+some order.  Neither policy would fit all uses of multi-IP NICs.
+
+Thankfully, digging into the code I find two functions that instead
+take ZeroMQ ~tcp://~ endpoint addresses:
+
+#+begin_src c
+igs_start_with_ip()
+igs_start_with_brokers()
+#+end_src
+
+The latter allows for TCP-based gossip discovery (instead of Zyre's default UDP).  That's nice!
+
+
+** Services
+:PROPERTIES:
+:CUSTOM_ID: services
+:END:
+
+The "services" feature is described as "request/reply" and "RPC/RMI".
+However, it appears rather more general than that.  At its essential,
+I would describe the "services" feature as a one-way, one-shot,
+peer-addressed notification mechanism.  The example applications
+"merely" approximates the usual RPC pattern by having the request
+method of the "server" call a (statically named) method back on the
+"sender" in order to deliver a reply.  Thus the example applications
+enact an asynchronous RPC with a hard-wired reply method name which is
+in fact also an RPC call made in a symmetric manner as the original
+"request".
+
+But, the essential nature of *ingescape* "services" also allow other
+behavior patterns.  The possibilities can perhaps be well described in
+email terms if we think of ~user@host~ email address strings to map to
+be interpreted as ~method@peer~ and method arguments to play a role
+similar to email headers.  We might then imagine these patterns of
+behavior:
+
+- static-reply :: as in the example, the "service" replies via the
+  sender ID and a static, hard-wired method name.  Analogous to a
+  ~Reply-To: static@sender~ requiring sender to have method (user) name
+  called ~static~.
+
+- dynamic-reply :: a service method call arguments may include a
+  method name that the service is expected to use for a reply.  Eg,
+  ~call(reply="dynamic")~ causes a reply to ~dynamic@sender~.  This
+  decouples the caller/callee development a little.
+
+- group :: Like *dynamic-reply* but with a list of ~method@peer~ pairs.
+  The service would be programmed to iterate on this list and send the
+  reply to each entry.
+
+- forward :: a service may call to another peer which is hard-wired in
+  the service.  Analogous to the use of a =~/.forward= file for email
+  delivery.
+
+- ignore :: the service may simply not reply to the original sender.
+
+And, of course, a "service" method may implement a mix of these
+patterns either statically or dynamically depending on method
+arguments or external factors.
+
+** Mapping
+:PROPERTIES:
+:CUSTOM_ID: mapping
+:END:
+
+For *ingescape* *data flow* this function is provided:
+
+#+begin_src C
+igs_mapping_add("input", "peer", "output")
+#+end_src
+
+When called in the context of defining an agent, this function call
+declares the agent's ~input~ port shall receive messages that the ~peer~
+may send out its own ~output~ port.  Presumably, ~peer:ouput~ maps to a
+PUB and ~agent:input~ to a SUB and then Zyre is used to discover the addresses for their ~bind()/connect()~ calls.
+
+The abstraction this function provides is very good.  However, the
+examples show the function being called in the context of the agent's
+~main()~.  This conflates implementation of agent functionality with
+peer linkage.
+
+This conflation is somewhat softened when instead of the mapping being
+hard-wired it is built from a user-provided JSON text with a call to
+the function ~igs_mapping_load_file()~.  This leaves it to the user to
+determine graph linkage.
+
+A side comment on that mapping JSON: the ~toOutput~ and ~fromInput~ key
+names are rather confusing (to me) as to which side of what boundary
+~to~ and ~from~ refers.  My understanding is ~to~ refers to the sender while
+~from~ refers to the receiver which is rather backwards unless one reads
+each to be from the point of view of their respective agent implementation.  Ie, a sender sends "to output" and a receiver receives "from input".
+
+In any case, forming a graph edge, either in the hard-coded way or
+with the JSON object, is apparently done only from the implementation
+of the "target" side of the edge.  This probably hints to a choice to
+hard-wire PUB to ~bind()~, SUB to ~connect()~.  It is a reasonable,
+simplifying choice.  A more general, complex one can be envisioned
+where PUB and SUB may ~bind()~ and/or ~connect()~ as needed and linkage is
+performed by a non-agent role through Zyre communication.  One benefit
+from such a variant design would be to allow a SUB to live on an
+accessible network while a PUB may be behind NAT.
+
+** Services/data-flow dichotomy
+:PROPERTIES:
+:CUSTOM_ID: services-data-flow-dichotomy
+:END:
+
+*ingescape* provides this dichotomy between services and data flow which
+is implemented in a somewhat uneven way.  On the one hand, the JSON
+mapping gives the end user say in how the data flow graph is wired.
+On the other hand, service calls use hard-wired identifiers or the
+application developer may invent their own way to let users configure
+the "service graph".
+
+I feel there is benefit to have *ingescape* provide first class support
+in the JSON handling to configure services.  This can then allow
+caller code development independent from details of callee.  The two
+may use different identifiers for the service and the JSON may provide
+a second kind of "mapping" between them.  It would also allow swapping
+out different implementations of some "service" w/out concerns of
+service or method name conflicts.
+
+Second, with the data flow mapping context, it is also possible to
+distribute service information in Zyre which can minimize user
+configuration effort.  For example, a service may advertise in Zyre
+its methods with each associated with a descriptive attribute set.  A
+client may then match its needs, also expressed as an attribute set,
+against attributes of the known services in order to locate a matching
+callee.  This is the approach tried in YAMZ and is flexible but of
+course more complex.
+
+The other part of this dichotomy I find interesting is how it couples
+input, operation and output.  This is not strictly required and one
+can at least contemplate using an "operation" function in either a
+data flow or service context.  The proper context to apply could
+depend on how the user configures the "flow graph" and "service
+graph".
+
+This factoring could be provide at application level or better made
+first class in *ingescape*.
+
+
+** Configuration
+:PROPERTIES:
+:CUSTOM_ID: configuration
+:END:
+
+The JSON "definition" and "mapping" file types are good.  However,
+they still rely on application code to register an association between
+an input observer (~igs_observe_input()~) and the data flow node input
+port name.  Likewise, a service method function must be registered to
+its externally known name via ~igs_service_init()~.  This is very
+reasonable and simple.  But it requires custom ~main()~ programs for
+each agent holding largely boilerplate code.
+
+Two patterns used in Wire-Cell Toolkit and PTMP are "plugin" and
+"named factory".  These patterns allow shared libraries to provide
+compiled functions which can be mapped via configuration strings.
+Adding them to the mix would allow a single, generic ~main()~ agent
+program and would allow configuration to fully drive the make up of
+the application.  ~dlopen()~ is needed for C/C++ which may entail some
+portability issues.  The same pattern can also be enacted in Python
+(if/when *ingescape* apps are developed in that language).
+
+
+** Load balancing
+:PROPERTIES:
+:CUSTOM_ID: load-balancing
+:END:
+
+In the README overview on data flow is this tantalizing comment:
+
+#+begin_quote
+optional capability to dispatch data between workers for workload distribution
+#+end_quote
+
+I could not determine what this implies though certainly any "service"
+or "data flow" node would be free to operate as a Majordomo client.
+
+** Lossy data flow
+:PROPERTIES:
+:CUSTOM_ID: lossy-data-flow
+:END:
+
+Use of PUB/SUB for data flow has one very substantial issue: there is
+no back pressure.  Data *will* be lost when an upstream node outpaces a
+downstream node long enough for the PUB/SUB buffers to reach HWM.
+This may actually be a desirable feature for some systems while
+utterly disastrous for others.  Adopters should consider if this lossy
+reality is acceptable.
+
+*ingescape* can be used also to form lossless, back-pressured graphs
+using purely the service pattern.  This rides on Zyre chat and thus
+can rely on ROUTER/DEALER mute policy of block when HWM is hit.
+Bouncing against a socket's high-water marks degrades throughput
+compared to other flow-control mechanisms.  If both lossless and very
+high rates are needed then a better type of flow control is needed.
+The credit-based flow control described in the zguide, and implemented
+in ZIO, is one good approach.  Adding this as a first-class transport
+in *ingescape* might be worth considering if one needs such performance.
+
+** TODO Splitting
+:PROPERTIES:
+:CUSTOM_ID: splitting
+:END:
+
+There's something hinted about "splits" which I didn't look into yet.
+
+* End note
+:PROPERTIES:
+:CUSTOM_ID: end-note
+:END:
+
+*ingescape* looks very exciting and codifies many ideas I have wanted to
+see or have realized.  I suggest some things which may potentially
+bring improvement but come with a cost of increasing complexity.
+
+Finally, like all good software, *ingescape* has an ambiguous
+pronunciation.  Is it ing-escape?  inge-scape?  I don't know, but I
+like it.
