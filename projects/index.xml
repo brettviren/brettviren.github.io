@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Projects on They call me Brett</title>
+		<link>https://brettviren.github.io/projects/</link>
+		<description>Recent content in Projects on They call me Brett</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<atom:link href="https://brettviren.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Wire-Cell</title>
+				<link>https://brettviren.github.io/projects/wire-cell/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/wire-cell/</guid>
+				<description>&lt;p&gt;Software for liquid argon time projection chambers: simulation, signal processing, imaging and reconstruction.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>pochoir</title>
+				<link>https://brettviren.github.io/projects/pochoir/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/pochoir/</guid>
+				<description>&lt;p&gt;Calculate electrical response to drifting charge.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>tred</title>
+				<link>https://brettviren.github.io/projects/tred/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/tred/</guid>
+				<description>&lt;p&gt;Three dimensional electron drift response simulation.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>gegede</title>
+				<link>https://brettviren.github.io/projects/gegede/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/gegede/</guid>
+				<description>&lt;p&gt;General Geometry Description.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>xerosere</title>
+				<link>https://brettviren.github.io/projects/xerosere/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/xerosere/</guid>
+				<description>&lt;p&gt;Multi-repo, multi-environment software development manager.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>firep</title>
+				<link>https://brettviren.github.io/projects/firep/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/firep/</guid>
+				<description>&lt;p&gt;Field response via physics-informed networks.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>multispack</title>
+				<link>https://brettviren.github.io/projects/multispack/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/multispack/</guid>
+				<description>&lt;p&gt;multispack = manylinux + Spack.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>spaxi</title>
+				<link>https://brettviren.github.io/projects/spaxi/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/spaxi/</guid>
+				<description>&lt;p&gt;If spack and pixi fell in love and made a baby.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>LS4GAN</title>
+				<link>https://brettviren.github.io/projects/ls4gan/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/ls4gan/</guid>
+				<description>&lt;p&gt;Work toward a novel approach to precise handling of systematic differences between simulation and reality using GANs.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>wcwc</title>
+				<link>https://brettviren.github.io/projects/wcwc/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/wcwc/</guid>
+				<description>&lt;p&gt;Wire-Cell Workstation Cluster.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>winch</title>
+				<link>https://brettviren.github.io/projects/winch/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/winch/</guid>
+				<description>&lt;p&gt;Winch is an Image Node Container Harness.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

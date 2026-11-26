@@ -1,0 +1,18 @@
+#+title: spaxi
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: projects
+#+hugo_bundle: spaxi
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 80
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+If spack and pixi fell in love and made a baby.
+
+#+hugo: more
+
+- [[https://github.com/brettviren/spaxi][https://github.com/brettviren/spaxi]]

@@ -12,6 +12,125 @@
 		
 			<atom:link href="https://brettviren.github.io/index.xml" rel="self" type="application/rss+xml" />
 			<item>
+				<title>DUNE</title>
+				<link>https://brettviren.github.io/experiments/dune/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/dune/</guid>
+				<description>&lt;p&gt;The Deep Underground Neutrino Experiment.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Wire-Cell</title>
+				<link>https://brettviren.github.io/projects/wire-cell/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/wire-cell/</guid>
+				<description>&lt;p&gt;Software for liquid argon time projection chambers: simulation, signal processing, imaging and reconstruction.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>MicroBooNE</title>
+				<link>https://brettviren.github.io/experiments/microboone/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/microboone/</guid>
+				<description>&lt;p&gt;A liquid argon time projection chamber neutrino experiment in the Booster Neutrino Beam at Fermilab.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>pochoir</title>
+				<link>https://brettviren.github.io/projects/pochoir/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/pochoir/</guid>
+				<description>&lt;p&gt;Calculate electrical response to drifting charge.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Daya Bay</title>
+				<link>https://brettviren.github.io/experiments/dayabay/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/dayabay/</guid>
+				<description>&lt;p&gt;A reactor antineutrino experiment in China that measured the neutrino mixing angle θ13.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>tred</title>
+				<link>https://brettviren.github.io/projects/tred/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/tred/</guid>
+				<description>&lt;p&gt;Three dimensional electron drift response simulation.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>gegede</title>
+				<link>https://brettviren.github.io/projects/gegede/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/gegede/</guid>
+				<description>&lt;p&gt;General Geometry Description.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>MINOS</title>
+				<link>https://brettviren.github.io/experiments/minos/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/minos/</guid>
+				<description>&lt;p&gt;A long-baseline neutrino oscillation experiment in Fermilab&amp;rsquo;s NuMI beam with a far detector in the Soudan mine.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Super-Kamiokande</title>
+				<link>https://brettviren.github.io/experiments/superk/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/superk/</guid>
+				<description>&lt;p&gt;A large water Cherenkov detector in the Kamioka mine, Japan, studying neutrinos and searching for proton decay.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>xerosere</title>
+				<link>https://brettviren.github.io/projects/xerosere/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/xerosere/</guid>
+				<description>&lt;p&gt;Multi-repo, multi-environment software development manager.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>firep</title>
+				<link>https://brettviren.github.io/projects/firep/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/firep/</guid>
+				<description>&lt;p&gt;Field response via physics-informed networks.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>multispack</title>
+				<link>https://brettviren.github.io/projects/multispack/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/multispack/</guid>
+				<description>&lt;p&gt;multispack = manylinux + Spack.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>spaxi</title>
+				<link>https://brettviren.github.io/projects/spaxi/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/spaxi/</guid>
+				<description>&lt;p&gt;If spack and pixi fell in love and made a baby.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>LS4GAN</title>
+				<link>https://brettviren.github.io/projects/ls4gan/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/ls4gan/</guid>
+				<description>&lt;p&gt;Work toward a novel approach to precise handling of systematic differences between simulation and reality using GANs.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>wcwc</title>
+				<link>https://brettviren.github.io/projects/wcwc/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/wcwc/</guid>
+				<description>&lt;p&gt;Wire-Cell Workstation Cluster.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>winch</title>
+				<link>https://brettviren.github.io/projects/winch/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/projects/winch/</guid>
+				<description>&lt;p&gt;Winch is an Image Node Container Harness.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>How to use myweb and drop</title>
+				<link>https://brettviren.github.io/artifacts/myweb-howto/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/artifacts/myweb-howto/</guid>
+				<description>Writing, publishing and deploying this site and its talks with myweb, and sharing files at expiring URLs with drop.</description>
+			</item>
+			<item>
 				<title>Unix Philosophy and the Wire-Cell Toolkit</title>
 				<link>https://brettviren.github.io/posts/unix-philosophy/</link>
 				<pubDate>Sat, 11 Jun 2022 00:00:00 +0000</pubDate>

@@ -1,0 +1,18 @@
+#+title: MINOS
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: experiments
+#+hugo_bundle: minos
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 40
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+A long-baseline neutrino oscillation experiment in Fermilab's NuMI beam with a far detector in the Soudan mine.
+
+#+hugo: more
+
+- [[https://www-numi.fnal.gov/][https://www-numi.fnal.gov/]]

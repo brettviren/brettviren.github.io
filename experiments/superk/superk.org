@@ -1,0 +1,18 @@
+#+title: Super-Kamiokande
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: experiments
+#+hugo_bundle: superk
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 50
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+A large water Cherenkov detector in the Kamioka mine, Japan, studying neutrinos and searching for proton decay.
+
+#+hugo: more
+
+- [[https://www-sk.icrr.u-tokyo.ac.jp/en/][https://www-sk.icrr.u-tokyo.ac.jp/en/]]

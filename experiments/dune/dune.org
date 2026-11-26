@@ -1,0 +1,22 @@
+#+title: DUNE
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: experiments
+#+hugo_bundle: dune
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 10
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+The Deep Underground Neutrino Experiment.
+
+#+hugo: more
+
+I work on its offline software, and on configuration for its data acquisition.
+
+- [[https://www.dunescience.org/][DUNE home]]
+- [[https://github.com/DUNE][DUNE on GitHub]]
+- [[https://github.com/dune-daq][DUNE DAQ on GitHub]]

@@ -10,9 +10,37 @@
 		
 		
 		
-			<lastBuildDate>Sun, 22 Nov 2026 16:14:32 -0500</lastBuildDate>
+			<lastBuildDate>Wed, 25 Nov 2026 19:22:45 -0500</lastBuildDate>
 		
 			<atom:link href="https://brettviren.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>drop</title>
+				<link>https://brettviren.github.io/tags/drop/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/tags/drop/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>howto</title>
+				<link>https://brettviren.github.io/tags/howto/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/tags/howto/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>myweb</title>
+				<link>https://brettviren.github.io/tags/myweb/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/tags/myweb/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>talks</title>
+				<link>https://brettviren.github.io/tags/talks/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/tags/talks/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>covid</title>
 				<link>https://brettviren.github.io/tags/covid/</link>

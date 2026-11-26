@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Artifacts on They call me Brett</title>
+		<link>https://brettviren.github.io/artifacts/</link>
+		<description>Recent content in Artifacts on They call me Brett</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<atom:link href="https://brettviren.github.io/artifacts/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>How to use myweb and drop</title>
+				<link>https://brettviren.github.io/artifacts/myweb-howto/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/artifacts/myweb-howto/</guid>
+				<description>Writing, publishing and deploying this site and its talks with myweb, and sharing files at expiring URLs with drop.</description>
+			</item>
+	</channel>
+</rss>

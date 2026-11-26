@@ -1,0 +1,18 @@
+#+title: MicroBooNE
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: experiments
+#+hugo_bundle: microboone
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 20
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+A liquid argon time projection chamber neutrino experiment in the Booster Neutrino Beam at Fermilab.
+
+#+hugo: more
+
+- [[https://microboone.fnal.gov/][https://microboone.fnal.gov/]]

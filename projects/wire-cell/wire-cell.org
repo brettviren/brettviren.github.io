@@ -1,0 +1,22 @@
+#+title: Wire-Cell
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: projects
+#+hugo_bundle: wire-cell
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 10
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+Software for liquid argon time projection chambers: simulation, signal processing, imaging and reconstruction.
+
+#+hugo: more
+
+Wire-Cell is developed in BNL's Electronic Detector Group.
+
+- [[https://lar.bnl.gov/wire-cell/][Wire-Cell home]]
+- [[https://github.com/wirecell][Wire-Cell Toolkit on GitHub]]
+- [[https://github.com/BNLIF][prototype]]

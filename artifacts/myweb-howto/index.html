@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to use myweb and drop</title>
+<style>
+:root { --fg: #222; --bg: #fdfdfb; --muted: #666; --link: #1a4f8a; --rule: #ddd; --code: #f3f3ef; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #ddd; --bg: #1b1b1b; --muted: #999; --link: #8bb8e8; --rule: #444; --code: #262626; }
+}
+body { color: var(--fg); background: var(--bg); font-family: Georgia, "Times New Roman", serif;
+       line-height: 1.55; max-width: 44rem; margin: 0 auto; padding: 1rem; }
+a { color: var(--link); }
+h1 { margin-bottom: 0.2rem; }
+h2 { border-top: 1px solid var(--rule); padding-top: 1rem; margin-top: 2rem; }
+.subtitle, .muted { color: var(--muted); }
+pre, code { font-family: "DejaVu Sans Mono", monospace; font-size: 0.88rem; }
+code { background: var(--code); padding: 0 0.2rem; }
+pre { background: var(--code); padding: 0.6rem; overflow-x: auto; }
+pre code { padding: 0; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--rule); padding: 0.2rem 0.5rem; text-align: left; vertical-align: top; }
+nav.toc a { margin-right: 0.8rem; }
+</style>
+</head>
+<body>
+<header>
+<p><a href="../../">← site</a></p>
+<h1>How to use myweb and drop</h1>
+<p class="subtitle">Writing, publishing and deploying this site and its talks, and sharing files at expiring URLs.</p>
+<nav class="toc">
+<a href="#model">Model</a>
+<a href="#write">Write</a>
+<a href="#access">Access</a>
+<a href="#publish">Publish</a>
+<a href="#deploy">Deploy</a>
+<a href="#talks">Talks</a>
+<a href="#artifacts">Artifacts</a>
+<a href="#drop">drop</a>
+</nav>
+</header>
+<article>
+
+<h2 id="model">The model</h2>
+<p>The site source is the DataLad dataset <code>~/keep/web</code>.  Each page is an
+<em>item</em>: a directory (a Hugo page bundle) in a <em>taxon</em> such as
+<code>posts</code>, <code>articles</code>, <code>notes</code>, <code>projects</code>
+or <code>experiments</code>.  The item holds its org source and any images or files it uses.</p>
+<p>A <em>target</em> is one place the site is deployed: <code>local</code>
+(<code>~/public_html</code>), <code>github</code> (GitHub Pages) and <code>work</code>
+(hierocles).  Taxa and targets are defined in <code>~/keep/web/myweb.toml</code>;
+host specifics, such as where each target goes, are in
+<code>~/.config/myweb/config.toml</code>.</p>
+<p>An item is named by its slug, <code>taxon/slug</code> or a path.</p>
+
+<h2 id="write">Write</h2>
+<p>Create a draft, then open it:</p>
+<pre><code>myweb new posts "A Title" -t emacs -t org
+myweb new notes "TIL" -m "One line is a whole note."
+myweb new articles "Long Thing" -d 2026-12-31   # TODO with deadline, in org-agenda
+myweb edit a-title</code></pre>
+<p><code>edit</code> opens a browser on a local preview that includes drafts, and the
+org file in your editor: <code>editor</code> in <code>config.toml</code>, else
+<code>$EDITOR</code>, else <code>$VISUAL</code>.  When you quit the editor the item is
+exported and the preview shows it.  If the editor is <code>emacsclient</code>, the file
+opens in your running Emacs (through <code>[emacs] client</code>) and every save
+re-exports, so the preview follows as you write.</p>
+<p>See what is in progress, and check an item before publishing:</p>
+<pre><code>myweb status            # drafts: deadline, TODO, words, figures
+myweb status -a -x posts
+myweb check a-title     # export, build, check links; report also in .check.txt</code></pre>
+<p>Linking:</p>
+<table>
+<tr><th>To</th><th>Write</th></tr>
+<tr><td>a section or page of this site</td><td><code>[[/posts][posts]]</code>, <code>[[/articles/howido][howido]]</code></td></tr>
+<tr><td>a path no org file makes</td><td><code>[[site:artifacts/][artifacts]]</code></td></tr>
+<tr><td>an area only some sites have</td><td>its full URL, eg <code>[[https://www.phy.bnl.gov/~bviren/tmp/][tmp]]</code></td></tr>
+<tr><td>a file in the item</td><td><code>[[file:fig.svg]]</code></td></tr>
+</table>
+<p>A bare <code>[[posts/]]</code> fails the export: org looks for a local file or heading.</p>
+
+<h2 id="access">Who sees an item</h2>
+<p>Set in the item's org header:</p>
+<table>
+<tr><th>Keyword</th><th>Values</th><th>Effect</th></tr>
+<tr><td><code>#+audience:</code></td><td><code>personal</code> · <code>work</code> · <code>both</code></td>
+<td>personal goes only to github, work only to work, both to each (local gets all)</td></tr>
+<tr><td><code>#+visibility:</code></td><td><code>public</code> · <code>unlisted</code> · <code>protected</code></td>
+<td>unlisted and protected are never listed; protected needs a password and never goes to github</td></tr>
+<tr><td><code>#+access:</code></td><td>a realm, eg <code>edg</code></td>
+<td>which password a protected item needs (the target's <code>realms</code>)</td></tr>
+</table>
+<p>Tags (<code>#+hugo_tags:</code>) also place an item on a project or experiment page
+whose slug matches, eg tag <code>dune</code> lists it on <a href="../../experiments/dune/">DUNE</a>.</p>
+
+<h2 id="publish">Publish</h2>
+<pre><code>myweb publish a-title</code></pre>
+<p>This clears the draft flag, exports, commits, updates the item's version stamp
+(and tags the revision, in a taxon with <code>tag = true</code>), then deploys to the
+<code>publish_targets</code> of your config.
+<code>--no-deploy</code> stops after recording; <code>-T work</code> picks the targets.</p>
+
+<h2 id="deploy">Deploy</h2>
+<pre><code>myweb build work        # build and check only, into ~/.cache/myweb/stage/work
+myweb deploy local      # build, then send
+myweb deploy github work
+myweb deploy -a         # every publish_target</code></pre>
+<p>Each target is sent by whatever it sets: <code>dest</code> (a local directory),
+<code>rsync</code> (a <code>host:path/</code>), <code>git</code> (a repository whose
+<code>branch</code> gets the build as one commit).  Paths in <code>keep</code>, such as
+<code>tmp/</code>, are never touched.  A build fails, sending nothing, if an excluded
+or protected page leaked into it.</p>
+<p>To deploy without asking: <code>myweb setup systemd -T work</code> (or <code>cron</code>,
+<code>git</code>); <code>--print</code> shows what it would install.</p>
+
+<h2 id="talks">Talks</h2>
+<p>A talk is a directory <code>~/keep/talks/&lt;group&gt;/&lt;YYYY&gt;/&lt;MM&gt;/&lt;DD&gt;/&lt;topic&gt;/</code>
+holding its sources, its PDF and a <code>talk.json</code>.  Each becomes a page under
+<a href="../../talks/">talks/</a> on the next build.  A command names a talk by that
+path, by its topic alone if no other talk shares it, or by a file path.</p>
+
+<h3>Start a new talk</h3>
+<pre><code>myweb talks new dune "Geometry Plans"            # today; or -d 2026-12-01, -t topic</code></pre>
+<p>This makes <code>dune/&lt;today&gt;/geometry-plans/</code> with an org-beamer
+<code>geometry-plans.org</code> (using your <code>setup.org</code>) and a draft
+<code>talk.json</code>, and opens the org file in your editor.  Write the slides and export the
+PDF as usual (<code>C-c C-e l P</code>).  Then:</p>
+<pre><code>myweb talks refresh geometry-plans                  # title and pages from the org and PDF
+myweb talks refresh geometry-plans --publish --save # off draft, datalad save
+myweb deploy work</code></pre>
+<p>Give it a summary, keywords and venue before publishing; the listing and search
+show them:</p>
+<pre><code>myweb talks describe geometry-plans -e --save     # all fields, in your editor</code></pre>
+<p>This shows every field, set or not, as text:</p>
+<pre><code>title: Geometry Plans
+subtitle:
+venue:
+url:
+keywords: Phlex, GDML
+
+summary:
+Two or three sentences, as many lines and paragraphs as you like.</code></pre>
+<p>Change what you want, save and quit; an emptied field is cleared.  Or set fields
+directly: <code>-s "…"</code> (<code>-s -</code> reads stdin), <code>-k</code> per keyword,
+<code>--title</code>, <code>--subtitle</code>, <code>--venue</code>, <code>--url</code>.  Use <code>describe</code> rather than editing
+<code>talk.json</code> by hand: for a migrated talk it also updates the talk's review,
+which migrating again (or <code>pull</code>) writes <code>talk.json</code> from.</p>
+
+<h3>Revisit a talk</h3>
+<pre><code>myweb talks edit geometry-plans       # open its source
+# edit, re-export the PDF
+myweb talks refresh geometry-plans --save
+myweb deploy work</code></pre>
+<p>Once a talk is in <code>~/keep/talks</code>, edit it there, not in <code>~/sync/talks</code>.</p>
+
+<h3>Migrate a talk from <code>~/sync/talks</code></h3>
+<pre><code>myweb talks scan                      # find new and changed talks
+myweb talks resolve dune/topics/plans/plans --accept   # an id from MIGRATION.org; migrates it
+datalad save -d ~/keep/talks -m "talks: migrate plans"
+myweb deploy work</code></pre>
+<p><code>scan</code> writes <code>~/keep/talks/MIGRATION.org</code>, listing every candidate
+by its <code>id</code> (its path in <code>~/sync/talks</code>, without extension).
+<code>resolve --accept</code> migrates that one as it is; add <code>-d YYYY-MM-DD</code> or
+<code>-t topic</code> if the scan guessed them wrong.  Its title comes from the PDF; give the
+summary (and a better title, if need be) with <code>myweb talks describe</code>.  For many talks at once, have reviews written from the
+digests (<code>myweb talks todo -p</code> lists them, <code>myweb talks fields</code> describes a
+review), then <code>myweb talks migrate --save</code>.  <code>--reject</code> and
+<code>--material</code> keep a candidate out.</p>
+
+<h3>A migrated talk changed in <code>~/sync/talks</code></h3>
+<pre><code>myweb talks scan                                  # shows it "changed", or "gone" if moved
+myweb talks pull shut-up-and-calculate --save     # changed where it was
+myweb talks pull phlex-gdml-geometry \
+      --from ~/sync/talks/dune/topics/phlex/geom --save   # moved, then changed
+myweb deploy work</code></pre>
+<p><code>pull</code> copies the talk's current files over the migrated ones and rewrites its
+<code>talk.json</code>.  It keeps the talk's title, summary and keywords, and your
+<code>audience</code>, <code>visibility</code>, <code>access</code> and <code>draft</code>.  The
+date and topic stay; a new group moves the talk, and so its URL.  The geometry talk above
+was pulled this way, from <code>wire-cell/</code> to <code>dune/2026/11/20/</code>.</p>
+
+<h3>Who sees a talk</h3>
+<p>As for any item, by <code>audience</code>, <code>visibility</code> and <code>access</code>
+in <code>talk.json</code>, else the group's defaults under
+<code>[talks.group.&lt;name&gt;]</code> in <code>myweb.toml</code> (the <code>edg</code> group is
+protected), else <code>[talks]</code>.  Talks are never sent to github.</p>
+
+<h2 id="artifacts">Artifacts</h2>
+<p>Artifacts, like this page, are ready-made files served as they are.
+Make a directory under <code>~/keep/web/artifacts/</code> with the files and an
+<code>artifact.toml</code>:</p>
+<pre><code>title = "Field response study"
+date = 2026-11-25
+summary = "One line for the listing."
+tags = ["dune"]
+# entry = "report.html"       if the page is not index.html
+# audience, visibility, access as for any item</code></pre>
+<p>Then <code>datalad save</code> and deploy.  To protect a whole tree with one password,
+nest artifacts in a group directory and set the group in <code>myweb.toml</code>:</p>
+<pre><code>[artifacts.group.review]
+visibility = "protected"
+access = "review"            # add review = "user review" to the target's realms</code></pre>
+
+<h2 id="drop">drop: share files at expiring URLs</h2>
+<p>drop copies files to <code>tmp/</code> of the local or work web area and prints a URL.
+It never goes to github.</p>
+<pre><code>drop put report.pdf                    # default target, ttl 7d, hashed URL
+drop put -t work --ttl 2w data/ fig.png
+drop put -t work --hash none -n slides deck.pdf   # readable URL .../tmp/slides/
+drop put -t work -u alice notes.pdf    # password; new user gets one generated
+drop put -a -m "for the review" x.tgz  # any user of the htpasswd
+drop put -y fig.png                    # also copy the URL to the clipboard</code></pre>
+<p>Manage what is there:</p>
+<pre><code>drop ls -A -l                 # all targets, with files and notes
+drop extend 3f9c2a 30d        # new TTL from now, or "never"
+drop rm 3f9c2a                # the id is the URL's last part
+drop gc -n                    # what has expired; without -n, remove it
+drop setup systemd            # run gc hourly</code></pre>
+<p>Users for password drops:</p>
+<pre><code>drop passwd ls -t work
+drop passwd add -t work alice
+drop passwd prune -t work     # offer to remove users no drop names</code></pre>
+<p class="muted">Defaults (target, ttl, hash, index) are in <code>~/.config/drop/config.toml</code>.</p>
+</article>
+</body>
+</html>

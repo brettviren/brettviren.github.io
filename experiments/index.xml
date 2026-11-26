@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Experiments on They call me Brett</title>
+		<link>https://brettviren.github.io/experiments/</link>
+		<description>Recent content in Experiments on They call me Brett</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<atom:link href="https://brettviren.github.io/experiments/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>DUNE</title>
+				<link>https://brettviren.github.io/experiments/dune/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/dune/</guid>
+				<description>&lt;p&gt;The Deep Underground Neutrino Experiment.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>MicroBooNE</title>
+				<link>https://brettviren.github.io/experiments/microboone/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/microboone/</guid>
+				<description>&lt;p&gt;A liquid argon time projection chamber neutrino experiment in the Booster Neutrino Beam at Fermilab.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Daya Bay</title>
+				<link>https://brettviren.github.io/experiments/dayabay/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/dayabay/</guid>
+				<description>&lt;p&gt;A reactor antineutrino experiment in China that measured the neutrino mixing angle θ13.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>MINOS</title>
+				<link>https://brettviren.github.io/experiments/minos/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/minos/</guid>
+				<description>&lt;p&gt;A long-baseline neutrino oscillation experiment in Fermilab&amp;rsquo;s NuMI beam with a far detector in the Soudan mine.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Super-Kamiokande</title>
+				<link>https://brettviren.github.io/experiments/superk/</link>
+				<pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+				<guid>https://brettviren.github.io/experiments/superk/</guid>
+				<description>&lt;p&gt;A large water Cherenkov detector in the Kamioka mine, Japan, studying neutrinos and searching for proton decay.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

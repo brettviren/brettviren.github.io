@@ -28,29 +28,15 @@ somehow [[/about/me][about me]].  This is the latest.  Time will tell if it surv
 
 This site is intended as an outlet for:
 
-- Detailed responses to technical inquires that might otherwise go
-  into an individual email message.  Seeking "efficiency" (laziness) I
-  may instead turn a response into a [[/posts][blog post]] or a more formal
-  [[/articles][article]] (such as [[/articles/howido][howido]]).  Where applicable, some things already
-  land in [[https://wirecell.github.io/news/][Wire-Cell News]] posts.
+- Provide browsable, searchable collection of [[/talks][talks]].
 
-- I want a way to distribute information which has some amount of
-  independent from my employer be it related to physics, software or
-  other topics not appropriately served from a ~.gov~ address.  Thus,
-  this site will not be served from my [[https://www.phy.bnl.gov/~bviren/][BNL web area]] (which I mostly
-  use for random file distribution, especially in a very permanent
-  [[https://www.phy.bnl.gov/~bviren/tmp/][tmp/]]).
+- Distribution of Totally Meaningful Parts ([[https://www.phy.bnl.gov/~bviren/tmp/][tmp]]).
 
-- Remembering all my past activities is becoming a chore and noting
-  them down will hopefully make that easy.  Thus some posts may be
-  rather boring, as they will be literally web logs.  They will be
-  kept distinct from more interesting items in some manner (likely in
-  a "notes" section).
+- I will sometimes answer technical questions in a [[/posts][blog]] post, in a longer and
+  potentially revised [[/articles][article]] (such as [[/articles/howido][howido]]) or with LLM-assistance an
+  [[site:artifacts/][artifact]].  Some such things may also land in [[https://wirecell.github.io/news/][Wire-Cell News]] posts.
 
-- When solving problems I tend to talk to myself using fingers typing
-  instead of lips flapping.  Putting these thoughts on this help me
-  focus them and find them later.  Maybe.  I also tend to revisit so
-  expect you may see here to change over time.
+- I may occasiounly put a short non sequitur or a "today I learned" in [[/notes][notes]].
 
 * Organization
 :PROPERTIES:
@@ -61,61 +47,40 @@ Following Hugo nomenclature the site is organized first by /sections/.
 Sections are interpreted as a type or a form of page.  The following
 sections may be found:
 
-- [[file:/about/][about]] :: meta descriptions (ie, this site),
-- [[file:/posts/][posts]] :: short "blog" entries, unlikely to (but may) see updates,
-- [[file:/articles/][articles]] :: long form on a topic and potentially updated over time.
-- [[/notes][notes]] :: things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence. 
+- [[/posts][posts]] :: short "blog" entries, unlikely to (but may) see updates.
+- [[/articles][articles]] :: long form on a topic and potentially updated over time.
+- [[/talks][talks]] :: slides from presentations I have given, each with a summary.
+- [[/notes][notes]] :: things likely more interesting to myself than others which is meant to summarize or simply mark some occurrence.
+- [[/projects][projects]] :: one page for each software project I develop or contribute to.
+- [[/experiments][experiments]] :: one page for each experiment I collaborate on.
+- [[/about][about]] :: meta descriptions (ie, this page).
 
-All /pages/ in these sections may have one or more /category/ or /tag/.  In
-Hugo these are both /taxonomies/.  They are provided by Hugo with no
+Pages are further labeled by /taxonomies/.  Hugo provides these with no
 assumed interpretation and so these are taken:
 
-- [[file:/categories/][categories]] :: A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.
-- [[file:/tags/][tags]] :: Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.
+- [[/categories][categories]] :: A limited number of general descriptors defined in a top-down manner.  These label the basic topical subject of the page independent of its section.
+- [[/tags][tags]] :: Numerous, unbound set of detailed descriptors defined in a bottom-up manner as pages are written.  These label aspects of the content regardless of category or section.
+- [[/groups][groups]] and [[/topics][topics]] :: The group (eg, an experiment or project) to which a talk was given and the topic of the talk.
+
+Each project and experiment page automatically lists the pages whose
+tag, group or topic matches it.  The [[/search][search]] page searches all
+pages from within your browser.
+
+The site is served in two places.  My [[https://brettviren.github.io/][personal site]] holds pages of
+personal interest and those of general interest.  My [[https://www.phy.bnl.gov/~bviren/][work site]] holds
+pages of work interest, those of general interest and the talks.  Some
+pages are only readable by members of a group.
 
 * Tech
 :PROPERTIES:
 :CUSTOM_ID: tech
 :END:
 
-This blog uses [[https://www.gnu.org/software/emacs/][GNU Emacs]] [[https://orgmode.org/][Org Mode]] with [[https://ox-hugo.scripter.co/][ox-hugo]] to make content for
-[[https://gohugo.io/][Hugo]].  See [[file:/articles/howido][howido]] if interested in details of my personal computing
-configuration.  The source to this site is in my [[https://github.com/brettviren/pub][pub]] repo and though
-not likely interesting to humans the exported HTML lands in [[https://github.com/brettviren/brettviren.github.io][this repo]].
-
-* Todo
-:PROPERTIES:
-:CUSTOM_ID: todo
-:END:
-
-** templates
-:PROPERTIES:
-:CUSTOM_ID: templates
-:END:
-
-- [X] Basic RSS feeds, these are out-of-the-box
-- [X] Full content RSS feeds.
-- [ ] Two RSS feed variants: ordered by pub date and by last modified date 
-- [X] per heading anchor links (as ripped from [[https://github.com/kaushalmodi/hugo-onyx-theme][hugo-onyx-theme]])
-- [ ] customize notes list.html
-- [ ] sidebar with recents, tags, categories
-- [ ] home page with tagclouds and most recent of each section
-
-** deploy
-:PROPERTIES:
-:CUSTOM_ID: deploy
-:END:
-
-- [X] Deploy to my github
-- [X] Deploy to local ~public_html~
-- [ ] +Deploy to my BNL via rsync+ wontfix
-- [X] automate deployment
-- [ ] some kind of comments system?  maybe offload to github discussions with auto thread start based on a deploy?  using GH API and ~hub~?  there's a topic for a post.
-
-** editing
-:PROPERTIES:
-:CUSTOM_ID: editing
-:END:
-
-- [X] org mode capture templates
-- [ ] org capture for notes
+This site uses [[https://www.gnu.org/software/emacs/][GNU Emacs]] [[https://orgmode.org/][Org Mode]] with [[https://ox-hugo.scripter.co/][ox-hugo]] to make content for
+[[https://gohugo.io/][Hugo]].  See [[/articles/howido][howido]] if interested in details of my personal computing
+configuration.  The org source of each page is linked from it ("org
+source").  Writing, building and deploying the site is done with
+[[https://github.com/brettviren/myweb][myweb]], a small command line tool I wrote that keeps the sources in a
+[[https://www.datalad.org/][DataLad]] dataset, sorts pages to each site by their audience and
+deploys each by rsync or git.  Though not likely interesting to humans,
+the exported HTML of the personal site lands in [[https://github.com/brettviren/brettviren.github.io][this repo]].

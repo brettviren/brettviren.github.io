@@ -1,0 +1,18 @@
+#+title: gegede
+#+date: 2026-11-25
+#+hugo_base_dir: ../../..
+#+hugo_section: projects
+#+hugo_bundle: gegede
+#+export_file_name: index
+#+hugo_tags: 
+#+hugo_weight: 40
+#+hugo_draft: false
+#+audience: both
+#+visibility: public
+#+property: header-args :eval never-export
+
+General Geometry Description.
+
+#+hugo: more
+
+- [[https://github.com/brettviren/gegede][https://github.com/brettviren/gegede]]
